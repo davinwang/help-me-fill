@@ -2,6 +2,37 @@
   "name": "help-me-fill",
   "version": "0.1.0",
   "private": true,
+  "description": "Privacy-first AI form filler browser extension. Turn any PDF, DOCX, XLSX, Markdown, or text document into a filled web form with human review. BYO API key, on-device option, no servers, no telemetry.",
+  "license": "MIT",
+  "author": "Davin Wang <davin.wang@live.com>",
+  "homepage": "https://github.com/davinwang/help-me-fill#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davinwang/help-me-fill.git"
+  },
+  "bugs": {
+    "url": "https://github.com/davinwang/help-me-fill/issues"
+  },
+  "keywords": [
+    "chrome-extension",
+    "edge-extension",
+    "form-filler",
+    "autofill",
+    "ai",
+    "llm",
+    "byo-key",
+    "privacy",
+    "on-device",
+    "pdf",
+    "docx",
+    "xlsx",
+    "resume",
+    "job-application",
+    "manifest-v3",
+    "react",
+    "typescript",
+    "vite"
+  ],
   "type": "module",
   "engines": {
     "node": "^22.18.0 || >=24.0.0"
