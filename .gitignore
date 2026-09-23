@@ -1,0 +1,10 @@
+node_modules/
+.npm-cache/
+.browsers/
+dist/
+test-results/
+playwright-report/
+coverage/
+tests/fixtures/generated/
+.env*
+*.local

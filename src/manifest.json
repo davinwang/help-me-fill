@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "help-me-fill 帮我填",
+  "version": "0.1.0",
+  "description": "Review AI suggestions from a PDF and fill supported web text fields.",
+  "permissions": ["sidePanel", "scripting", "activeTab", "storage"],
+  "optional_host_permissions": [
+    "https://api.openai.com/*",
+    "https://api.anthropic.com/*",
+    "https://generativelanguage.googleapis.com/*",
+    "https://api.deepseek.com/*",
+    "https://open.bigmodel.cn/*",
+    "https://openrouter.ai/*",
+    "https://api.moonshot.cn/*",
+    "https://llm-8qqdhr2i4l0ydvm2.cn-beijing.maas.aliyuncs.com/*"
+  ],
+  "background": { "service_worker": "background/service-worker.js", "type": "module" },
+  "side_panel": { "default_path": "sidepanel/index.html" },
+  "action": { "default_title": "Open help-me-fill" },
+  "icons": { "16": "icons/16.png", "48": "icons/48.png", "128": "icons/128.png" },
+  "content_security_policy": { "extension_pages": "script-src 'self'; object-src 'none'; worker-src 'self'" }
+}
