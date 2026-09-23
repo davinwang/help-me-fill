@@ -7,7 +7,7 @@ import { ReviewTable } from './components/ReviewTable';
 import { FillResults } from './components/FillResults';
 import { parseDocument, mergeDocuments } from '../parsers';
 import { createProvider } from '../ai/provider';
-import { PROVIDERS, BUILTIN, type ProviderSettings as Settings } from '../ai/registry';
+import { resolveProvider, type ProviderSettings as Settings } from '../ai/registry';
 import { compactFields } from '../ai/prompts';
 import { UserError, errorMessage } from '../shared/errors';
 import { initialSession, sessionReducer, isBusy, scanActivePage, sendPage, executeOnPage, assertActive, type Action, type Phase } from './session';
@@ -83,8 +83,8 @@ export function App() {
     const config = { ...settings }, document = mergeDocuments(state.documents), snapshot = state.scan;
     void run('mapping', async signal => {
       await assertActive(snapshot.target);
-      const info = config.provider === 'builtin' ? BUILTIN : PROVIDERS[config.provider];
-      if (config.provider !== 'builtin' && !await chrome.permissions.contains({ origins: [info.origin] })) throw new UserError('API host permission is missing. Enable the provider again.');
+      const info = resolveProvider(config);
+      if (info.kind !== 'builtin' && !await chrome.permissions.contains({ origins: [info.origin] })) throw new UserError('Host permission is missing. Enable the provider again.');
       const outcome = await createProvider(config).map({ lines: document.lines, fields: compactFields(snapshot.fields), signal, onProgress: text => { if (!signal.aborted) dispatch({ type: 'PROGRESS', text }); } });
       await assertActive(snapshot.target);
       return { type: 'PLAN', plan: outcome.plan, metrics: `${info.name} · ${config.model} · ${outcome.calls} request(s) · ${(outcome.elapsedMs / 1000).toFixed(1)} s${outcome.usage ? ` · usage: ${JSON.stringify(outcome.usage)}` : ''}` };
