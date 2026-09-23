@@ -1,0 +1,18 @@
+{
+  "appName": {
+    "message": "帮我填 Help Me Fill",
+    "description": "中文商店列表与扩展卡片中展示的完整产品名。"
+  },
+  "appShortName": {
+    "message": "帮我填",
+    "description": "空间受限处（工具栏 tooltip 等）使用的短名。"
+  },
+  "appDescription": {
+    "message": "隐私优先的 AI 表单填写工具。把任意 PDF、DOCX、XLSX、Markdown 一键映射为网页表单答案，填写前逐字段审核。自带 API Key，或完全端侧运行，无服务器、无遥测、无账号。",
+    "description": "Chrome 应用商店中文描述。"
+  },
+  "actionTitle": {
+    "message": "打开 帮我填",
+    "description": "工具栏图标 tooltip。"
+  }
+}

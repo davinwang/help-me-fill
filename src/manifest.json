@@ -1,8 +1,12 @@
 {
   "manifest_version": 3,
-  "name": "help-me-fill 帮我填",
+  "name": "__MSG_appName__",
+  "short_name": "__MSG_appShortName__",
   "version": "0.1.0",
-  "description": "Review AI suggestions from a PDF and fill supported web text fields.",
+  "description": "__MSG_appDescription__",
+  "default_locale": "en",
+  "author": "Davin Wang",
+  "homepage_url": "https://github.com/davinwang/help-me-fill",
   "permissions": ["sidePanel", "scripting", "activeTab", "storage"],
   "optional_host_permissions": [
     "https://api.openai.com/*",
@@ -16,7 +20,7 @@
   ],
   "background": { "service_worker": "background/service-worker.js", "type": "module" },
   "side_panel": { "default_path": "sidepanel/index.html" },
-  "action": { "default_title": "Open help-me-fill" },
+  "action": { "default_title": "__MSG_actionTitle__" },
   "icons": { "16": "icons/16.png", "48": "icons/48.png", "128": "icons/128.png" },
   "content_security_policy": { "extension_pages": "script-src 'self'; object-src 'none'; worker-src 'self'" }
 }
