@@ -22,11 +22,24 @@ update will be announced before the release ships.
 
 | Data type | Where it comes from | Where it goes | Retained? |
 |---|---|---|---|
-| Your document (PDF, DOCX, XLSX, MD, TXT) | You drop it into the side panel | Parsed in-browser by `pdf.js`, `mammoth`, or SheetJS. Extracted text is sent to the AI provider you selected. | Only in the current session. Cleared when you close the panel or start a new document. Never persisted to disk by the extension. |
+| Your document (PDF, DOCX, XLSX, MD, TXT) | You drop it into the side panel | Parsed in-browser by `pdf.js`, `mammoth`, or SheetJS. Extracted text lines (id, page, text only) are sent to the AI provider you selected. | Only in the current session. Cleared when you close the panel or start a new document. Never persisted to disk by the extension. |
 | Your API key for a provider | You paste it into the settings UI | `chrome.storage.local`, encrypted at rest by the OS keychain, scoped to the extension. Sent only to the provider it belongs to, in the `Authorization` header of your AI requests. | Until you clear it in settings or uninstall the extension. |
-| The web form's fields | Scanned from the tab you're on | Sent to your AI provider as part of the mapping prompt. | Only in the current session. |
+| The web form's field metadata | Scanned from the tab you're on | An **explicit allowlist** of properties is sent to your AI provider: `id`, `type`, `label`, `ariaLabel`, `placeholder`, `name`, `context`, `required`, `maxLength`, `pattern`. **Current field values, page URL, cookies, DOM structure, and any other page content are NOT sent.** See `compactFields` in `src/ai/prompts.ts`. | Only in the current session. |
 | Values you accept and fill | From the review table | Written into the page's form fields using framework-compatible events. | Whatever the page itself does with them. The extension retains nothing after fill. |
 | Undo snapshot | Captured before fill | Kept in memory in the content script. | Until you navigate away, close the tab, or reload. |
+
+### 2.a Verifiable before you send
+
+The side panel includes a **Disclosure Preview** (`src/sidepanel/components/DisclosurePreview.tsx`)
+that shows you, before any request is made:
+
+- The exact destination origin (or "On-device model — no network request" for
+  Chrome built-in AI).
+- The full JSON payload that will be sent, produced by the same `makePayload`
+  function the request uses.
+- The complete system prompt that will be sent.
+
+Nothing is hidden. If the preview doesn't show it, it isn't sent.
 
 ### 2. What data the extension sends to the extension author
 
@@ -47,15 +60,19 @@ filling. None target a help-me-fill domain.
 ### 3. What data goes to third parties
 
 Only the AI provider you explicitly select in settings. When you trigger a
-mapping request:
+mapping request, the payload is constructed by `makePayload` in
+`src/ai/prompts.ts` and contains exactly:
 
-- The extracted document text is sent to that provider.
-- The scanned form fields (labels, types, placeholders, existing values) are
-  sent to that provider.
-- Your API key is sent to that provider in the request headers.
-
-No other provider sees any of this. Providers are not chained, requests are
-not proxied, and there is no fallback that silently switches providers.
+- `documentLines`: `[{ id, page, text }, ...]` — the extracted lines from your
+  document.
+- `formFields`: an allowlist projection of each scanned field — `{ id, type,
+  label, ariaLabel, placeholder, name, context, required, maxLength, pattern }`.
+  **No current field values, no page URL, no cookies, no DOM structure, no
+  referrer.**
+- The system prompt: instructs the model to cite exact source quotes with line
+  IDs, abstain into an `unmapped` bucket on ambiguity, treat the document and
+  field metadata as untrusted data (prompt-injection defense), and never emit
+  selectors, JavaScript, navigation, or submit actions.
 
 **Your use of each provider is governed by that provider's own privacy policy.**
 We encourage you to read them:

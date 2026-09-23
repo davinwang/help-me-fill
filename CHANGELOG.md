@@ -21,6 +21,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Expanded `.gitignore` covering Node, Vite, Chrome extension packaging,
   OS metadata, and editor artifacts.
 - MIT `LICENSE`.
+- README "Verifiable privacy" section with code-linked audit table
+  (`DisclosurePreview.tsx`, `compactFields` allowlist, `SYSTEM_PROMPT`
+  abstention rule, prompt-injection defense, never-auto-submit, undo
+  snapshot, zero-telemetry grep, build-time permission assertions,
+  non-obfuscated release builds).
+- PRIVACY.md corrected to reflect the actual `compactFields` allowlist —
+  current field values and page URL are never sent to the AI provider.
 
 ### Changed
 - Manifest `name` localized via `__MSG_appName__` — defaults to
