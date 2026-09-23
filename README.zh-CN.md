@@ -32,8 +32,8 @@ Help Me Fill 走了相反的路：
 
 整个插件运行在你的 Chrome / Edge 进程里。当你调用 AI 映射时，请求
 **从你的浏览器直接发往你自己选择的模型提供方** —— Anthropic、OpenAI、Google、
-DeepSeek、Moonshot（Kimi）、智谱 GLM、OpenRouter、你自己的阿里云百炼端点，
-甚至可以是 **Chrome 内置的 Gemini Nano 端侧模型**（零联网调用）。
+DeepSeek、智谱 GLM、Z.ai、OpenRouter，甚至可以是 **Chrome 内置的 Gemini Nano
+端侧模型**（零联网调用）。
 
 其他所有环节 —— PDF 解析、DOCX 解析、XLSX 解析、表单扫描、字段映射、
 安全填写、撤销 —— 全部在本地浏览器进程完成，不上报任何埋点。
@@ -121,10 +121,9 @@ npm run build
 | OpenAI | HTTPS 直连 | ❌ | [platform.openai.com/api-keys](https://platform.openai.com/api-keys) |
 | Google Gemini | HTTPS 直连 | ❌ | [aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey) |
 | DeepSeek | HTTPS 直连（OpenAI 兼容） | ❌ | [platform.deepseek.com](https://platform.deepseek.com/api_keys) |
-| Moonshot（Kimi） | HTTPS 直连（OpenAI 兼容） | ❌ | [platform.moonshot.cn](https://platform.moonshot.cn/console/info) |
 | 智谱 GLM | HTTPS 直连（OpenAI 兼容） | ❌ | [open.bigmodel.cn](https://open.bigmodel.cn/usercenter/apikeys) |
+| Z.ai | HTTPS 直连（OpenAI 兼容） | ❌ | [z.ai](https://z.ai/manage-apikey/apikey-list) |
 | OpenRouter | HTTPS 直连（OpenAI 兼容） | ❌ | [openrouter.ai/keys](https://openrouter.ai/keys) |
-| 阿里云百炼（Qwen 专属端点） | HTTPS 直连（OpenAI 兼容） | ❌ | [bailian.console.aliyun.com](https://bailian.console.aliyun.com/?apiKey=1) |
 | 任意其他 OpenAI 兼容端点 | HTTPS 直连 | ❌ | 你的提供方 |
 
 新增提供方只需修改 `src/ai/registry.ts` 和 `src/ai/transports/`，约 50 行代码。
@@ -151,7 +150,7 @@ npm run build
 | 填写前审核 | ✅ 完整表格 | ❌ | ❌ | ❌ | ❌ |
 | 撤销 | ✅ | ❌ | ❌ | ❌ | ❌ |
 | 无遥测 | ✅ | ✅ | ❌ | ❌ | 部分 |
-| 多提供方选择 | ✅ 9+ | ✅ | ❌ | ❌ | — |
+| 多提供方选择 | ✅ 7+ | ✅ | ❌ | ❌ | — |
 | 框架感知填写（React/Vue/Angular） | ✅ | — | ✅ | ✅ | ✅ |
 
 ## 架构

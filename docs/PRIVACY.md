@@ -81,10 +81,9 @@ We encourage you to read them:
 - OpenAI: https://openai.com/policies/privacy-policy
 - Google (Gemini): https://policies.google.com/privacy
 - DeepSeek: https://www.deepseek.com/privacy
-- Moonshot (Kimi): https://platform.moonshot.cn/docs/privacy
 - Zhipu: https://open.bigmodel.cn/privacy
+- Z.ai: https://z.ai/privacy
 - OpenRouter: https://openrouter.ai/privacy
-- Aliyun Bailian: https://terms.aliyun.com/legal-agreement/terms/suit_bu1_ali_cloud/suit_bu1_ali_cloud202112071754_32178.html
 
 ### 4. On-device mode (Chrome built-in AI)
 
@@ -113,10 +112,8 @@ that provider**:
 - `https://api.anthropic.com/*` — only if you configure Anthropic
 - `https://generativelanguage.googleapis.com/*` — only if you configure Gemini
 - `https://api.deepseek.com/*` — only if you configure DeepSeek
-- `https://open.bigmodel.cn/*` — only if you configure Zhipu
+- `https://open.bigmodel.cn/*` — only if you configure Zhipu or Z.ai
 - `https://openrouter.ai/*` — only if you configure OpenRouter
-- `https://api.moonshot.cn/*` — only if you configure Moonshot
-- Your Bailian endpoint — only if you configure Qwen
 
 We do not request `<all_urls>`. We do not request `tabs`, `webRequest`,
 `cookies`, `history`, `bookmarks`, or `notifications`. The build script has a

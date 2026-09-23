@@ -36,8 +36,8 @@ Help Me Fill takes the opposite bet:
 
 The extension runs entirely in your Chrome/Edge process. When you ask for AI mapping,
 the request goes **directly from your browser to the provider you chose** — Anthropic,
-OpenAI, Google, DeepSeek, Moonshot, Zhipu, OpenRouter, your own Bailian endpoint, or
-the **Chrome built-in Gemini Nano running on-device** with zero network calls at all.
+OpenAI, Google, DeepSeek, Zhipu, OpenRouter, or the **Chrome built-in Gemini Nano
+running on-device** with zero network calls at all.
 
 Everything else — PDF parsing, DOCX parsing, XLSX parsing, form scanning, field mapping,
 safe filling, undo — happens locally, in your browser process, with no telemetry.
@@ -127,10 +127,9 @@ proxies your requests.
 | OpenAI | HTTPS direct | ❌ | [platform.openai.com/api-keys](https://platform.openai.com/api-keys) |
 | Google Gemini | HTTPS direct | ❌ | [aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey) |
 | DeepSeek | HTTPS direct (OpenAI-compat) | ❌ | [platform.deepseek.com](https://platform.deepseek.com/api_keys) |
-| Moonshot (Kimi) | HTTPS direct (OpenAI-compat) | ❌ | [platform.moonshot.cn](https://platform.moonshot.cn/console/info) |
 | Zhipu (GLM) | HTTPS direct (OpenAI-compat) | ❌ | [open.bigmodel.cn](https://open.bigmodel.cn/usercenter/apikeys) |
+| Z.ai | HTTPS direct (OpenAI-compat) | ❌ | [z.ai](https://z.ai/manage-apikey/apikey-list) |
 | OpenRouter | HTTPS direct (OpenAI-compat) | ❌ | [openrouter.ai/keys](https://openrouter.ai/keys) |
-| Aliyun Bailian (Qwen, dedicated endpoint) | HTTPS direct (OpenAI-compat) | ❌ | [bailian.console.aliyun.com](https://bailian.console.aliyun.com/?apiKey=1) |
 | Any other OpenAI-compatible endpoint | HTTPS direct | ❌ | Your provider |
 
 Adding a new provider is a ~50-line change to `src/ai/registry.ts` and
@@ -157,7 +156,7 @@ Adding a new provider is a ~50-line change to `src/ai/registry.ts` and
 | Review before fill | ✅ Full table | ❌ | ❌ | ❌ | ❌ |
 | Undo | ✅ | ❌ | ❌ | ❌ | ❌ |
 | No telemetry | ✅ | ✅ | ❌ | ❌ | Partial |
-| Multi-provider choice | ✅ 9+ | ✅ | ❌ | ❌ | — |
+| Multi-provider choice | ✅ 7+ | ✅ | ❌ | ❌ | — |
 | Framework-aware fill (React/Vue/Angular) | ✅ | — | ✅ | ✅ | ✅ |
 
 ## Architecture

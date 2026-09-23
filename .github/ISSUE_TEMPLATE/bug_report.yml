@@ -91,10 +91,9 @@ body:
         - OpenAI
         - Google Gemini
         - DeepSeek
-        - Moonshot (Kimi)
         - Zhipu (GLM)
+        - Z.ai
         - OpenRouter
-        - Aliyun Bailian (Qwen)
         - Custom OpenAI-compatible endpoint
         - Not applicable / bug happens before provider call
     validations:

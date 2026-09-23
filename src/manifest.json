@@ -14,9 +14,7 @@
     "https://generativelanguage.googleapis.com/*",
     "https://api.deepseek.com/*",
     "https://open.bigmodel.cn/*",
-    "https://openrouter.ai/*",
-    "https://api.moonshot.cn/*",
-    "https://llm-8qqdhr2i4l0ydvm2.cn-beijing.maas.aliyuncs.com/*"
+    "https://openrouter.ai/*"
   ],
   "background": { "service_worker": "background/service-worker.js", "type": "module" },
   "side_panel": { "default_path": "sidepanel/index.html" },
