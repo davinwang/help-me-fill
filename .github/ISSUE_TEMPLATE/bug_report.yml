@@ -1,0 +1,135 @@
+name: Bug report
+description: Something is broken or behaves unexpectedly.
+title: "[bug] "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug. Please fill out as much of this
+        form as you can — reproducible bugs get fixed fastest.
+
+        **Security issue?** Do NOT use this form. See [SECURITY.md](https://github.com/davinwang/help-me-fill/blob/main/SECURITY.md) for private disclosure.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear, concise description of the observed behavior.
+      placeholder: Tell us what you saw.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+      placeholder: Tell us what you thought would happen.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Minimal, numbered steps. Attach a sample document if it's required to reproduce.
+      placeholder: |
+        1. Open side panel
+        2. Drop the attached PDF
+        3. Click "Scan & Map" on https://example-form.test
+        4. See error toast: "..."
+    validations:
+      required: true
+  - type: dropdown
+    id: version
+    attributes:
+      label: Help Me Fill version
+      description: Shown on the extension card in `chrome://extensions/`.
+      options:
+        - "0.1.0"
+        - "main branch (built from source)"
+        - "Other (specify below)"
+    validations:
+      required: true
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Browser
+      multiple: true
+      options:
+        - Chrome
+        - Edge
+        - Brave
+        - Vivaldi
+        - Other Chromium
+    validations:
+      required: true
+  - type: input
+    id: browser-version
+    attributes:
+      label: Browser version
+      placeholder: e.g. Chrome 141.0.6778.86
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - Windows
+        - macOS
+        - Linux
+        - ChromeOS
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    id: provider
+    attributes:
+      label: AI provider in use when the bug occurred
+      multiple: true
+      options:
+        - Chrome built-in AI (Gemini Nano)
+        - Anthropic (Claude)
+        - OpenAI
+        - Google Gemini
+        - DeepSeek
+        - Moonshot (Kimi)
+        - Zhipu (GLM)
+        - OpenRouter
+        - Aliyun Bailian (Qwen)
+        - Custom OpenAI-compatible endpoint
+        - Not applicable / bug happens before provider call
+    validations:
+      required: true
+  - type: dropdown
+    id: document-format
+    attributes:
+      label: Document format involved
+      multiple: true
+      options:
+        - PDF
+        - DOCX
+        - XLSX
+        - Markdown
+        - Plain text
+        - None / not document-related
+  - type: textarea
+    id: logs
+    attributes:
+      label: Console logs and errors
+      description: Open DevTools on the side panel or the target tab, copy any red errors. Wrap in triple backticks.
+      render: shell
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots or screen recording
+      description: Drag and drop images here. Redact any personal data before uploading.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Pre-flight checks
+      options:
+        - label: I searched existing issues and this is not a duplicate.
+          required: true
+        - label: I can reproduce this on the latest version.
+          required: true
+        - label: This is not a security vulnerability. (If it is, use the private process in SECURITY.md.)
+          required: true

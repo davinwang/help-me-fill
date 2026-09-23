@@ -1,0 +1,85 @@
+name: Feature request
+description: Propose a new capability or improvement.
+title: "[feat] "
+labels: ["enhancement", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting an improvement. Before you submit, please check
+        [ROADMAP.md](https://github.com/davinwang/help-me-fill/blob/main/ROADMAP.md) —
+        your idea may already be planned. If it is, add a 👍 to the tracking issue instead.
+
+        Also check the **Non-goals** section of the roadmap. Requests for a
+        help-me-fill server, cloud sync through us, telemetry, or auto-submit
+        will be closed as `wontfix`.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: Describe the pain point, not the solution. Who hits it, how often, how badly?
+      placeholder: |
+        When I fill Workday applications, the resume upload field is a plain
+        <input type="file"> and I have to manually attach my resume every time,
+        even though the extension already has it parsed.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: How you'd like it to work. Be specific about UX and edge cases.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: What other approaches did you think about? Why did you reject them?
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      multiple: true
+      options:
+        - Document parsing
+        - AI provider / mapping
+        - Content script (scan/fill/undo)
+        - Side panel UI
+        - Settings / storage
+        - Manifest / permissions
+        - Build / packaging
+        - Tests
+        - Documentation
+        - Landing page / marketing
+        - Internationalization
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    id: privacy-impact
+    attributes:
+      label: Privacy impact
+      description: Does this feature change what data leaves the browser?
+      options:
+        - "None — pure local behavior change"
+        - "Sends existing data to the same user-configured provider"
+        - "Would require a new host permission or new external service"
+        - "Not sure"
+    validations:
+      required: true
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Screenshots, mockups, links to similar features in other tools, etc.
+  - type: checkboxes
+    id: contribute
+    attributes:
+      label: Contribution
+      options:
+        - label: I'd be willing to submit a PR for this if the design is agreed on.
+        - label: I checked ROADMAP.md and this isn't already listed.
+          required: true
+        - label: I checked the Non-goals section and this doesn't contradict it.
+          required: true
