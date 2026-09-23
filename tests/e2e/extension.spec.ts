@@ -27,6 +27,9 @@ test('production sidebar parses a bilingual PDF and scans the real tab', async (
       await app.panel.evaluate(() => { const select = document.querySelector('select') as HTMLSelectElement; select.value = 'openai'; select.dispatchEvent(new Event('change', { bubbles: true })); });
     }
     // Flash-class defaults are prefilled but editable, and each provider links to its key page.
+    const providerShot = await app.panel.send('Page.captureScreenshot', { format: 'png' });
+    await writeFile(info.outputPath('provider-settings.png'), Buffer.from(providerShot.data, 'base64'));
+    await info.attach('provider-settings', { path: info.outputPath('provider-settings.png'), contentType: 'image/png' });
     expect(await app.panel.evaluate(() => document.querySelector<HTMLInputElement>('input[placeholder="Model ID from your provider account"]')?.value)).toBe(PROVIDERS.openai.defaultModel);
     expect(await app.panel.evaluate((keyUrl: string) => document.querySelector(`a[href="${keyUrl}"]`)?.textContent ?? '', PROVIDERS.openai.keyUrl)).toContain('Get API key');
     await app.panel.enter('input[placeholder="Model ID from your provider account"]', 'zhipu-check');

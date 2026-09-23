@@ -1,4 +1,4 @@
-import { PROVIDERS, BUILTIN, type ProviderSettings, type TransportRequest } from './registry';
+import { resolveProvider, type ProviderSettings, type TransportRequest } from './registry';
 import { SYSTEM_PROMPT, makePayload } from './prompts';
 import { MappingError, validateMapping } from './validate-mapping';
 import { openaiRequest, openaiText } from './transports/openai-compatible';
@@ -16,17 +16,21 @@ export interface AIProvider { map(request: MappingRequest): Promise<MappingOutco
 export function validateSettings(settings: ProviderSettings) {
   // The on-device provider is keyless and model-managed by the browser.
   if (settings.provider === 'builtin') return;
-  if (!/^[a-zA-Z0-9._:/-]{1,120}$/.test(settings.model)) throw new UserError('Enter a valid text-model ID from your provider account.');
-  if (!settings.apiKey.trim() || /\s/.test(settings.apiKey) || settings.apiKey.length > 1024) throw new UserError('Enter a valid API key without spaces.');
+  if (!/^[a-zA-Z0-9._:/-]{1,120}$/.test(settings.model)) throw new UserError('Enter a valid text-model ID from your provider.');
+  // Resolving validates a custom endpoint (loopback http only) and yields the kind.
+  const resolved = resolveProvider(settings);
+  if (settings.apiKey && (/\s/.test(settings.apiKey) || settings.apiKey.length > 1024)) throw new UserError('Enter a valid API key without spaces.');
+  // Cloud providers authenticate with a key; local servers usually need none.
+  if (resolved.kind === 'cloud' && !settings.apiKey.trim()) throw new UserError('Enter a valid API key without spaces.');
 }
 export function buildRequest(settings: ProviderSettings, system: string, user: string): TransportRequest {
-  if (settings.provider === 'builtin') throw new UserError('The on-device provider does not use HTTP requests.');
-  const transport = PROVIDERS[settings.provider].transport;
+  const transport = resolveProvider(settings).transport;
+  if (transport === 'builtin') throw new UserError('The on-device provider does not use HTTP requests.');
   return transport === 'anthropic' ? anthropicRequest(settings, system, user) : transport === 'gemini' ? geminiRequest(settings, system, user) : openaiRequest(settings, system, user);
 }
 function extractText(settings: ProviderSettings, value: unknown) {
-  if (settings.provider === 'builtin') throw new UserError('The on-device provider does not use HTTP responses.');
-  const transport = PROVIDERS[settings.provider].transport;
+  const transport = resolveProvider(settings).transport;
+  if (transport === 'builtin') throw new UserError('The on-device provider does not use HTTP responses.');
   return transport === 'anthropic' ? anthropicText(value) : transport === 'gemini' ? geminiText(value) : openaiText(value);
 }
 function usageNumbers(value: unknown): Record<string, number> | undefined {

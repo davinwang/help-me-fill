@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
-import { createProvider, buildRequest } from '../../src/ai/provider';
-import { PROVIDERS, type ProviderId } from '../../src/ai/registry';
+import { createProvider, buildRequest, validateSettings } from '../../src/ai/provider';
+import { PROVIDERS, resolveProvider, localEndpointOrigin, type ProviderId, type ProviderSettings } from '../../src/ai/registry';
 import type { FieldDescriptor } from '../../src/shared/schemas';
 const field: FieldDescriptor = { id: 'f1', type: 'text', label: 'Name', ariaLabel: '', placeholder: '', name: 'name', context: '', required: false, maxLength: -1, pattern: '' };
 const lines = [{ id: 'p1-l1', page: 1, text: 'Name: Alice' }];
@@ -39,10 +39,41 @@ describe('registry defaults and key pages', () => {
   });
   it('uses provider-appropriate token limits on OpenAI-compatible transports', () => {
     expect(JSON.stringify(buildRequest(settings('openai'), 's', 'u'))).toContain('max_completion_tokens');
-    for (const provider of ['deepseek', 'zhipu', 'openrouter'] as ProviderId[]) {
-      const body = JSON.stringify(buildRequest(settings(provider), 's', 'u'));
+    for (const [id, info] of Object.entries(PROVIDERS)) {
+      if (info.transport !== 'openai' || id === 'openai') continue;
+      const body = JSON.stringify(buildRequest(settings(id as ProviderId), 's', 'u'));
       expect(body).toContain('"max_tokens":8192'); expect(body).not.toContain('max_completion_tokens');
     }
+  });
+});
+describe('local and custom providers', () => {
+  const custom = (endpoint: string, apiKey = ''): ProviderSettings => ({ provider: 'custom', model: 'local-model', apiKey, endpoint });
+  it('marks Ollama as local and keeps its API key optional', () => {
+    expect(PROVIDERS.ollama.kind).toBe('local');
+    expect(() => validateSettings({ provider: 'ollama', model: 'llama3.2', apiKey: '' })).not.toThrow();
+    // A local request omits the Authorization header entirely when no key is set.
+    expect(buildRequest({ provider: 'ollama', model: 'llama3.2', apiKey: '' }, 's', 'u').headers).toEqual({});
+  });
+  it('still requires an API key for cloud providers', () => {
+    expect(() => validateSettings({ provider: 'openai', model: 'gpt-4o-mini', apiKey: '' })).toThrow('API key');
+  });
+  it('resolves a custom endpoint to its loopback origin and uses it verbatim', () => {
+    const resolved = resolveProvider(custom('http://localhost:1234/v1/chat/completions'));
+    expect(resolved.kind).toBe('local'); expect(resolved.origin).toBe('http://localhost/*');
+    expect(buildRequest(custom('http://127.0.0.1:8080/v1/chat/completions'), 's', 'u').url).toBe('http://127.0.0.1:8080/v1/chat/completions');
+    expect(() => validateSettings(custom('http://localhost:1234/v1/chat/completions'))).not.toThrow();
+  });
+  it('rejects custom endpoints that are not local http servers', () => {
+    expect(() => localEndpointOrigin('https://api.openai.com/v1')).toThrow('local address');
+    expect(() => localEndpointOrigin('https://localhost:1234/v1')).toThrow('http://');
+    expect(() => localEndpointOrigin('not a url')).toThrow('valid local endpoint');
+    expect(() => validateSettings(custom('https://evil.example.com/v1'))).toThrow();
+  });
+  it('normalizes and validates a mocked local server response', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(Response.json(envelope('ollama')));
+    const output = await createProvider({ provider: 'ollama', model: 'llama3.2', apiKey: '' }, fetcher).map(payload());
+    expect(output.plan).toEqual(plan); expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(fetcher.mock.calls[0][0]).toBe(PROVIDERS.ollama.endpoint);
   });
 });
 describe('request safety and failures', () => {

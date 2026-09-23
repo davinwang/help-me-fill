@@ -69,6 +69,16 @@ pre, .text-preview { max-height: 230px; overflow: auto; white-space: pre-wrap; o
 .error, .notice, .progress { border-radius: 9px; padding: 12px; font-size: 12px; line-height: 1.6; margin: 14px 0; }
 .error { background: #fff0f1; border: 1px solid #edc8ce; color: #963747; }
 .notice, .overwrite { background: #fff8eb; color: #785522; padding: 10px; border-radius: 6px; }
+/* Provider-kind badge next to the select: cloud, local, and on-device at a glance. */
+.badge.badge-cloud { color: #33507a; background: #e9f0fb; }
+.badge.badge-local { color: #2c7462; background: #edf7f2; }
+.badge.badge-builtin { color: #4a3f8f; background: #eeecfb; }
+.settings .badge { margin-top: 8px; }
+/* The cloud data-destination notice is deliberately prominent; local is calm info. */
+.notice-cloud { background: #fff4e0; border: 1px solid #f0c987; color: #7a4d13; }
+.notice-local { background: #eef6f2; border: 1px solid #c6e2d5; color: #2c6152; }
+.notice a { color: inherit; font-weight: 700; }
+.notice code { font: 11px ui-monospace, monospace; background: #0000000f; padding: 1px 4px; border-radius: 4px; }
 .progress { display: flex; align-items: center; gap: 9px; background: #eeecfb; color: var(--accent); }
 .progress > span:nth-child(2) { flex: 1; }
 .spinner { width: 14px; height: 14px; flex-shrink: 0; border: 2px solid #c8c2f1; border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; }

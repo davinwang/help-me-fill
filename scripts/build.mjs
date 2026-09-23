@@ -56,6 +56,7 @@ assert.deepEqual(manifest.optional_host_permissions, [
   'https://api.openai.com/*', 'https://api.anthropic.com/*',
   'https://generativelanguage.googleapis.com/*', 'https://api.deepseek.com/*',
   'https://open.bigmodel.cn/*', 'https://openrouter.ai/*',
+  'http://localhost/*', 'http://127.0.0.1/*',
 ]);
 for (const path of [manifest.background.service_worker, manifest.side_panel.default_path, ...Object.values(manifest.icons), 'content/index.js', 'pdf/pdf.worker.min.mjs']) {
   assert(!path.startsWith('dist/') && !path.includes('..') && !path.startsWith('/'));

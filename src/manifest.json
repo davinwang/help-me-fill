@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "__MSG_appName__",
   "short_name": "__MSG_appShortName__",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "__MSG_appDescription__",
   "default_locale": "en",
   "author": "Davin Wang",
@@ -14,7 +14,9 @@
     "https://generativelanguage.googleapis.com/*",
     "https://api.deepseek.com/*",
     "https://open.bigmodel.cn/*",
-    "https://openrouter.ai/*"
+    "https://openrouter.ai/*",
+    "http://localhost/*",
+    "http://127.0.0.1/*"
   ],
   "background": { "service_worker": "background/service-worker.js", "type": "module" },
   "side_panel": { "default_path": "sidepanel/index.html" },
