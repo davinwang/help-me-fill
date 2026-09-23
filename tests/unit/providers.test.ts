@@ -39,7 +39,7 @@ describe('registry defaults and key pages', () => {
   });
   it('uses provider-appropriate token limits on OpenAI-compatible transports', () => {
     expect(JSON.stringify(buildRequest(settings('openai'), 's', 'u'))).toContain('max_completion_tokens');
-    for (const provider of ['deepseek', 'zhipu', 'openrouter', 'moonshot', 'qwen'] as ProviderId[]) {
+    for (const provider of ['deepseek', 'zhipu', 'openrouter'] as ProviderId[]) {
       const body = JSON.stringify(buildRequest(settings(provider), 's', 'u'));
       expect(body).toContain('"max_tokens":8192'); expect(body).not.toContain('max_completion_tokens');
     }

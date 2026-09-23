@@ -37,6 +37,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `package.json` adds `license`, `author`, `homepage`, `repository`, `bugs`,
   `keywords`, and `description` metadata fields.
 
+### Removed
+- **Moonshot (Kimi)** host permission (`https://api.moonshot.cn/*`) dropped
+  from `src/manifest.json` and from the `scripts/build.mjs` assertion list.
+  The provider entry had already been removed from `src/ai/registry.ts` at
+  some earlier point, leaving the manifest, build assertion, and
+  `tests/unit/providers.test.ts` iteration out of sync with the registry.
+  Reason for not restoring: Kimi has no flash-class model — flagship-only
+  pricing is too heavy for a per-form mapping call. Users who want Kimi
+  can route through OpenRouter.
+- **Aliyun Bailian (Qwen dedicated host)** permission
+  (`https://llm-8qqdhr2i4l0ydvm2.cn-beijing.maas.aliyuncs.com/*`) dropped
+  from the manifest and build assertion for the same drift reason. Not
+  restored because the pinned host was an account-provisioned dedicated
+  Bailian maas deployment that only authenticates keys from that specific
+  account — unsuitable for a distributed extension. A user-configurable
+  "custom OpenAI-compatible endpoint" provider is on the roadmap and will
+  cover Qwen, DashScope, and any other OpenAI-compatible service.
+- Provider comparison in both READMEs updated from "9+" to "7+" to match
+  the actual registry after the removals.
+
 ## [0.1.0] — 2026-09-23
 
 ### Added
