@@ -1,0 +1,18 @@
+{
+  "appName": {
+    "message": "Help Me Fill",
+    "description": "Full product name shown in the Chrome Web Store listing and on the extension card."
+  },
+  "appShortName": {
+    "message": "Help Me Fill",
+    "description": "Short name used where space is constrained (toolbar tooltip, some browser UIs)."
+  },
+  "appDescription": {
+    "message": "Privacy-first AI form filler. Turn any PDF, DOCX, XLSX, or Markdown into a filled web form, with review before fill. Bring your own AI key, or run fully on-device. No servers, no telemetry, no account.",
+    "description": "Chrome Web Store description. Must stay under 132 characters for the short listing and ideally under 200 overall."
+  },
+  "actionTitle": {
+    "message": "Open Help Me Fill",
+    "description": "Tooltip on the toolbar action button."
+  }
+}
