@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Question or design discussion
+    url: https://github.com/davinwang/help-me-fill/discussions
+    about: For "how do I...", "should we...", or "has anyone tried..." — use Discussions, not Issues.
+  - name: Security vulnerability
+    url: https://github.com/davinwang/help-me-fill/blob/main/SECURITY.md
+    about: Please do NOT open a public issue. Use private disclosure via the Security tab or email.
+  - name: Roadmap and planned work
+    url: https://github.com/davinwang/help-me-fill/blob/main/ROADMAP.md
+    about: Check here first to see if your idea is already planned before opening a feature request.
+  - name: Privacy policy
+    url: https://github.com/davinwang/help-me-fill/blob/main/docs/PRIVACY.md
+    about: What data the extension touches, where it goes, and how to audit it yourself.
