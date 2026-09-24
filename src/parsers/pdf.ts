@@ -12,6 +12,25 @@ export function validateFile(file: Pick<File, 'name' | 'size' | 'type'>) {
   if (file.size > LIMITS.bytes) throw new UserError('PDFs must be 10 MiB or smaller. Choose a smaller document.');
 }
 
+// Interactive form (AcroForm) widget values. A filled, fillable PDF keeps its
+// data in field values that are often absent from the text layer, so they are
+// surfaced as their own evidence lines: `[Form] FieldName: value`.
+export function extractFormFields(annotations: unknown[], page: number, startIndex: number): DocumentLine[] {
+  const lines: DocumentLine[] = [];
+  for (const annotation of annotations) {
+    const widget = annotation as { subtype?: string; fieldName?: string; fieldValue?: unknown; alternativeText?: string };
+    if (widget.subtype !== 'Widget') continue;
+    const raw = widget.fieldValue;
+    const value = (Array.isArray(raw) ? raw.join(', ') : typeof raw === 'string' ? raw : typeof raw === 'number' || typeof raw === 'boolean' ? String(raw) : '')
+      .replace(/\s+/g, ' ').trim();
+    if (!value || value === 'Off') continue; // Empty field or unchecked box carries no fact.
+    const name = (widget.fieldName ?? widget.alternativeText ?? '').replace(/\[\d+\]/g, '').split('.').pop()?.replace(/\s+/g, ' ').trim() ?? '';
+    if (!name) continue;
+    lines.push({ id: `p${page}-l${startIndex + lines.length + 1}`, page, text: `[Form] ${name}: ${value}` });
+  }
+  return lines;
+}
+
 export function extractLines(items: Array<TextItem | TextMarkedContent>, page: number): DocumentLine[] {
   const lines: DocumentLine[] = [];
   let text = '', last: TextItem | undefined;
@@ -65,7 +84,9 @@ export async function parsePdf(file: File, signal: AbortSignal, onProgress: (pag
       throwIfAborted(signal);
       const pdfPage = await pdf.getPage(page);
       const content = await pdfPage.getTextContent();
-      const next = extractLines(content.items, page);
+      const textLines = extractLines(content.items, page);
+      const formLines = extractFormFields(await pdfPage.getAnnotations(), page, textLines.length);
+      const next = [...textLines, ...formLines];
       characters += next.reduce((sum, line) => sum + Array.from(line.text).length, 0);
       if (characters > LIMITS.characters) throw new UserError('Extracted text exceeds 24,000 characters. Choose a shorter PDF; nothing was truncated.');
       lines.push(...next);

@@ -10,10 +10,24 @@ export function ReviewTable({ state, dispatch, disabled, onFill }: { state: Sess
       <div className="button-row"><button type="button" className="link-button" onClick={() => dispatch({ type: 'SELECT_ALL', selected: true })}>Select all supported suggestions</button><button type="button" className="link-button" onClick={() => dispatch({ type: 'SELECT_ALL', selected: false })}>Clear selection</button></div>
       {state.rows.map(row => {
         const field = state.scan!.fields.find(item => item.id === row.fieldId)!;
-        const needsOverwrite = field.currentValue !== '';
+        const needsOverwrite = field.type === 'checkbox' ? field.currentValue === 'true' : field.currentValue !== '';
+        const set = (patch: Partial<typeof row>) => dispatch({ type: 'ROW', fieldId: row.fieldId, patch });
+        const editor = field.type === 'select'
+          ? <select value={row.value} onChange={event => set({ value: event.target.value, manual: true })}>
+            {!field.options?.includes(row.value) && <option value={row.value}>{row.value || '(choose an option)'}</option>}
+            {field.options?.map(option => <option key={option} value={option}>{option}</option>)}
+          </select>
+          : field.type === 'checkbox'
+            ? <select value={row.value} onChange={event => set({ value: event.target.value, manual: true })}>
+              <option value="true">true — tick this box</option>
+              <option value="false">false — leave / untick</option>
+            </select>
+            : ['date', 'month', 'time', 'datetime-local'].includes(field.type)
+              ? <input type={field.type} value={row.value} onChange={event => set({ value: event.target.value, manual: true })} />
+              : <textarea rows={field.type === 'textarea' || field.type === 'richtext' ? 3 : 1} value={row.value} maxLength={field.maxLength >= 0 ? Math.min(field.maxLength, 4_000) : 4_000} onChange={event => set({ value: event.target.value, manual: true })} />;
         return <article className={`review-row ${row.selected ? 'selected' : ''}`} key={row.fieldId}>
           <label className="check-label"><input type="checkbox" checked={row.selected} disabled={disabled || (needsOverwrite && !row.allowOverwrite)} onChange={event => dispatch({ type: 'ROW', fieldId: row.fieldId, patch: { selected: event.target.checked } })} />{fieldLabel(row.fieldId)}<span className="subtle">{field.type}</span></label>
-          <label className="hint">Proposed value<textarea rows={field.type === 'textarea' ? 3 : 1} value={row.value} maxLength={field.maxLength >= 0 ? Math.min(field.maxLength, 4_000) : 4_000} onChange={event => dispatch({ type: 'ROW', fieldId: row.fieldId, patch: { value: event.target.value, manual: true } })} /></label>
+          <label className="hint">Proposed value{editor}</label>
           {row.manual && <span className="badge warning">Manual override · Check carefully</span>}
           {needsOverwrite && <div className="overwrite"><p>Current value: <span className="preserve">{field.currentValue}</span></p><label className="check-label"><input type="checkbox" checked={row.allowOverwrite} onChange={event => dispatch({ type: 'ROW', fieldId: row.fieldId, patch: { allowOverwrite: event.target.checked, selected: false } })} />Allow replacing this existing value</label></div>}
           <details><summary>Source evidence</summary>{row.evidence.map((evidence, index) => <blockquote key={index}><span className="line-tag">{evidence.lineId}</span>{evidence.quote}</blockquote>)}<p className="hint">{row.reason}</p></details>

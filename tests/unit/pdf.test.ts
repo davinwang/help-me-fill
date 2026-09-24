@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 vi.mock('pdfjs-dist', () => ({ GlobalWorkerOptions: { workerSrc: '' }, getDocument: vi.fn() }));
 import { getDocument } from 'pdfjs-dist';
 import type { TextItem } from 'pdfjs-dist/types/src/display/api';
-import { validateFile, extractLines, parsePdf } from '../../src/parsers/pdf';
+import { validateFile, extractLines, extractFormFields, parsePdf } from '../../src/parsers/pdf';
 const item = (str: string, x = 10, y = 100, eol = false): TextItem => ({ str, dir: 'ltr', transform: [12,0,0,12,x,y], width: str.length * 6, height: 12, fontName: 'F1', hasEOL: eol });
 const file = () => ({ name: 'sample.pdf', type: 'application/pdf', size: 20, arrayBuffer: async () => new TextEncoder().encode('%PDF-1.7\nmock').buffer } as File);
 beforeEach(() => vi.stubGlobal('chrome', { runtime: { getURL: (path: string) => `chrome-extension://test/${path}` } }));
@@ -16,6 +16,19 @@ describe('PDF guards and provenance', () => {
     const result = extractLines([item('姓名: 陈小明', 10, 100, true), item('Reference:', 10, 80), item('00123', 100, 80, true)], 2);
     expect(result).toEqual([{ id: 'p2-l1', page: 2, text: '姓名: 陈小明' }, { id: 'p2-l2', page: 2, text: 'Reference: 00123' }]);
   });
+  it('surfaces filled AcroForm field values as evidence lines and skips empty or unchecked ones', () => {
+    const annotations = [
+      { subtype: 'Widget', fieldName: 'topmostSubform[0].Page1[0].ApplicantName[0]', fieldValue: 'Avery Morgan' },
+      { subtype: 'Widget', fieldName: 'form1[0].Consent[0]', fieldValue: true },
+      { subtype: 'Widget', fieldName: 'form1[0].Unused[0]', fieldValue: '' },
+      { subtype: 'Widget', fieldName: 'form1[0].Box[0]', fieldValue: 'Off' },
+      { subtype: 'Text', fieldName: 'notAWidget', fieldValue: 'ignored' },
+    ];
+    expect(extractFormFields(annotations, 3, 2)).toEqual([
+      { id: 'p3-l3', page: 3, text: '[Form] ApplicantName: Avery Morgan' },
+      { id: 'p3-l4', page: 3, text: '[Form] Consent: true' },
+    ]);
+  });
   it('enforces the page limit and destroys the task', async () => {
     const destroy = vi.fn().mockResolvedValue(undefined);
     vi.mocked(getDocument).mockReturnValue({ promise: Promise.resolve({ numPages: 21 }), destroy } as never);
@@ -23,11 +36,11 @@ describe('PDF guards and provenance', () => {
   });
   it('rejects no-text PDFs without pretending OCR happened', async () => {
     const destroy = vi.fn().mockResolvedValue(undefined);
-    vi.mocked(getDocument).mockReturnValue({ promise: Promise.resolve({ numPages: 1, getPage: async () => ({ getTextContent: async () => ({ items: [] }), cleanup: vi.fn() }) }), destroy } as never);
+    vi.mocked(getDocument).mockReturnValue({ promise: Promise.resolve({ numPages: 1, getPage: async () => ({ getTextContent: async () => ({ items: [] }), getAnnotations: async () => [], cleanup: vi.fn() }) }), destroy } as never);
     await expect(parsePdf(file(), new AbortController().signal, () => {})).rejects.toThrow('OCR'); expect(destroy).toHaveBeenCalled();
   });
   it('rejects text limits without truncating', async () => {
-    vi.mocked(getDocument).mockReturnValue({ promise: Promise.resolve({ numPages: 1, getPage: async () => ({ getTextContent: async () => ({ items: [item('x'.repeat(24_001))] }), cleanup: vi.fn() }) }), destroy: async () => {} } as never);
+    vi.mocked(getDocument).mockReturnValue({ promise: Promise.resolve({ numPages: 1, getPage: async () => ({ getTextContent: async () => ({ items: [item('x'.repeat(24_001))] }), getAnnotations: async () => [], cleanup: vi.fn() }) }), destroy: async () => {} } as never);
     await expect(parsePdf(file(), new AbortController().signal, () => {})).rejects.toThrow('nothing was truncated');
   });
   it('cancels before creating a PDF task', async () => {
