@@ -47,14 +47,25 @@ for (const framework of ['native', 'react', 'vue']) {
       expect(mockError).toBe(''); expect(requests).toBe(1);
       expect(await app.panel.evaluate(() => document.querySelectorAll('.review-row input:checked').length)).toBe(0);
       await app.panel.click('Select all supported suggestions');
+      const isButtonDisabled = (text: string) => app.panel.evaluate((text: string) =>
+        [...document.querySelectorAll('button')].find(button => button.textContent?.trim() === text)?.disabled,
+      text);
       await app.panel.click('Fill selected (10)');
       await expect.poll(() => app.panel.text(), { timeout: 25_000 }).toContain('Operation results');
+      await expect.poll(() => isButtonDisabled('Fill selected (10)')).toBe(true);
       expect(await app.panel.evaluate(() => [...document.querySelectorAll('.results .badge')].map(node => node.textContent))).toEqual(Array(10).fill('filled'));
       await app.page.locator('#rerender').click();
       for (const field of scenario.fields) await expect(app.page.locator(`[name="${field.name}"]`)).toHaveValue(field.expected!);
       const state = JSON.parse(await app.page.locator('#state').innerText());
       expect(state.fullName).toBe(scenario.fields[0].expected);
-      // A user edit after filling must survive undo.
+      await app.panel.click('Undo last fill');
+      await expect.poll(() => app.panel.evaluate(() => document.querySelectorAll('.results .badge').length ? [...document.querySelectorAll('.results .badge')].filter(node => node.textContent === 'restored').length : 0), { timeout: 25_000 }).toBe(10);
+      await expect.poll(() => isButtonDisabled('Undo last fill')).toBe(true);
+      await expect.poll(() => isButtonDisabled('Fill selected (10)')).toBe(false);
+      await app.panel.click('Fill selected (10)');
+      await expect.poll(() => app.panel.evaluate(() => [...document.querySelectorAll('.results .badge')].filter(node => node.textContent === 'filled').length), { timeout: 25_000 }).toBe(10);
+      expect(mockError).toBe('');
+      // A user edit after the repeated fill must survive undo.
       await app.page.locator('[name="fullName"]').fill('Later user edit');
       await app.panel.click('Undo last fill');
       await expect.poll(() => app.panel.evaluate(() => document.querySelectorAll('.results .badge').length ? [...document.querySelectorAll('.results .badge')].filter(node => node.textContent === 'restored').length : 0), { timeout: 25_000 }).toBe(9);

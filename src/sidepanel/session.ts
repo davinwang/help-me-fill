@@ -45,7 +45,9 @@ export function sessionReducer(state: Session, action: Action): Session {
     case 'PLAN': return { ...state, phase: 'review', plan: action.plan, metrics: action.metrics, result: undefined, rows: action.plan.assignments.map(row => ({ ...row, selected: false, allowOverwrite: false, manual: false })) };
     case 'ROW': return { ...state, rows: state.rows.map(row => row.fieldId === action.fieldId ? { ...row, ...action.patch } : row) };
     case 'SELECT_ALL': return { ...state, rows: state.rows.map(row => ({ ...row, selected: action.selected && (row.allowOverwrite || !state.scan?.fields.find(field => field.id === row.fieldId)?.currentValue) })) };
-    case 'RESULT': return { ...state, phase: 'complete', result: action.result, error: undefined };
+    // Retain undo results so the completed undo is visible, while returning to
+    // review immediately allows the same selected suggestions to be filled again.
+    case 'RESULT': return { ...state, phase: state.phase === 'undoing' ? 'review' : 'complete', result: action.result, error: undefined };
     case 'ERROR': return { ...state, phase: state.plan ? 'review' : state.documents.length ? 'ready' : 'idle', error: action.error };
     case 'INVALIDATE': return { phase: state.documents.length ? 'ready' : 'idle', stage: 'documents', documents: state.documents, rows: [], error: action.error };
     case 'BACK': return { ...state, phase: state.documents.length ? 'ready' : 'idle', stage: 'documents', plan: undefined, rows: [], result: undefined, metrics: undefined, error: undefined };
