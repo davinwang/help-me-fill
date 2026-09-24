@@ -119,7 +119,12 @@ export function ProviderSettings({ disabled, onChange }: Props) {
     try {
       await chrome.storage.local.remove(`key:${provider}`);
       setSavedKeys(previous => { const next = new Set(previous); next.delete(provider); return next; });
-      setKey(''); onChange(undefined); setStatus(t('psKeyRemoved'));
+      setKey(''); onChange(undefined);
+      // One-step cleanup: dropping the key also drops the browser's network
+      // access to the provider origin. A custom endpoint that is empty or
+      // invalid has nothing granted to revoke, so a failed revoke is ignored.
+      try { await chrome.permissions.remove({ origins: [originFor(provider, endpoint)] }); } catch { /* nothing to revoke */ }
+      setStatus(t('psKeyRemoved'));
     } catch { setStatus(t('psKeyRemoveFailed')); }
   }
   const kind = kindOf(provider);
@@ -155,12 +160,6 @@ export function ProviderSettings({ disabled, onChange }: Props) {
       {(provider === 'ollama' || provider === 'lmstudio') && <p className="notice notice-local" role="note"><Rich message={t('psNoticeLocal', [PROVIDERS[provider].name, PROVIDERS[provider].keyUrl, PROVIDERS[provider].defaultModel])} /></p>}
       {provider === 'custom' && <p className="notice notice-local" role="note"><Rich message={t('psNoticeCustom')} /></p>}
       <div className="button-row"><button type="button" onClick={() => void save()}>{provider === 'builtin' ? t('psEnableBuiltinModel') : kind === 'local' ? t('psSaveVerify') : t('psSaveVerifyKey')}</button>{provider !== 'builtin' && <button type="button" className="secondary" onClick={() => void remove()}>{t('psRemoveKey')}</button>}</div>
-      {provider !== 'builtin' && <button type="button" className="link-button" onClick={() => {
-        try {
-          const origin = originFor(provider, endpoint);
-          void chrome.permissions.remove({ origins: [origin] }).then(() => { onChange(undefined); setStatus(t('psPermissionRevoked')); }, () => setStatus(t('psPermissionRevokeFailed')));
-        } catch (error) { setStatus(errorMessage(error)); }
-      }}>{t('psRevokePermission')}</button>}
     </fieldset>
     <p className="hint" role="status">{status}</p>
     <p className="hint">{t('psKeyHint')}</p>

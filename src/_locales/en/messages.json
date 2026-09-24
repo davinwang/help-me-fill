@@ -169,7 +169,7 @@
   "psBuiltinVerified": { "message": "On-device provider verified and enabled. Text never leaves this device; on-device accuracy is experimental." },
   "psLocalVerified": { "message": "Local provider verified and enabled. Requests stay on this machine or network; nothing is sent to the cloud." },
   "psCloudVerified": { "message": "Provider verified and enabled. The key works; model compatibility for filling is not guaranteed." },
-  "psKeyRemoved": { "message": "Stored key removed. Host permission can also be revoked below." },
+  "psKeyRemoved": { "message": "Stored key removed and host permission revoked." },
   "psKeyRemoveFailed": { "message": "Could not remove the key. Try again." },
   "psSummary": { "message": "LLM provider" },
   "psKinds": { "message": "Cloud · Local · On-device" },
@@ -201,9 +201,6 @@
   "psSaveVerify": { "message": "Save & verify" },
   "psSaveVerifyKey": { "message": "Save & verify key" },
   "psRemoveKey": { "message": "Remove key" },
-  "psRevokePermission": { "message": "Revoke host permission" },
-  "psPermissionRevoked": { "message": "Host permission revoked." },
-  "psPermissionRevokeFailed": { "message": "Permission could not be revoked." },
   "psKeyHint": { "message": "API keys are encrypted with AES-GCM and stored only on this device — not a hardware-backed vault, and never sent anywhere except your chosen provider. Cloud provider accounts determine model availability and charges. Local and on-device providers run entirely on this computer. No backend or subscription is included." },
 
   "errTargetChanged": { "message": "The target tab or page changed. Scan and review again." },

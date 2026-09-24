@@ -157,7 +157,7 @@
   "psBuiltinVerified": { "message": "デバイス上プロバイダーを検証して有効にしました。テキストがこのデバイスから出ることはありません。デバイス上の精度は実験的です。" },
   "psLocalVerified": { "message": "ローカルプロバイダーを検証して有効にしました。リクエストはこのコンピューターまたはネットワーク内に留まり、クラウドには何も送信されません。" },
   "psCloudVerified": { "message": "プロバイダーを検証して有効にしました。キーは有効です。入力のためのモデル互換性は保証されません。" },
-  "psKeyRemoved": { "message": "保存済みのキーを削除しました。下でホスト権限も取り消せます。" },
+  "psKeyRemoved": { "message": "保存済みのキーを削除し、ホスト権限も取り消しました。" },
   "psKeyRemoveFailed": { "message": "キーを削除できませんでした。もう一度お試しください。" },
   "psSummary": { "message": "LLM プロバイダー" },
   "psKinds": { "message": "クラウド · ローカル · デバイス上" },
@@ -189,9 +189,6 @@
   "psSaveVerify": { "message": "保存して検証" },
   "psSaveVerifyKey": { "message": "キーを保存して検証" },
   "psRemoveKey": { "message": "キーを削除" },
-  "psRevokePermission": { "message": "ホスト権限を取り消す" },
-  "psPermissionRevoked": { "message": "ホスト権限を取り消しました。" },
-  "psPermissionRevokeFailed": { "message": "権限を取り消せませんでした。" },
   "psKeyHint": { "message": "API キーは AES-GCM で暗号化され、このデバイスにのみ保存されます。ハードウェアに裏付けられた金庫ではなく、選択したプロバイダー以外のどこへも送信されません。クラウドプロバイダーのアカウントがモデルの利用可能性と料金を決定します。ローカルおよびデバイス上のプロバイダーは完全にこのコンピューター上で実行されます。バックエンドやサブスクリプションは含まれません。" },
 
   "errTargetChanged": { "message": "対象のタブまたはページが変更されました。再度スキャンして確認してください。" },

@@ -157,7 +157,7 @@
   "psBuiltinVerified": { "message": "Fournisseur sur l'appareil vérifié et activé. Le texte ne quitte jamais cet appareil ; la précision sur l'appareil est expérimentale." },
   "psLocalVerified": { "message": "Fournisseur local vérifié et activé. Les requêtes restent sur cette machine ou ce réseau ; rien n'est envoyé vers le cloud." },
   "psCloudVerified": { "message": "Fournisseur vérifié et activé. La clé fonctionne ; la compatibilité du modèle pour le remplissage n'est pas garantie." },
-  "psKeyRemoved": { "message": "Clé enregistrée supprimée. L'autorisation d'hôte peut aussi être révoquée ci-dessous." },
+  "psKeyRemoved": { "message": "Clé enregistrée supprimée et autorisation d'hôte révoquée." },
   "psKeyRemoveFailed": { "message": "Impossible de supprimer la clé. Réessayez." },
   "psSummary": { "message": "Fournisseur LLM" },
   "psKinds": { "message": "Cloud · Local · Sur l'appareil" },
@@ -189,9 +189,6 @@
   "psSaveVerify": { "message": "Enregistrer et vérifier" },
   "psSaveVerifyKey": { "message": "Enregistrer et vérifier la clé" },
   "psRemoveKey": { "message": "Supprimer la clé" },
-  "psRevokePermission": { "message": "Révoquer l'autorisation d'hôte" },
-  "psPermissionRevoked": { "message": "Autorisation d'hôte révoquée." },
-  "psPermissionRevokeFailed": { "message": "L'autorisation n'a pas pu être révoquée." },
   "psKeyHint": { "message": "Les clés API sont chiffrées avec AES-GCM et stockées uniquement sur cet appareil — pas un coffre sécurisé par le matériel, et jamais envoyées ailleurs qu'auprès de votre fournisseur choisi. Les comptes des fournisseurs cloud déterminent la disponibilité des modèles et les frais. Les fournisseurs locaux et sur l'appareil s'exécutent entièrement sur cet ordinateur. Aucun backend ni abonnement n'est inclus." },
 
   "errTargetChanged": { "message": "L'onglet ou la page cible a changé. Relancez l'analyse et la relecture." },
