@@ -113,17 +113,18 @@ export function App() {
     dispatch({ type: 'PROGRESS', text: t('progressCanceling') });
   }
   const boundScan = settings && state.stage === 'review' ? state.scan : undefined;
+  // The settings card keeps one fixed slot in the tree. An edit calls
+  // onChange(undefined) to invalidate the workflow, so moving the card in or out
+  // of a `settings &&` branch would remount it: the fresh mount re-runs its
+  // storage restore and silently reverts the provider the user just picked.
+  const showSettings = !settings || editing;
   return <main>
     <header><div className="brand"><span className="brand-icon" aria-hidden="true">h</span><div><h1>help-me-fill</h1><span className="subtle">{t('brandSubtle')}</span></div></div>{settings && <button type="button" className="link-button" disabled={busy} onClick={() => setEditing(value => !value)}>{t('editLlm')}</button>}</header>
-    {!settings && <>
-      <div className="intro"><h2>{t('introTitle')}</h2><p>{t('introBody')}</p></div>
-      <ProviderSettings disabled={busy} onChange={providerChanged} />
-      {state.error && <div className="error" role="alert">{state.error}</div>}
-      <p className="hint">{t('configureProviderHint')}</p>
-    </>}
+    {!settings && <div className="intro"><h2>{t('introTitle')}</h2><p>{t('introBody')}</p></div>}
+    {showSettings && <ProviderSettings disabled={busy} onChange={providerChanged} />}
+    {state.error && <div className="error" role="alert">{state.error}</div>}
+    {!settings && <p className="hint">{t('configureProviderHint')}</p>}
     {settings && <>
-      {editing && <ProviderSettings disabled={busy} onChange={providerChanged} />}
-      {state.error && <div className="error" role="alert">{state.error}</div>}
       <ol className="steps" aria-label={t('workflowLabel')}><li className={state.stage === 'review' ? 'done' : 'active'}>1 {t('stepDocument')}</li><li className={state.plan || state.result ? 'done' : boundScan ? 'active' : ''}>2 {t('stepReview')}</li><li className={state.result ? 'done' : state.plan ? 'active' : ''}>3 {t('stepFill')}</li></ol>
       {busy && <div className="progress" role="status"><span className="spinner" aria-hidden="true" /><span>{state.progress ?? ({ parsing: t('progressParsing'), scanning: t('progressScanning'), mapping: t('progressMapping'), filling: t('progressFilling'), undoing: t('progressUndoing') } as Record<string, string>)[state.phase]}</span><button type="button" className="link-button" onClick={cancel}>{t('cancel')}</button></div>}
       {!boundScan && <>
