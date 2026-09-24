@@ -157,7 +157,7 @@
   "psBuiltinVerified": { "message": "Gerätemodell-Anbieter überprüft und aktiviert. Text verlässt dieses Gerät nie; die Genauigkeit auf dem Gerät ist experimentell." },
   "psLocalVerified": { "message": "Lokaler Anbieter überprüft und aktiviert. Anfragen bleiben auf diesem Rechner oder Netzwerk; es wird nichts an die Cloud gesendet." },
   "psCloudVerified": { "message": "Anbieter überprüft und aktiviert. Der Schlüssel funktioniert; die Modellkompatibilität für das Ausfüllen ist nicht garantiert." },
-  "psKeyRemoved": { "message": "Gespeicherter Schlüssel entfernt. Die Host-Berechtigung kann unten ebenfalls widerrufen werden." },
+  "psKeyRemoved": { "message": "Gespeicherter Schlüssel entfernt und Host-Berechtigung widerrufen." },
   "psKeyRemoveFailed": { "message": "Der Schlüssel konnte nicht entfernt werden. Versuchen Sie es erneut." },
   "psSummary": { "message": "LLM-Anbieter" },
   "psKinds": { "message": "Cloud · Lokal · Auf dem Gerät" },
@@ -189,9 +189,6 @@
   "psSaveVerify": { "message": "Speichern & überprüfen" },
   "psSaveVerifyKey": { "message": "Schlüssel speichern & überprüfen" },
   "psRemoveKey": { "message": "Schlüssel entfernen" },
-  "psRevokePermission": { "message": "Host-Berechtigung widerrufen" },
-  "psPermissionRevoked": { "message": "Host-Berechtigung widerrufen." },
-  "psPermissionRevokeFailed": { "message": "Die Berechtigung konnte nicht widerrufen werden." },
   "psKeyHint": { "message": "API-Schlüssel werden mit AES-GCM verschlüsselt und nur auf diesem Gerät gespeichert — kein hardwaregestützter Tresor, und sie werden nirgendwohin außer an Ihren gewählten Anbieter gesendet. Cloud-Anbieterkonten bestimmen Modellverfügbarkeit und Gebühren. Lokale und Gerätemodell-Anbieter laufen vollständig auf diesem Computer. Es ist kein Backend oder Abonnement enthalten." },
 
   "errTargetChanged": { "message": "Der Ziel-Tab oder die Seite hat sich geändert. Scannen und prüfen Sie erneut." },
