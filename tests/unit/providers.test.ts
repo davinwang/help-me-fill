@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
-import { createProvider, buildRequest, validateSettings } from '../../src/ai/provider';
+import { createProvider, buildRequest, validateSettings, verifyProvider } from '../../src/ai/provider';
 import { PROVIDERS, resolveProvider, localEndpointOrigin, type ProviderId, type ProviderSettings } from '../../src/ai/registry';
 import type { FieldDescriptor } from '../../src/shared/schemas';
 const field: FieldDescriptor = { id: 'f1', type: 'text', label: 'Name', ariaLabel: '', placeholder: '', name: 'name', context: '', required: false, maxLength: -1, pattern: '' };
@@ -54,6 +54,11 @@ describe('local and custom providers', () => {
     // A local request omits the Authorization header entirely when no key is set.
     expect(buildRequest({ provider: 'ollama', model: 'llama3.2', apiKey: '' }, 's', 'u').headers).toEqual({});
   });
+  it('ships LM Studio as a keyless local preset on its own loopback port', () => {
+    expect(PROVIDERS.lmstudio.kind).toBe('local');
+    expect(() => validateSettings({ provider: 'lmstudio', model: 'local-model', apiKey: '' })).not.toThrow();
+    expect(buildRequest({ provider: 'lmstudio', model: 'local-model', apiKey: '' }, 's', 'u').headers).toEqual({});
+  });
   it('still requires an API key for cloud providers', () => {
     expect(() => validateSettings({ provider: 'openai', model: 'gpt-4o-mini', apiKey: '' })).toThrow('API key');
   });
@@ -63,9 +68,18 @@ describe('local and custom providers', () => {
     expect(buildRequest(custom('http://127.0.0.1:8080/v1/chat/completions'), 's', 'u').url).toBe('http://127.0.0.1:8080/v1/chat/completions');
     expect(() => validateSettings(custom('http://localhost:1234/v1/chat/completions'))).not.toThrow();
   });
-  it('rejects custom endpoints that are not local http servers', () => {
-    expect(() => localEndpointOrigin('https://api.openai.com/v1')).toThrow('local address');
+  it('accepts private LAN endpoints and derives their host origin', () => {
+    for (const host of ['192.168.1.50', '10.0.0.7', '172.16.0.9', '172.31.255.1', '127.0.0.1']) {
+      expect(localEndpointOrigin(`http://${host}:8000/v1/chat/completions`)).toBe(`http://${host}/*`);
+    }
+    expect(resolveProvider(custom('http://192.168.0.10:1234/v1/chat/completions')).kind).toBe('local');
+  });
+  it('rejects custom endpoints that are not local or private http servers', () => {
+    expect(() => localEndpointOrigin('https://api.openai.com/v1')).toThrow('http://');
     expect(() => localEndpointOrigin('https://localhost:1234/v1')).toThrow('http://');
+    expect(() => localEndpointOrigin('http://8.8.8.8/v1')).toThrow('private LAN');
+    expect(() => localEndpointOrigin('http://172.32.0.1/v1')).toThrow('private LAN');
+    expect(() => localEndpointOrigin('http://192.169.0.1/v1')).toThrow('private LAN');
     expect(() => localEndpointOrigin('not a url')).toThrow('valid local endpoint');
     expect(() => validateSettings(custom('https://evil.example.com/v1'))).toThrow();
   });
@@ -113,5 +127,38 @@ describe('request safety and failures', () => {
   it('rejects oversized responses', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response('x'.repeat(270_000)));
     await expect(createProvider(settings(), fetcher).map(payload())).rejects.toThrow('256 KiB'); expect(fetcher).toHaveBeenCalledTimes(1);
+  });
+});
+describe('provider verification (save-time environment check)', () => {
+  const okFetcher = () => vi.fn<typeof fetch>().mockResolvedValue(new Response('{"object":"list","data":[]}', { status: 200 }));
+  it('probes the OpenAI-compatible models endpoint with a GET and no document text', async () => {
+    const fetcher = okFetcher();
+    await expect(verifyProvider(settings('openai'), fetcher)).resolves.toBeUndefined();
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(fetcher.mock.calls[0][0]).toBe('https://api.openai.com/v1/models');
+    expect(fetcher.mock.calls[0][1]).toMatchObject({ method: 'GET', credentials: 'omit', redirect: 'error' });
+    expect(JSON.stringify(fetcher.mock.calls[0][1]?.headers)).toContain('synthetic-test-key');
+  });
+  it('derives provider-specific verification URLs and headers', async () => {
+    const gemini = okFetcher(); await verifyProvider(settings('gemini'), gemini);
+    expect(gemini.mock.calls[0][0]).toBe(PROVIDERS.gemini.endpoint);
+    const anthropic = okFetcher(); await verifyProvider(settings('anthropic'), anthropic);
+    expect(anthropic.mock.calls[0][0]).toBe('https://api.anthropic.com/v1/models');
+    const ollama = okFetcher(); await verifyProvider({ provider: 'ollama', model: 'llama3.2', apiKey: '' }, ollama);
+    expect(ollama.mock.calls[0][0]).toBe('http://localhost:11434/v1/models');
+    expect(ollama.mock.calls[0][1]?.headers).toEqual({});
+  });
+  it('blocks the save on a rejected key without leaking the response body', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response('SECRET_PROVIDER_BODY', { status: 401 }));
+    await expect(verifyProvider(settings('openai'), fetcher)).rejects.toThrow('API key was rejected');
+  });
+  it('maps a network failure to a reachability error', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockRejectedValue(new Error('ECONNREFUSED'));
+    await expect(verifyProvider({ provider: 'ollama', model: 'llama3.2', apiKey: '' }, fetcher)).rejects.toThrow('Could not reach the provider');
+  });
+  it('checks the on-device capability gate without touching the network', async () => {
+    const fetcher = vi.fn();
+    await expect(verifyProvider({ provider: 'builtin', model: 'on-device', apiKey: '' }, fetcher)).rejects.toThrow('on-device model');
+    expect(fetcher).not.toHaveBeenCalled();
   });
 });

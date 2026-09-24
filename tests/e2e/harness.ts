@@ -84,11 +84,21 @@ export async function enableProvider(app: { context: BrowserContext; id: string;
     await (chrome as any).developerPrivate.addHostPermission(id, 'https://api.openai.com/*');
   }, app.id);
   await manager.close(); await app.page.bringToFront();
+  // Saving now runs a live verification probe (GET /v1/models). Intercept just that
+  // call so the disposable profile never touches the network, then tear the stub down
+  // so each test can install its own interception afterwards.
+  await app.panel.send('Fetch.enable', { patterns: [{ urlPattern: 'https://api.openai.com/v1/models*', requestStage: 'Request' }] });
+  app.panel.onEvent = (method, event) => {
+    if (method !== 'Fetch.requestPaused') return;
+    void app.panel.send('Fetch.fulfillRequest', { requestId: event.requestId, responseCode: 200, responseHeaders: [{ name: 'Content-Type', value: 'application/json' }], body: Buffer.from(JSON.stringify({ object: 'list', data: [{ id: 'test-model', object: 'model' }] })).toString('base64') });
+  };
   await app.panel.enter('input[placeholder="Model ID from your provider account"]', 'test-model');
   await app.panel.enter('input[type=password]', 'synthetic-e2e-key');
-  await app.panel.click('Enable provider');
-  // The settings card hides once the provider is enabled and the workflow unlocks.
+  await app.panel.click('Save & verify key');
+  // The settings card hides once the provider is verified and the workflow unlocks.
   await expect.poll(() => app.panel.text()).toContain('1 Document');
+  await app.panel.send('Fetch.disable');
+  app.panel.onEvent = undefined;
   await expect.poll(() => app.panel.text()).toContain('AI help me fill');
 }
 export async function attachPanel(cdp: CDPSession, id: string): Promise<Panel> {

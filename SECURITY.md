@@ -67,14 +67,26 @@ The following are out of scope:
 For a full description, see [docs/PRIVACY.md](./docs/PRIVACY.md). Key points:
 
 - The extension has **no server component**. There is no backend to breach.
-- API keys are stored in `chrome.storage.local`, which is scoped to the
-  extension and encrypted at rest by the OS keychain.
+- API keys are sealed with AES-GCM (Web Crypto) before being written to
+  `chrome.storage.local`, which is scoped to the extension. The random data key
+  lives in the same store, so this is obfuscation against plaintext disk
+  inspection — **not** an OS-keychain or hardware-backed vault (extensions have
+  no such API). Keys are sent only to the provider they belong to.
 - Documents are parsed in-browser and never uploaded anywhere except directly
   to the AI provider the user selected — the request path is:
   `browser → provider`, with no proxy.
 - Content scripts are injected on demand into a specific tab, not ambient.
+- Saving a provider runs a one-off verification request (a `GET` of the
+  provider's model list, or the on-device capability gate). It carries only the
+  API key — never document text or field data — and a failure blocks the save.
 - The build has hard assertions on the exact permission set. Weakening these is
-  treated as a security regression.
+  treated as a security regression. The single broad entry, `http://*/*` in
+  `optional_host_permissions`, exists only so the custom provider can request a
+  specific private-LAN origin at runtime (Chrome match patterns cannot express
+  CIDR). `localEndpointOrigin()` restricts custom endpoints to loopback and the
+  RFC1918 ranges (10/8, 172.16/12, 192.168/16) over `http://`; public and remote
+  hosts are rejected, and only the exact host the user enters is ever prompted
+  for and granted. No `https://*/*` and no `<all_urls>` are declared.
 
 ## Recognition
 

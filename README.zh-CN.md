@@ -58,7 +58,7 @@ DeepSeek、智谱 GLM、Z.ai、OpenRouter，也可以是**本地 Ollama** 或你
 | 我的文档去哪了？ | 由 `pdf.js` / `mammoth` / `xlsx` 在浏览器内解析，不上传。 |
 | AI 请求发往哪里？ | 由浏览器直接发往你配置的模型提供方，无中间人。 |
 | 插件会回传数据吗？ | 不会。零埋点、零遥测、没有任何 `fetch` 指向 help-me-fill 域名。 |
-| API Key 存在哪？ | `chrome.storage.local` —— 由操作系统密钥链加密，仅本插件可读。 |
+| API Key 存在哪？ | `chrome.storage.local` —— 使用 AES-GCM（Web Crypto）加密后存储，仅本插件可读。并非操作系统密钥链级别的保险箱（插件无此 API），数据密钥与密文同处存储，应视为强混淆。 |
 | 插件能读所有标签页吗？ | 不能。权限只有 `activeTab` + `sidePanel` + `scripting` + `storage`。host 权限是**可选**的，只在你启用某个提供方时才请求对应域名。 |
 | 每个页面都注入内容脚本吗？ | 不。脚本只在你主动填写的那个标签页按需注入。 |
 | 能完全离线使用吗？ | 可以。启用 **Chrome 内置 AI**（Gemini Nano）后，零联网调用、零 Key、零费用。 |
@@ -117,12 +117,15 @@ npm run build
 
 全部为 BYO-Key 或无 Key 模式，插件本身不持有任何共享 Key，也不代理请求。
 设置界面中每个选项都标记为**云端**、**本地**或**端侧**，让你随时知道数据流向。
+保存提供方时会做一次快速校验（请求模型列表，或对端侧做能力检测），以便立即发现
+Key 错误或服务不可达——校验只发送你的 Key，绝不发送文档正文。
 
 | 提供方 | 类型 | 传输方式 | API Key | 说明 |
 |---|---|---|---|---|
 | Chrome 内置 AI（Gemini Nano） | 端侧 | `chrome.aiOrigin` | 无需 | 零联网。需要 Chrome 138+ 并开启对应 flag |
 | Ollama | 本地 | OpenAI 兼容 | 可选 | 预设 `http://localhost:11434`。任意 Ollama 拉取的模型 |
-| 自定义本地服务 | 本地 | OpenAI 兼容 | 可选 | LM Studio、llamafile、vLLM，或任意本地兼容 OpenAI 协议的端点。**端点会强制校验为 `localhost` / `127.0.0.1`**，远程地址会被 `localEndpointOrigin()`（`src/ai/registry.ts`）直接拒绝 |
+| LM Studio | 本地 | OpenAI 兼容 | 可选 | 预设 `http://localhost:1234`。任意在 LM Studio 本地服务中加载的模型 |
+| 自定义本地服务 | 本地 | OpenAI 兼容 | 可选 | llamafile、vLLM，或任意本地兼容 OpenAI 协议的端点。**端点必须为 `http://` 且主机是 `localhost` / `127.0.0.1` 或私有局域网地址（`192.168.x.x`、`10.x.x.x`、`172.16–31.x.x`）**，公网/远程地址会被 `localEndpointOrigin()`（`src/ai/registry.ts`）直接拒绝 |
 | Anthropic（Claude） | 云端 | Anthropic | 必填 | [console.anthropic.com/settings/keys](https://console.anthropic.com/settings/keys) |
 | OpenAI | 云端 | OpenAI | 必填 | [platform.openai.com/api-keys](https://platform.openai.com/api-keys) |
 | Google Gemini | 云端 | Gemini | 必填 | [aistudio.google.com/apikey](https://aistudio.google.com/apikey) |

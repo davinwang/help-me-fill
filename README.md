@@ -62,7 +62,7 @@ safe filling, undo — happens locally, in your browser process, with no telemet
 | Where does my document go? | Parsed in-browser by `pdf.js`, `mammoth`, and `xlsx`. Never uploaded. |
 | Where does my AI request go? | Directly from your browser to the provider host you configured. No middleman. |
 | Does the extension phone home? | No. Zero analytics. Zero telemetry. No `fetch` to any help-me-fill domain. |
-| Where is my API key stored? | `chrome.storage.local` — encrypted at rest by the OS keychain, scoped to the extension. |
+| Where is my API key stored? | `chrome.storage.local` — sealed with AES-GCM (Web Crypto) at rest, scoped to the extension. Not an OS-keychain vault (extensions have no such API); the data key lives beside the ciphertext, so treat it as strong obfuscation. |
 | Can the extension read every tab? | No. Permissions are `activeTab` + `sidePanel` + `scripting` + `storage`. Host permissions are **optional** and requested per-provider only when you enable that provider. |
 | Is there a content script on every page? | No. Scripts are injected on-demand into the tab you're actively filling. |
 | Can I use it fully offline? | Yes — enable the **Chrome built-in AI** provider (Gemini Nano). No network calls, no keys, no cost. |
@@ -123,12 +123,16 @@ Then in Chrome or Edge:
 All providers are BYO-key or keyless. The extension never holds a shared pool of
 keys and never proxies your requests. Every option is tagged in the settings UI as
 **Cloud**, **Local**, or **On-device** so you always know where your data is going.
+Saving a provider runs a quick verification (a model-list request, or the on-device
+capability check) so a wrong key or unreachable server is caught immediately — it
+sends only your key, never document text.
 
 | Provider | Kind | Transport | API key | Notes |
 |---|---|---|---|---|
 | Chrome built-in AI (Gemini Nano) | On-device | `chrome.aiOrigin` | Not needed | Zero network. Requires Chrome 138+ with the flag enabled. |
 | Ollama | Local | OpenAI-compatible | Optional | Preset for `http://localhost:11434`. Any Ollama-pulled model. |
-| Custom local server | Local | OpenAI-compatible | Optional | LM Studio, llamafile, vLLM, or any local OpenAI-compatible endpoint. **Endpoint is validated to `localhost`/`127.0.0.1` only — remote custom URLs are rejected** by `localEndpointOrigin()` in `src/ai/registry.ts`. |
+| LM Studio | Local | OpenAI-compatible | Optional | Preset for `http://localhost:1234`. Any model loaded in LM Studio's local server. |
+| Custom local server | Local | OpenAI-compatible | Optional | llamafile, vLLM, or any local OpenAI-compatible endpoint. **Endpoint must be `http://` on `localhost`/`127.0.0.1` or a private LAN address (`192.168.x.x`, `10.x.x.x`, `172.16–31.x.x`)** — public/remote URLs are rejected by `localEndpointOrigin()` in `src/ai/registry.ts`. |
 | Anthropic (Claude) | Cloud | Anthropic | Required | [console.anthropic.com/settings/keys](https://console.anthropic.com/settings/keys) |
 | OpenAI | Cloud | OpenAI | Required | [platform.openai.com/api-keys](https://platform.openai.com/api-keys) |
 | Google Gemini | Cloud | Gemini | Required | [aistudio.google.com/apikey](https://aistudio.google.com/apikey) |

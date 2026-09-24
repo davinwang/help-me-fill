@@ -23,7 +23,7 @@ update will be announced before the release ships.
 | Data type | Where it comes from | Where it goes | Retained? |
 |---|---|---|---|
 | Your document (PDF, DOCX, XLSX, MD, TXT) | You drop it into the side panel | Parsed in-browser by `pdf.js`, `mammoth`, or SheetJS. Extracted text lines (id, page, text only) are sent to the AI provider you selected. | Only in the current session. Cleared when you close the panel or start a new document. Never persisted to disk by the extension. |
-| Your API key for a provider | You paste it into the settings UI | `chrome.storage.local`, encrypted at rest by the OS keychain, scoped to the extension. Sent only to the provider it belongs to, in the `Authorization` header of your AI requests. | Until you clear it in settings or uninstall the extension. |
+| Your API key for a provider | You paste it into the settings UI | `chrome.storage.local`, sealed with AES-GCM (Web Crypto) at rest, scoped to the extension. Sent only to the provider it belongs to, in the `Authorization` header of your AI requests. | Until you clear it in settings or uninstall the extension. |
 | The web form's field metadata | Scanned from the tab you're on | An **explicit allowlist** of properties is sent to your AI provider: `id`, `type`, `label`, `ariaLabel`, `placeholder`, `name`, `context`, `required`, `maxLength`, `pattern`. **Current field values, page URL, cookies, DOM structure, and any other page content are NOT sent.** See `compactFields` in `src/ai/prompts.ts`. | Only in the current session. |
 | Values you accept and fill | From the review table | Written into the page's form fields using framework-compatible events. | Whatever the page itself does with them. The extension retains nothing after fill. |
 | Undo snapshot | Captured before fill | Kept in memory in the content script. | Until you navigate away, close the tab, or reload. |
@@ -103,7 +103,7 @@ clear explanation. The extension never silently falls back to a cloud provider.
 | `sidePanel` | To render the UI where you drop documents and review mappings. |
 | `activeTab` | To scan and fill only the tab you're actively working on. We cannot see other tabs. |
 | `scripting` | To inject the scan/fill/undo content scripts on demand into the active tab. |
-| `storage` | To persist your provider settings and API keys in `chrome.storage.local`. |
+| `storage` | To persist your provider settings and API keys (AES-GCM sealed) in `chrome.storage.local`. |
 
 Optional host permissions are requested **per provider, only when you enable
 that provider**:
@@ -114,11 +114,22 @@ that provider**:
 - `https://api.deepseek.com/*` — only if you configure DeepSeek
 - `https://open.bigmodel.cn/*` — only if you configure Zhipu or Z.ai
 - `https://openrouter.ai/*` — only if you configure OpenRouter
-- `http://localhost/*` and `http://127.0.0.1/*` — only if you configure Ollama
-  or a custom local server. Loopback traffic never leaves your machine. The
-  custom endpoint is validated by `localEndpointOrigin()` in
-  `src/ai/registry.ts` to reject any non-loopback URL, so this permission
-  cannot be abused to reach remote hosts.
+- `http://localhost/*` and `http://127.0.0.1/*` — only if you configure Ollama,
+  LM Studio, or a custom local server on loopback. This traffic never leaves
+  your machine.
+- `http://*/*` — declared so a custom local server on your **private LAN** can be
+  reached. Chrome match patterns cannot express CIDR ranges, so this optional
+  pattern is broad, but it is only ever used to request the single origin you
+  type. `localEndpointOrigin()` in `src/ai/registry.ts` restricts custom
+  endpoints to loopback and the RFC1918 private ranges (`192.168.0.0/16`,
+  `10.0.0.0/8`, `172.16.0.0/12`) over `http://`, rejecting public and remote
+  hosts, and the runtime prompt shows only that exact host. We do **not** declare
+  `https://*/*`.
+
+When you save a provider, the extension makes a one-off verification request (a
+`GET` of that provider's model list) to confirm the key and connectivity. It
+carries only the API key — never document text or field metadata — and a failure
+blocks the save.
 
 We do not request `<all_urls>`. We do not request `tabs`, `webRequest`,
 `cookies`, `history`, `bookmarks`, or `notifications`. The build script has a
