@@ -1,4 +1,4 @@
-import enMessages from '../_locales/en/messages.json';
+import enMessages from '../_locales/en/messages.json' with { type: 'json' };
 
 // Single localization entry point for every extension context (side panel,
 // content script, service worker). Chrome resolves the active locale from the
