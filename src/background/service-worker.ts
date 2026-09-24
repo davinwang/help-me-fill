@@ -1,5 +1,4 @@
 async function configure() {
-  await chrome.storage.session.setAccessLevel({ accessLevel: 'TRUSTED_CONTEXTS' });
   await chrome.storage.local.setAccessLevel({ accessLevel: 'TRUSTED_CONTEXTS' });
   await chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: false });
 }
