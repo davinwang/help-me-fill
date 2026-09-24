@@ -1,5 +1,6 @@
 import { LIMITS } from '../shared/schemas';
 import { UserError, throwIfAborted } from '../shared/errors';
+import { t } from '../shared/i18n';
 import type { ParsedDocument } from './types';
 
 export { mergeDocuments } from './merge';
@@ -12,10 +13,10 @@ export function extensionOf(name: string): string {
 export function validateDocumentFile(file: Pick<File, 'name' | 'size' | 'type'>) {
   const extension = extensionOf(file.name);
   if (!(SUPPORTED_EXTENSIONS as readonly string[]).includes(extension)) {
-    throw new UserError('Choose a PDF, Word (.docx), Excel (.xlsx/.xls), Markdown (.md), or plain text (.txt) file. Legacy .doc and image-only scans are not supported.');
+    throw new UserError(t('parseUnsupportedType'));
   }
-  if (!file.size) throw new UserError('This file is empty.');
-  if (file.size > LIMITS.bytes) throw new UserError('Documents must be 10 MiB or smaller. Choose a smaller file.');
+  if (!file.size) throw new UserError(t('parseEmpty'));
+  if (file.size > LIMITS.bytes) throw new UserError(t('parseTooLarge'));
 }
 // All formats converge on the same page/sheet-tagged text lines before any LLM
 // call; parsers load lazily so each library stays in its own chunk.

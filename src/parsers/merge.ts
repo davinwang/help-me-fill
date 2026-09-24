@@ -1,5 +1,6 @@
 import { LIMITS } from '../shared/schemas';
 import { UserError } from '../shared/errors';
+import { t } from '../shared/i18n';
 import type { DocumentLine, ParsedDocument } from './types';
 
 // Multiple uploads stay separate cards in the UI but converge on one bounded
@@ -12,10 +13,10 @@ export function mergeDocuments(documents: ParsedDocument[]): ParsedDocument {
     for (const line of document.lines) lines.push({ ...line, id: `d${index + 1}-${line.id}` });
   });
   const characters = lines.reduce((sum, line) => sum + Array.from(line.text).length, 0);
-  if (characters > LIMITS.characters) throw new UserError('Combined extracted text exceeds 24,000 characters. Remove a document; nothing was truncated.');
+  if (characters > LIMITS.characters) throw new UserError(t('mergeTooLong'));
   return {
     kind: 'mixed',
-    name: `${documents.length} documents`,
+    name: t('mergeDocName', [documents.length]),
     pages: documents.reduce((sum, document) => sum + document.pages, 0),
     characters,
     lines,

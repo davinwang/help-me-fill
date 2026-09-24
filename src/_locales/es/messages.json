@@ -1,0 +1,351 @@
+{
+  "appName": { "message": "Help Me Fill" },
+  "appShortName": { "message": "Help Me Fill" },
+  "appDescription": { "message": "Rellenador de formularios con IA que prioriza la privacidad. Convierte cualquier PDF, DOCX, XLSX o Markdown en un formulario web rellenado, con revisión antes de rellenar. Trae tu propia clave de IA o ejecútalo totalmente en el dispositivo. Sin servidores, sin telemetría, sin cuenta." },
+  "actionTitle": { "message": "Abrir Help Me Fill" },
+
+  "panelTitle": { "message": "help-me-fill — Revisar y rellenar" },
+  "brandSubtle": { "message": "Help Me Fill" },
+  "errorBoundary": { "message": "El panel encontró un problema. Ciérralo y vuelve a abrirlo para iniciar una sesión nueva. Inspecciona tu formulario antes de reintentarlo." },
+  "needsExtension": { "message": "Esta interfaz necesita las API de extensión. Compila el proyecto, carga dist/ como extensión sin empaquetar en Chrome o Edge y haz clic en el icono de la extensión en la barra de herramientas." },
+
+  "editLlm": { "message": "Editar LLM" },
+  "introTitle": { "message": "Tu documento. Los campos correctos." },
+  "introBody": { "message": "Extrae localmente, revisa con IA y luego rellena a tu manera." },
+  "configureProviderHint": { "message": "Configura un proveedor para empezar. La extracción de texto del documento se ejecuta localmente en este navegador; solo se contacta al proveedor después de que apruebes enviar el texto extraído y los metadatos de los campos." },
+  "workflowLabel": { "message": "Flujo" },
+  "stepDocument": { "message": "Documento" },
+  "stepReview": { "message": "Revisar" },
+  "stepFill": { "message": "Rellenar" },
+  "progressParsing": { "message": "Extrayendo el texto del documento localmente…" },
+  "progressScanning": { "message": "Leyendo los campos admitidos de la página…" },
+  "progressMapping": { "message": "Esperando a tu proveedor…" },
+  "progressFilling": { "message": "Rellenando y verificando los campos seleccionados…" },
+  "progressUndoing": { "message": "Restaurando los valores sin cambios…" },
+  "progressCanceling": { "message": "Cancelando el trabajo restante. Los campos ya rellenados pueden permanecer; inspecciona los resultados." },
+  "cancel": { "message": "Cancelar" },
+  "aiHelpMeFill": { "message": "IA, ayúdame a rellenar" },
+  "backToDocuments": { "message": "Volver a los documentos" },
+  "footerNote": { "message": "El análisis del documento permanece local. Las sugerencias de la IA envían el texto extraído y los metadatos de los campos al proveedor que elijas tras tu consentimiento. Cerrar este panel puede cancelar el trabajo; las solicitudes nunca se reanudan automáticamente." },
+  "progressReadingPage": {
+    "message": "Leyendo localmente la página $PAGE$ de $TOTAL$…",
+    "placeholders": { "page": { "content": "$1" }, "total": { "content": "$2" } }
+  },
+  "errActiveTabChanged": { "message": "La pestaña activa cambió. Haz clic en el icono de la barra de herramientas en la página deseada y luego vuelve a escanear y revisar." },
+  "errDocumentRouteChanged": { "message": "El documento o la ruta cambió. Vuelve a escanear y revisar." },
+  "errTargetTabClosed": { "message": "La pestaña de destino se cerró." },
+  "errInspectPartial": {
+    "message": "$MESSAGE$ Inspecciona la página en busca de cambios parciales antes de volver a escanear.",
+    "placeholders": { "message": { "content": "$1" } }
+  },
+  "errNoFields": { "message": "No se encontraron campos admitidos en esta página." },
+  "errHostPermissionMissing": { "message": "Falta el permiso de host. Vuelve a activar el proveedor." },
+  "metrics": {
+    "message": "$NAME$ · $MODEL$ · $CALLS$ solicitud(es) · $SECONDS$ s",
+    "placeholders": { "name": { "content": "$1" }, "model": { "content": "$2" }, "calls": { "content": "$3" }, "seconds": { "content": "$4" } }
+  },
+  "metricsUsage": {
+    "message": "$NAME$ · $MODEL$ · $CALLS$ solicitud(es) · $SECONDS$ s · uso: $USAGE$",
+    "placeholders": { "name": { "content": "$1" }, "model": { "content": "$2" }, "calls": { "content": "$3" }, "seconds": { "content": "$4" }, "usage": { "content": "$5" } }
+  },
+
+  "errAddOneDocument": { "message": "Añade un documento a la vez; los documentos analizados permanecen en la lista de abajo." },
+  "dropZoneLabel": { "message": "Subida de documentos" },
+  "dropZoneTitle": { "message": "Empieza con tus documentos" },
+  "dropZoneBody": { "message": "Suelta documentos aquí o elige un archivo. Añade tantos como necesites." },
+  "chooseDocument": { "message": "Elegir documento" },
+  "chooseDocumentFile": { "message": "Elegir un archivo de documento" },
+  "dropZoneFormats": { "message": "PDF · Word (.docx) · Excel (.xlsx/.xls) · Markdown (.md) · Texto (.txt) · 10 MiB cada uno" },
+
+  "parsed": { "message": "Analizado" },
+  "removeDocument": {
+    "message": "Quitar $NAME$",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "delete": { "message": "Eliminar" },
+  "details": { "message": "Detalles" },
+  "unitPages": { "message": "páginas" },
+  "unitSheets": { "message": "hojas" },
+  "unitParts": { "message": "partes" },
+  "docMeta": {
+    "message": "$KIND$ · $PAGES$ $UNITS$ · $CHARS$ caracteres · Comprueba el orden de lectura y la exactitud de la fuente.",
+    "placeholders": { "kind": { "content": "$1" }, "pages": { "content": "$2" }, "units": { "content": "$3" }, "chars": { "content": "$4" } }
+  },
+
+  "consentEyebrow": { "message": "Antes de que nada salga de tu navegador" },
+  "consentTitle": { "message": "Revisa lo que compartes" },
+  "consentBuiltin": { "message": "La generación de sugerencias la gestiona el **modelo en el dispositivo** de tu navegador. El texto extraído del documento y los metadatos del formulario seleccionado nunca salen de este dispositivo. No se usan los archivos originales ni los valores existentes de los campos." },
+  "consentLocal": {
+    "message": "La generación de sugerencias envía el texto extraído del documento y los metadatos del formulario seleccionado a **$PROVIDER$** en este equipo. No se envía nada a la nube. No se usan los archivos originales ni los valores existentes de los campos.",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "consentCloud": {
+    "message": "La generación de sugerencias envía el texto extraído del documento y los metadatos del formulario seleccionado a **$PROVIDER$**, un proveedor en la nube. No se envían los archivos originales ni los valores existentes de los campos.",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "consentProviderFallback": { "message": "tu proveedor seleccionado" },
+  "consentDestinationBuiltin": { "message": "Modelo en el dispositivo (sin solicitud de red)" },
+  "destinationLabel": { "message": "Destino:" },
+  "modelLabel": { "message": "Modelo:" },
+  "previewOutgoing": { "message": "Previsualizar los datos salientes" },
+  "viewMappingInstructions": { "message": "Ver las instrucciones de asignación" },
+  "consentAccuracyBuiltin": { "message": "La precisión en el dispositivo es experimental; cada sugerencia aún necesita tu revisión." },
+  "consentAccuracyLocal": { "message": "La precisión del modelo local varía; cada sugerencia aún necesita tu revisión." },
+  "consentAccuracyCloud": { "message": "Se aplican la política de retención y los cargos de API de tu proveedor." },
+  "consentRequestsNote": { "message": "Puede hacerse una solicitud más, como máximo, una solicitud de reparación de validación. Sin respaldo automático a otro proveedor." },
+  "generateBuiltin": { "message": "Generar sugerencias en el dispositivo" },
+  "generateLocal": { "message": "Generar sugerencias localmente" },
+  "generateCloud": {
+    "message": "Enviar a $PROVIDER$ y generar sugerencias",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "generateCloudFallback": { "message": "proveedor" },
+  "enableProviderToContinue": { "message": "Activa arriba un proveedor para continuar." },
+
+  "unlabeledField": { "message": "Campo sin etiqueta" },
+  "reviewEyebrow": { "message": "Tú tienes la última palabra" },
+  "reviewTitle": { "message": "Revisar sugerencias" },
+  "reviewHint": { "message": "Las evidencias muestran de dónde procede el texto, no que la coincidencia sea correcta. Selecciona solo los valores que quieras rellenar." },
+  "selectAll": { "message": "Seleccionar todas las sugerencias admitidas" },
+  "clearSelection": { "message": "Borrar la selección" },
+  "chooseOption": { "message": "(elige una opción)" },
+  "checkboxTrue": { "message": "true — marcar esta casilla" },
+  "checkboxFalse": { "message": "false — dejar / desmarcar" },
+  "proposedValue": { "message": "Valor propuesto" },
+  "manualOverride": { "message": "Modificación manual · Compruébalo con atención" },
+  "currentValue": { "message": "Valor actual:" },
+  "allowOverwrite": { "message": "Permitir reemplazar este valor existente" },
+  "sourceEvidence": { "message": "Evidencias de la fuente" },
+  "noAssignments": { "message": "No se devolvió ninguna asignación admitida y respaldada por evidencias. El formulario no se ha modificado." },
+  "unmappedSummary": {
+    "message": "$COUNT$ campos sin asignar",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "fillNotice": { "message": "Rellenar puede activar la validación, el guardado automático o las solicitudes de red del sitio. Esta extensión nunca hace clic en Enviar. Deshacer no puede revertir los efectos del lado del servidor." },
+  "fillSelected": {
+    "message": "Rellenar seleccionados ($COUNT$)",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+
+  "fillResultsLabel": { "message": "Resultados del rellenado" },
+  "operationResults": { "message": "Resultados de la operación" },
+  "resultsHint": { "message": "Verificado en esta página, no confirmado por el servidor. Vuelve a escanear antes de otro rellenado." },
+  "fieldFallback": { "message": "Campo" },
+  "statusFilled": { "message": "rellenado" },
+  "statusRestored": { "message": "restaurado" },
+  "statusSkipped": { "message": "omitido" },
+  "statusFailed": { "message": "fallido" },
+  "statusChangedReverted": { "message": "cambiado/revertido" },
+  "undoLastFill": { "message": "Deshacer el último rellenado" },
+  "undoHint": { "message": "Deshacer conserva las ediciones posteriores y no puede revertir el guardado automático u otros efectos del lado de la página. Restablecer o volver a escanear borra el deshacer." },
+
+  "psStatusDefault": { "message": "Configura un proveedor para generar sugerencias." },
+  "kindCloud": { "message": "Nube" },
+  "kindLocal": { "message": "Local" },
+  "kindBuiltin": { "message": "En el dispositivo" },
+  "psBuiltinUnavailableSaved": { "message": "El proveedor en el dispositivo guardado no está disponible ahora mismo en este navegador. Elige otro proveedor." },
+  "psBuiltinRestored": { "message": "Proveedor en el dispositivo restaurado. Las sugerencias permanecen en este dispositivo." },
+  "psCustomEndpointMissing": { "message": "Falta el punto de conexión personalizado guardado. Vuelve a configurarlo." },
+  "psLocalRestored": { "message": "Proveedor local restaurado. Las solicitudes permanecen en este equipo." },
+  "psKeyRestored": { "message": "Clave guardada restaurada. No se incluye la verificación en vivo del proveedor/modelo." },
+  "psRestoreFailed": { "message": "No se pudo restaurar la configuración. Vuelve a configurar el proveedor." },
+  "psUnsaved": { "message": "Cambios sin guardar. Activa este proveedor antes de generar sugerencias." },
+  "psBuiltinUnavailable": { "message": "El modelo en el dispositivo no está disponible ahora mismo en este navegador. Elige otro proveedor." },
+  "psPermissionDeclined": { "message": "Se denegó el permiso de host. No se envió ningún documento." },
+  "psCheckingBuiltin": { "message": "Comprobando el modelo en el dispositivo…" },
+  "psVerifying": { "message": "Verificando el proveedor…" },
+  "psBuiltinVerified": { "message": "Proveedor en el dispositivo verificado y activado. El texto nunca sale de este dispositivo; la precisión en el dispositivo es experimental." },
+  "psLocalVerified": { "message": "Proveedor local verificado y activado. Las solicitudes permanecen en este equipo o red; no se envía nada a la nube." },
+  "psCloudVerified": { "message": "Proveedor verificado y activado. La clave funciona; no se garantiza la compatibilidad del modelo para rellenar." },
+  "psKeyRemoved": { "message": "Clave guardada eliminada. También puedes revocar abajo el permiso de host." },
+  "psKeyRemoveFailed": { "message": "No se pudo eliminar la clave. Inténtalo de nuevo." },
+  "psSummary": { "message": "Proveedor de LLM" },
+  "psKinds": { "message": "Nube · Local · En el dispositivo" },
+  "psBuiltinDetected": { "message": "Opción en el dispositivo detectada" },
+  "psProvider": { "message": "Proveedor" },
+  "psKeySaved": { "message": "Clave guardada" },
+  "psKeySavedTitle": { "message": "Hay una clave de API guardada para este proveedor" },
+  "psProviderBadge": {
+    "message": "Proveedor $KIND$",
+    "placeholders": { "kind": { "content": "$1" } }
+  },
+  "psBuiltinReady": { "message": "El modelo en el dispositivo del navegador está listo. Sin clave de API ni solicitud de red; el texto extraído nunca sale de este dispositivo. La precisión en el dispositivo es experimental." },
+  "psBuiltinDownload": { "message": "El navegador descargará su modelo en el dispositivo en el primer uso; el progreso de la descarga aparece durante la generación. Después, sin clave de API ni solicitud de red." },
+  "psEndpointUrl": { "message": "URL del punto de conexión" },
+  "psModelId": { "message": "ID del modelo" },
+  "psModelPlaceholderLocal": { "message": "Nombre del modelo cargado en tu servidor local" },
+  "psModelPlaceholderCloud": { "message": "ID del modelo de tu cuenta de proveedor" },
+  "psApiKeyOptional": { "message": "Clave de API (opcional)" },
+  "psApiKey": { "message": "Clave de API" },
+  "psGetApiKey": { "message": "Obtener clave de API" },
+  "psKeyPlaceholderLocal": { "message": "Déjalo en blanco si tu servidor local no necesita clave" },
+  "psKeyPlaceholderCloud": { "message": "Cifrada y guardada en este dispositivo" },
+  "psNoticeCloud": {
+    "message": "☁️ **Aviso de datos:** Help Me Fill no almacena datos, pero generar sugerencias **envía el texto extraído de tu documento y los metadatos de los campos a $PROVIDER$**. No se envía nada hasta que lo revises y apruebes en el siguiente paso.",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "psNoticeLocal": {
+    "message": "🏠 **Configuración necesaria:** instala e inicia [$NAME$]($URL$) en este equipo y luego carga un modelo (por ejemplo `$MODEL$`). Al guardar se hace una comprobación local rápida de que el servidor es accesible. Las solicitudes permanecen en este equipo — no se envía nada a la nube.",
+    "placeholders": { "name": { "content": "$1" }, "url": { "content": "$2" }, "model": { "content": "$3" } }
+  },
+  "psNoticeCustom": { "message": "🏠 **Configuración necesaria:** inicia tu servidor local compatible con OpenAI (Ollama, LM Studio, llamafile, vLLM…) e introduce arriba su dirección `/v1/chat/completions`. Hosts permitidos por `http://`: `localhost`, `127.0.0.1` y rangos de LAN privada (`192.168.x.x`, `10.x.x.x`, `172.16–31.x.x`). Al guardar se hace una comprobación rápida de que el servidor es accesible. Las solicitudes permanecen en tu equipo o red local — no se envía nada a la nube." },
+  "psEnableBuiltinModel": { "message": "Activar el modelo en el dispositivo" },
+  "psSaveVerify": { "message": "Guardar y verificar" },
+  "psSaveVerifyKey": { "message": "Guardar y verificar la clave" },
+  "psRemoveKey": { "message": "Quitar la clave" },
+  "psRevokePermission": { "message": "Revocar el permiso de host" },
+  "psPermissionRevoked": { "message": "Permiso de host revocado." },
+  "psPermissionRevokeFailed": { "message": "No se pudo revocar el permiso." },
+  "psKeyHint": { "message": "Las claves de API se cifran con AES-GCM y se guardan solo en este dispositivo — no es una cámara acorazada respaldada por hardware, y nunca se envían a ningún lugar salvo a tu proveedor elegido. Las cuentas de los proveedores en la nube determinan la disponibilidad del modelo y los cargos. Los proveedores locales y en el dispositivo se ejecutan totalmente en este equipo. No se incluye ningún backend ni suscripción." },
+
+  "errTargetChanged": { "message": "La pestaña o página de destino cambió. Vuelve a escanear y revisar." },
+  "errConnectionLost": { "message": "Se perdió la conexión con la página. Haz clic en el icono de la barra de herramientas en la página del formulario y luego vuelve a escanear." },
+  "errInvalidResponse": { "message": "La página devolvió una respuesta no válida." },
+  "errOpenFormPage": { "message": "Abre una página de formulario HTTP(S) y haz clic en el icono de la barra de herramientas de help-me-fill para conceder acceso." },
+  "errStorePage": { "message": "Las tiendas de extensiones del navegador no se pueden rellenar. Abre una página de formulario normal." },
+  "errAccessDenied": { "message": "Se denegó el acceso a la página. Haz clic en el icono de la extensión en la barra de herramientas de esta pestaña y luego vuelve a escanear. Las páginas restringidas no son compatibles." },
+  "errNoDocumentId": { "message": "El navegador no proporcionó una identidad de documento. Actualiza el navegador e inténtalo de nuevo." },
+  "errPageChangedScanning": { "message": "La página cambió durante el escaneo. Inténtalo de nuevo." },
+  "errNoAck": { "message": "La página no confirmó el panel de revisión. Vuelve a escanear." },
+  "errConnectionClosed": { "message": "La conexión con la página se cerró. Vuelve a escanear." },
+  "errCanceled": { "message": "Cancelado. No se inició ninguna solicitud nueva." },
+  "errGeneric": { "message": "La operación no pudo completarse. Restablece la sesión e inténtalo de nuevo." },
+
+  "fillUnknownField": { "message": "ID de campo desconocido o duplicado. No se rellenó nada." },
+  "fillChangedSinceReview": { "message": "Un campo cambió desde la revisión. Vuelve a escanear y revisar." },
+  "fillNeedsApproval": { "message": "Sobrescribir un valor existente requiere aprobación explícita." },
+  "fillCanceledOrInactive": { "message": "La operación se canceló o la pestaña de destino ya no está activa." },
+  "fillValueChangedDuring": { "message": "El valor de un campo cambió durante el rellenado. Vuelve a revisar." },
+  "fillAlreadyContains": { "message": "Ya contiene el valor seleccionado." },
+  "fillChangedOnFocus": { "message": "El destino cambió al recibir el foco. No se rellenaron los campos restantes." },
+  "fillVerified": { "message": "El valor y la validez nativa persistieron durante la verificación." },
+  "fillReverted": { "message": "La página cambió, rechazó o reemplazó este valor. Inspecciónalo manualmente." },
+  "fillStopped": { "message": "Detenido tras un cambio de destino o un fallo de ejecución." },
+
+  "undoCanceled": { "message": "Se detuvo el deshacer porque la operación se canceló o la pestaña cambió." },
+  "undoPreserved": { "message": "Se conservó una edición posterior del usuario o de la página." },
+  "undoTargetChanged": { "message": "El destino cambió durante el deshacer." },
+  "undoRestored": { "message": "Valor anterior restaurado. Los efectos del lado de la página no se pueden deshacer." },
+  "undoNotRetained": { "message": "La página no conservó el valor anterior." },
+
+  "ctrlNotAnOption": { "message": "El valor seleccionado no es una de las opciones del campo." },
+  "ctrlNoSetter": { "message": "Este control no tiene un establecedor de valor nativo compatible." },
+  "ctrlCheckboxBoolean": { "message": "Los valores de la casilla deben ser \"true\" o \"false\"." },
+  "ctrlValueNotOption": { "message": "El valor no es una de las opciones del campo." },
+  "ctrlTooLong": { "message": "El valor supera el límite de longitud del campo." },
+  "ctrlTooShort": { "message": "El valor es más corto que el mínimo del campo." },
+  "ctrlNormalize": { "message": "El navegador normalizaría este valor. Edítalo antes de rellenar." },
+  "ctrlConstraint": { "message": "El valor no satisface el tipo, el patrón ni la restricción de obligatoriedad del campo." },
+
+  "scanTooManyControls": { "message": "Esta página tiene demasiados controles para escanearla de forma segura. Usa un formulario más sencillo." },
+  "scanTooManyFields": { "message": "Esta página tiene más de 60 campos admitidos. No se usó ningún escaneo parcial." },
+  "scanFormChanged": { "message": "El formulario cambió después del escaneo. Vuelve a escanear y revisar." },
+  "scanFormStructureChanged": { "message": "La estructura del formulario cambió. Vuelve a escanear y revisar." },
+
+  "idxBusy": { "message": "Todavía se está ejecutando otra operación. Espera a que termine." },
+  "idxPageChanged": { "message": "La página cambió. Vuelve a escanear." },
+  "idxScanFirst": { "message": "Escanea este documento antes de rellenarlo." },
+  "idxPanelDisconnected": { "message": "El panel de revisión ya no está conectado. No se rellenó nada." },
+  "idxInvalidMessage": { "message": "Mensaje de extensión no válido." },
+
+  "parseUnsupportedType": { "message": "Elige un archivo PDF, Word (.docx), Excel (.xlsx/.xls), Markdown (.md) o de texto sin formato (.txt). Los .doc antiguos y los escaneos de solo imagen no son compatibles." },
+  "parseEmpty": { "message": "Este archivo está vacío." },
+  "parseTooLarge": { "message": "Los documentos deben tener 10 MiB o menos. Elige un archivo más pequeño." },
+
+  "pdfInvalidType": { "message": "Elige un archivo PDF válido. Los archivos de Word, Excel, Markdown y texto se dirigen a sus propios analizadores; no se admite OCR." },
+  "pdfTooLarge": { "message": "Los PDF deben tener 10 MiB o menos. Elige un documento más pequeño." },
+  "pdfBadHeader": { "message": "Este archivo no contiene una cabecera de PDF válida." },
+  "pdfPassword": { "message": "Los PDF protegidos con contraseña no son compatibles. Elige un documento sin proteger." },
+  "pdfTooManyPages": { "message": "Los PDF pueden contener como máximo 20 páginas. Elige un documento más corto; no se truncó nada." },
+  "pdfTooMuchText": { "message": "El texto extraído supera los 24.000 caracteres. Elige un PDF más corto; no se truncó nada." },
+  "pdfNoText": { "message": "No se encontró texto extraíble. Los PDF escaneados o de solo imagen requieren OCR, que aún no está incluido." },
+  "pdfUnreadable": { "message": "No se pudo leer este PDF. Puede estar dañado, protegido con contraseña o usar una codificación no compatible." },
+
+  "docxUnreadable": { "message": "No se pudo leer este archivo de Word. Vuelve a exportarlo como .docx e inténtalo de nuevo." },
+
+  "xlsxUnreadable": { "message": "No se pudo leer esta hoja de cálculo. Vuelve a exportarla como .xlsx e inténtalo de nuevo." },
+  "xlsxNoSheets": { "message": "Este libro no tiene hojas visibles." },
+  "xlsxTooManySheets": {
+    "message": "Los libros pueden contener como máximo $COUNT$ hojas visibles. Elige un libro más pequeño; no se truncó nada.",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+
+  "mergeTooLong": { "message": "El texto extraído combinado supera los 24.000 caracteres. Quita un documento; no se truncó nada." },
+  "mergeDocName": {
+    "message": "$COUNT$ documentos",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+
+  "textNoText": { "message": "No se encontró texto extraíble. Los documentos escaneados o de solo imagen requieren OCR, que aún no está incluido." },
+  "textTooMuch": { "message": "El texto extraído supera los 24.000 caracteres. Elige un documento más corto; no se truncó nada." },
+
+  "provBadModel": { "message": "Introduce un ID de modelo de texto válido de tu proveedor." },
+  "provBadKey": { "message": "Introduce una clave de API válida sin espacios." },
+  "provBuiltinNoHttp": { "message": "El proveedor en el dispositivo no usa solicitudes HTTP." },
+  "provBuiltinNoHttpResponse": { "message": "El proveedor en el dispositivo no usa respuestas HTTP." },
+  "provEmptyResponse": { "message": "El proveedor devolvió una respuesta vacía." },
+  "provTooBig": { "message": "La respuesta del proveedor superó los 256 KiB. Elige un documento más corto." },
+  "provInvalidResponse": { "message": "El proveedor devolvió una respuesta de API no válida." },
+  "provInputTooBig": { "message": "La entrada de asignación está vacía o supera los límites del prototipo." },
+  "provNoSuggestions": { "message": "No se devolvió ninguna sugerencia válida." },
+  "provHttp401": { "message": "Comprueba tu clave de API, el acceso a la cuenta y la política de acceso del navegador." },
+  "provHttp429": { "message": "Se alcanzó el límite de solicitudes o la cuota. Espera o comprueba tu cuenta de proveedor antes de reintentarlo." },
+  "provHttp400": { "message": "Comprueba el ID del modelo y su compatibilidad con esta API del proveedor y la salida JSON." },
+  "provHttpOther": { "message": "El proveedor no está disponible. Reinténtalo explícitamente más tarde." },
+  "provRequestFailed": {
+    "message": "Falló la solicitud al proveedor ($STATUS$). $MESSAGE$",
+    "placeholders": { "status": { "content": "$1" }, "message": { "content": "$2" } }
+  },
+  "provTimeout": { "message": "El proveedor tardó más de 60 segundos. Reinténtalo explícitamente; no se hizo ningún reintento automático." },
+  "provUnreachable": { "message": "No se pudo contactar con el proveedor seleccionado. Comprueba el acceso de red y el permiso de host de la API." },
+
+  "verifyBuiltinUnreachable": { "message": "El modelo en el dispositivo no es accesible ahora mismo en este navegador. Elige otro proveedor." },
+  "verify401": { "message": "Verificación fallida: la clave de API fue rechazada. Comprueba la clave, el acceso a la cuenta y la política de acceso del navegador." },
+  "verify400": { "message": "Verificación fallida: no se encontró el punto de conexión ni la lista de modelos. Comprueba la URL del punto de conexión y la API del proveedor." },
+  "verify429": { "message": "Verificación fallida: se alcanzó el límite de solicitudes o la cuota. Espera e inténtalo de nuevo." },
+  "verifyHttpOther": {
+    "message": "Verificación fallida (HTTP $STATUS$). Comprueba el estado del proveedor y tu cuenta.",
+    "placeholders": { "status": { "content": "$1" } }
+  },
+  "verifyTimeout": { "message": "La verificación agotó el tiempo tras 20 segundos. Comprueba el punto de conexión y la red e inténtalo de nuevo." },
+  "verifyUnreachable": { "message": "No se pudo contactar con el proveedor para verificarlo. Comprueba el punto de conexión, el acceso de red y el permiso de host." },
+
+  "regBadEndpoint": { "message": "Introduce una URL de punto de conexión local válida, por ejemplo http://localhost:11434/v1/chat/completions." },
+  "regNeedHttp": { "message": "El punto de conexión personalizado debe usar http:// en una dirección local." },
+  "regNeedLocal": { "message": "El punto de conexión personalizado debe ser localhost, 127.0.0.1 o una dirección de LAN privada (192.168.x.x, 10.x.x.x, 172.16-31.x.x). No se permiten hosts públicos." },
+
+  "mapTooBig": { "message": "La salida del modelo superó el límite de respuesta." },
+  "mapInvalidJson": { "message": "El modelo no devolvió un JSON válido." },
+  "mapSchema": { "message": "La salida del modelo no coincidía con el esquema de asignación requerido." },
+  "mapUnknownField": { "message": "El modelo devolvió un ID de campo desconocido o duplicado." },
+  "mapMissingFields": { "message": "El modelo no tuvo en cuenta todos los campos." },
+  "mapQuoteMissing": { "message": "Una cita de la fuente no estaba presente en la línea citada." },
+  "mapValueNotOption": { "message": "Un valor propuesto no es una de las opciones del campo." },
+  "mapCheckbox": { "message": "Las asignaciones de casilla deben usar el valor \"true\"; deja una casilla sin asignar para no tocarla." },
+  "mapDateEmpty": { "message": "Un control de fecha recibió un valor vacío." },
+  "mapUnsupported": { "message": "Un valor propuesto no estaba respaldado por sus evidencias citadas." },
+  "mapTooLong": { "message": "Un valor propuesto supera el límite de longitud del campo." },
+
+  "builtinNoApi": { "message": "Este navegador no expone un modelo en el dispositivo. Elige un proveedor en la nube." },
+  "builtinUnavailable": { "message": "El modelo en el dispositivo no está disponible en este dispositivo, navegador o política. Elige un proveedor en la nube." },
+  "builtinDownloading": {
+    "message": "Descargando el modelo en el dispositivo… $PERCENT$ %",
+    "placeholders": { "percent": { "content": "$1" } }
+  },
+  "builtinTokensExceeded": {
+    "message": "El documento necesita unos $TOKENS$ tokens en el dispositivo pero solo caben $LEFT$ en su ventana de contexto. Quita documentos o elige un proveedor en la nube; no se truncó nada.",
+    "placeholders": { "tokens": { "content": "$1" }, "left": { "content": "$2" } }
+  },
+  "builtinTooLarge": { "message": "El documento es demasiado grande para la ventana de contexto del modelo en el dispositivo. Quita documentos o elige un proveedor en la nube; no se truncó nada." },
+  "builtinWaiting": { "message": "Esperando al modelo en el dispositivo…" },
+  "builtinEmpty": { "message": "El modelo en el dispositivo devolvió una respuesta vacía." },
+  "builtinTimeout": { "message": "El modelo en el dispositivo tardó más de 120 segundos. Reinténtalo explícitamente; no se hizo ningún reintento automático." },
+  "builtinFailed": {
+    "message": "El modelo en el dispositivo falló: $MESSAGE$. Elige un proveedor en la nube si esto se repite.",
+    "placeholders": { "message": { "content": "$1" } }
+  },
+
+  "anthropicRefused": { "message": "Anthropic rechazó o truncó la respuesta, o devolvió contenido no compatible. Comprueba el modelo o acorta el documento." },
+  "geminiRefused": { "message": "Gemini rechazó o truncó la respuesta. Comprueba el modelo o acorta el documento." },
+  "openaiRefused": { "message": "El proveedor rechazó o truncó la respuesta, o este modelo es incompatible. Prueba un modelo de texto compatible o un documento más corto." }
+}

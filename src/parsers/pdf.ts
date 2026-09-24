@@ -2,14 +2,15 @@ import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist';
 import type { TextItem, TextMarkedContent } from 'pdfjs-dist/types/src/display/api';
 import { LIMITS } from '../shared/schemas';
 import { UserError, throwIfAborted } from '../shared/errors';
+import { t } from '../shared/i18n';
 import type { DocumentLine, ParsedDocument } from './types';
 
 export function validateFile(file: Pick<File, 'name' | 'size' | 'type'>) {
   if (!/\.pdf$/i.test(file.name) || (file.type && !['application/pdf', 'application/octet-stream'].includes(file.type))) {
-    throw new UserError('Choose a valid PDF file. Word, Excel, Markdown, and text files are routed to their own parsers; OCR is not supported.');
+    throw new UserError(t('pdfInvalidType'));
   }
-  if (!file.size) throw new UserError('This file is empty.');
-  if (file.size > LIMITS.bytes) throw new UserError('PDFs must be 10 MiB or smaller. Choose a smaller document.');
+  if (!file.size) throw new UserError(t('parseEmpty'));
+  if (file.size > LIMITS.bytes) throw new UserError(t('pdfTooLarge'));
 }
 
 // Interactive form (AcroForm) widget values. A filled, fillable PDF keeps its
@@ -61,7 +62,7 @@ export async function parsePdf(file: File, signal: AbortSignal, onProgress: (pag
   throwIfAborted(signal);
   const bytes = new Uint8Array(await file.arrayBuffer());
   throwIfAborted(signal);
-  if (!new TextDecoder().decode(bytes.subarray(0, 1024)).includes('%PDF-')) throw new UserError('This file does not contain a valid PDF header.');
+  if (!new TextDecoder().decode(bytes.subarray(0, 1024)).includes('%PDF-')) throw new UserError(t('pdfBadHeader'));
   GlobalWorkerOptions.workerSrc = chrome.runtime.getURL('pdf/pdf.worker.min.mjs');
   const task = getDocument({
     data: bytes, useWasm: false,
@@ -74,10 +75,10 @@ export async function parsePdf(file: File, signal: AbortSignal, onProgress: (pag
   // Reject explicitly: destroying a password-waiting task alone may leave its promise pending.
   let rejectPassword: (reason: Error) => void = () => {};
   const protectedDocument = new Promise<never>((_resolve, reject) => { rejectPassword = reject; });
-  task.onPassword = () => rejectPassword(new UserError('Password-protected PDFs are not supported. Choose an unprotected document.'));
+  task.onPassword = () => rejectPassword(new UserError(t('pdfPassword')));
   try {
     const pdf = await Promise.race([task.promise, protectedDocument]);
-    if (pdf.numPages > LIMITS.pages) throw new UserError('PDFs may contain at most 20 pages. Choose a shorter document; nothing was truncated.');
+    if (pdf.numPages > LIMITS.pages) throw new UserError(t('pdfTooManyPages'));
     const lines: DocumentLine[] = [];
     let characters = 0;
     for (let page = 1; page <= pdf.numPages; page++) {
@@ -88,18 +89,18 @@ export async function parsePdf(file: File, signal: AbortSignal, onProgress: (pag
       const formLines = extractFormFields(await pdfPage.getAnnotations(), page, textLines.length);
       const next = [...textLines, ...formLines];
       characters += next.reduce((sum, line) => sum + Array.from(line.text).length, 0);
-      if (characters > LIMITS.characters) throw new UserError('Extracted text exceeds 24,000 characters. Choose a shorter PDF; nothing was truncated.');
+      if (characters > LIMITS.characters) throw new UserError(t('pdfTooMuchText'));
       lines.push(...next);
       onProgress(page, pdf.numPages);
       pdfPage.cleanup();
     }
     throwIfAborted(signal);
-    if (!lines.length) throw new UserError('No extractable text was found. Scanned or image-only PDFs require OCR, which is not included yet.');
+    if (!lines.length) throw new UserError(t('pdfNoText'));
     return { kind: 'pdf', name: file.name, pages: pdf.numPages, characters, lines };
   } catch (error) {
     throwIfAborted(signal);
     if (error instanceof UserError) throw error;
-    throw new UserError('This PDF could not be read. It may be corrupt, password-protected, or use unsupported encoding.');
+    throw new UserError(t('pdfUnreadable'));
   } finally {
     signal.removeEventListener('abort', abort);
     await task.destroy();

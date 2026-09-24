@@ -1,4 +1,5 @@
 import { UserError, throwIfAborted } from '../../shared/errors';
+import { t } from '../../shared/i18n';
 import { builtinApi, BUILTIN_TEXT_IO, type BuiltinSession } from '../builtin-support';
 
 // Same contract as the cloud transports, expressed as a JSON Schema so the
@@ -42,9 +43,9 @@ const BUILTIN_TIMEOUT = 120_000;
 
 export async function builtinPrompt(system: string, user: string, signal: AbortSignal, onProgress?: (text: string) => void): Promise<string> {
   const api = builtinApi();
-  if (!api) throw new UserError('This browser does not expose an on-device model. Choose a cloud provider.');
+  if (!api) throw new UserError(t('builtinNoApi'));
   const state = await api.availability(BUILTIN_TEXT_IO);
-  if (state === 'unavailable') throw new UserError('The on-device model is unavailable on this device, browser, or policy. Choose a cloud provider.');
+  if (state === 'unavailable') throw new UserError(t('builtinUnavailable'));
   throwIfAborted(signal);
   let session: BuiltinSession | undefined;
   const controller = new AbortController();
@@ -59,27 +60,27 @@ export async function builtinPrompt(system: string, user: string, signal: AbortS
       initialPrompts: [{ role: 'system', content: system }],
       signal: controller.signal,
       monitor: monitor => monitor.addEventListener('downloadprogress', event => {
-        if (!signal.aborted && event.total) onProgress?.(`Downloading the on-device model… ${Math.round((event.loaded / event.total) * 100)}%`);
+        if (!signal.aborted && event.total) onProgress?.(t('builtinDownloading', [Math.round((event.loaded / event.total) * 100)]));
       }),
     });
     throwIfAborted(signal);
     if (typeof session.countPromptTokens === 'function') {
       const tokens = await session.countPromptTokens(user, { responseConstraint: MAPPING_SCHEMA });
       if (tokens + OUTPUT_RESERVE > session.inputTokensLeft) {
-        throw new UserError(`The document needs about ${tokens} on-device tokens but only ${session.inputTokensLeft} fit its context window. Remove documents or choose a cloud provider; nothing was truncated.`);
+        throw new UserError(t('builtinTokensExceeded', [tokens, session.inputTokensLeft]));
       }
     } else if (user.length > FALLBACK_CHARACTER_LIMIT) {
-      throw new UserError('The document is too large for the on-device model context window. Remove documents or choose a cloud provider; nothing was truncated.');
+      throw new UserError(t('builtinTooLarge'));
     }
-    onProgress?.('Waiting for the on-device model…');
+    onProgress?.(t('builtinWaiting'));
     const text = await session.prompt(user, { responseConstraint: MAPPING_SCHEMA, signal: controller.signal });
-    if (typeof text !== 'string' || !text.trim()) throw new UserError('The on-device model returned an empty response.');
+    if (typeof text !== 'string' || !text.trim()) throw new UserError(t('builtinEmpty'));
     return text;
   } catch (error) {
     throwIfAborted(signal);
-    if (timedOut) throw new UserError('The on-device model took longer than 120 seconds. Retry explicitly; no automatic retry was made.');
+    if (timedOut) throw new UserError(t('builtinTimeout'));
     if (error instanceof UserError) throw error;
-    throw new UserError(`The on-device model failed: ${error instanceof Error ? error.message : 'unknown error'}. Choose a cloud provider if this repeats.`);
+    throw new UserError(t('builtinFailed', [error instanceof Error ? error.message : 'unknown error']));
   } finally {
     clearTimeout(timeout);
     signal.removeEventListener('abort', abort);

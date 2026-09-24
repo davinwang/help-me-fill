@@ -1,0 +1,351 @@
+{
+  "appName": { "message": "Help Me Fill（ヘルプ・ミー・フィル）" },
+  "appShortName": { "message": "Help Me Fill" },
+  "appDescription": { "message": "プライバシー重視の AI フォーム入力ツール。PDF・DOCX・XLSX・Markdown を Web フォームの回答に対応付け、入力前に字段ごとに確認できます。自分の AI キーを使うか、完全にデバイス上で実行。サーバーなし、テレメトリなし、アカウントなし。" },
+  "actionTitle": { "message": "Help Me Fill を開く" },
+
+  "panelTitle": { "message": "help-me-fill — 確認と入力" },
+  "brandSubtle": { "message": "Help Me Fill" },
+  "errorBoundary": { "message": "パネルで問題が発生しました。閉じて開き直すと新しいセッションを開始できます。再試行の前にフォームを確認してください。" },
+  "needsExtension": { "message": "この UI には拡張機能 API が必要です。プロジェクトをビルドし、Chrome または Edge で dist/ を「パッケージ化されていない拡張機能」として読み込み、拡張機能のツールバーアイコンをクリックしてください。" },
+
+  "editLlm": { "message": "LLM を編集" },
+  "introTitle": { "message": "あなたの文書を、正しいフィールドへ。" },
+  "introBody": { "message": "ローカルで抽出し、AI で確認し、あなたの判断で入力します。" },
+  "configureProviderHint": { "message": "始めるにはプロバイダーを設定してください。文書テキストの抽出はこのブラウザー内でローカルに実行されます。抽出テキストとフィールドのメタデータの送信を承認した後にのみ、プロバイダーに接続します。" },
+  "workflowLabel": { "message": "ワークフロー" },
+  "stepDocument": { "message": "文書" },
+  "stepReview": { "message": "確認" },
+  "stepFill": { "message": "入力" },
+  "progressParsing": { "message": "文書テキストをローカルで抽出中…" },
+  "progressScanning": { "message": "ページで対応するフィールドを読み取り中…" },
+  "progressMapping": { "message": "プロバイダーの応答を待機中…" },
+  "progressFilling": { "message": "選択したフィールドを入力・検証中…" },
+  "progressUndoing": { "message": "変更されていない値を復元中…" },
+  "progressCanceling": { "message": "残りの処理をキャンセルしています。すでに入力されたフィールドは残る場合があります。結果を確認してください。" },
+  "cancel": { "message": "キャンセル" },
+  "aiHelpMeFill": { "message": "AI に入力してもらう" },
+  "backToDocuments": { "message": "文書に戻る" },
+  "footerNote": { "message": "文書の解析は常にローカルで行われます。AI の提案は、同意後に抽出テキストとフィールドのメタデータを選択したプロバイダーへ送信します。このパネルを閉じると処理がキャンセルされる場合があります。リクエストが自動的に再開されることはありません。" },
+  "progressReadingPage": {
+    "message": "$TOTAL$ ページ中 $PAGE$ ページ目をローカルで読み取り中…",
+    "placeholders": { "page": { "content": "$1" }, "total": { "content": "$2" } }
+  },
+  "errActiveTabChanged": { "message": "アクティブなタブが変更されました。目的のページでツールバーアイコンをクリックし、再度スキャンして確認してください。" },
+  "errDocumentRouteChanged": { "message": "文書またはルートが変更されました。再度スキャンして確認してください。" },
+  "errTargetTabClosed": { "message": "対象のタブが閉じられました。" },
+  "errInspectPartial": {
+    "message": "$MESSAGE$ 再スキャンの前に、ページに変更が一部残っていないか確認してください。",
+    "placeholders": { "message": { "content": "$1" } }
+  },
+  "errNoFields": { "message": "このページに対応するフィールドが見つかりませんでした。" },
+  "errHostPermissionMissing": { "message": "ホスト権限がありません。プロバイダーを再度有効にしてください。" },
+  "metrics": {
+    "message": "$NAME$ · $MODEL$ · リクエスト $CALLS$ 回 · $SECONDS$ 秒",
+    "placeholders": { "name": { "content": "$1" }, "model": { "content": "$2" }, "calls": { "content": "$3" }, "seconds": { "content": "$4" } }
+  },
+  "metricsUsage": {
+    "message": "$NAME$ · $MODEL$ · リクエスト $CALLS$ 回 · $SECONDS$ 秒 · 使用量: $USAGE$",
+    "placeholders": { "name": { "content": "$1" }, "model": { "content": "$2" }, "calls": { "content": "$3" }, "seconds": { "content": "$4" }, "usage": { "content": "$5" } }
+  },
+
+  "errAddOneDocument": { "message": "文書は一度に 1 つずつ追加してください。解析済みの文書は下の一覧に残ります。" },
+  "dropZoneLabel": { "message": "文書のアップロード" },
+  "dropZoneTitle": { "message": "あなたの文書から始めましょう" },
+  "dropZoneBody": { "message": "文書をここにドロップするか、ファイルを選択してください。必要なだけ追加できます。" },
+  "chooseDocument": { "message": "文書を選択" },
+  "chooseDocumentFile": { "message": "文書ファイルを選択" },
+  "dropZoneFormats": { "message": "PDF · Word (.docx) · Excel (.xlsx/.xls) · Markdown (.md) · テキスト (.txt) · 各 10 MiB" },
+
+  "parsed": { "message": "解析済み" },
+  "removeDocument": {
+    "message": "$NAME$ を削除",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "delete": { "message": "削除" },
+  "details": { "message": "詳細" },
+  "unitPages": { "message": "ページ" },
+  "unitSheets": { "message": "シート" },
+  "unitParts": { "message": "パート" },
+  "docMeta": {
+    "message": "$KIND$ · $PAGES$ $UNITS$ · $CHARS$ 文字 · 読み取り順と原文の正確さを確認してください。",
+    "placeholders": { "kind": { "content": "$1" }, "pages": { "content": "$2" }, "units": { "content": "$3" }, "chars": { "content": "$4" } }
+  },
+
+  "consentEyebrow": { "message": "データがブラウザーから送信される前に" },
+  "consentTitle": { "message": "共有する内容を確認" },
+  "consentBuiltin": { "message": "提案の生成はブラウザーの**デバイス上モデル**が処理します。抽出された文書テキストと選択したフォームのメタデータがこのデバイスから出ることはありません。元のファイルや既存のフィールド値は使用されません。" },
+  "consentLocal": {
+    "message": "提案の生成では、抽出された文書テキストと選択したフォームのメタデータを、このコンピューター上の **$PROVIDER$** に送信します。クラウドには何も送信されません。元のファイルや既存のフィールド値は使用されません。",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "consentCloud": {
+    "message": "提案の生成では、抽出された文書テキストと選択したフォームのメタデータを、クラウドプロバイダーの **$PROVIDER$** に送信します。元のファイルや既存のフィールド値は送信されません。",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "consentProviderFallback": { "message": "選択したプロバイダー" },
+  "consentDestinationBuiltin": { "message": "デバイス上モデル（ネットワークリクエストなし）" },
+  "destinationLabel": { "message": "送信先:" },
+  "modelLabel": { "message": "モデル:" },
+  "previewOutgoing": { "message": "送信データをプレビュー" },
+  "viewMappingInstructions": { "message": "マッピング指示を表示" },
+  "consentAccuracyBuiltin": { "message": "デバイス上の精度は実験的です。すべての提案には依然としてあなたの確認が必要です。" },
+  "consentAccuracyLocal": { "message": "ローカルモデルの精度はさまざまです。すべての提案には依然としてあなたの確認が必要です。" },
+  "consentAccuracyCloud": { "message": "プロバイダーの保持ポリシーと API 料金が適用されます。" },
+  "consentRequestsNote": { "message": "リクエストは最大 1 回、加えて検証修復リクエストを最大 1 回行うことがあります。プロバイダーの自動フォールバックはありません。" },
+  "generateBuiltin": { "message": "デバイス上で提案を生成" },
+  "generateLocal": { "message": "ローカルで提案を生成" },
+  "generateCloud": {
+    "message": "$PROVIDER$ に送信して提案を生成",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "generateCloudFallback": { "message": "プロバイダー" },
+  "enableProviderToContinue": { "message": "続行するには上でプロバイダーを有効にしてください。" },
+
+  "unlabeledField": { "message": "ラベルのないフィールド" },
+  "reviewEyebrow": { "message": "最終判断はあなたが行います" },
+  "reviewTitle": { "message": "提案を確認" },
+  "reviewHint": { "message": "根拠はテキストの出所を示すものであり、一致が正しいことを保証しません。入力したい値だけを選択してください。" },
+  "selectAll": { "message": "対応する提案をすべて選択" },
+  "clearSelection": { "message": "選択を解除" },
+  "chooseOption": { "message": "（オプションを選択）" },
+  "checkboxTrue": { "message": "true — このボックスをオンにする" },
+  "checkboxFalse": { "message": "false — そのまま / オフにする" },
+  "proposedValue": { "message": "提案された値" },
+  "manualOverride": { "message": "手動で変更 · よく確認してください" },
+  "currentValue": { "message": "現在の値:" },
+  "allowOverwrite": { "message": "この既存の値の置き換えを許可する" },
+  "sourceEvidence": { "message": "出典の根拠" },
+  "noAssignments": { "message": "根拠に裏付けられた対応付けが返されませんでした。フォームは変更されていません。" },
+  "unmappedSummary": {
+    "message": "$COUNT$ 件のフィールドが未マッピング",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "fillNotice": { "message": "入力により、サイトの検証・自動保存・ネットワークリクエストが発生する場合があります。この拡張機能は「送信」を絶対にクリックしません。取り消しはサーバー側の影響を元に戻せません。" },
+  "fillSelected": {
+    "message": "選択項目を入力（$COUNT$）",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+
+  "fillResultsLabel": { "message": "入力結果" },
+  "operationResults": { "message": "操作結果" },
+  "resultsHint": { "message": "このページ上で検証済みですが、サーバーによる確認はされていません。次に入力する前に再スキャンしてください。" },
+  "fieldFallback": { "message": "フィールド" },
+  "statusFilled": { "message": "入力済み" },
+  "statusRestored": { "message": "復元済み" },
+  "statusSkipped": { "message": "スキップ" },
+  "statusFailed": { "message": "失敗" },
+  "statusChangedReverted": { "message": "変更/元に戻された" },
+  "undoLastFill": { "message": "直前の入力を取り消す" },
+  "undoHint": { "message": "取り消しは以降の編集を保持し、自動保存やその他のページ側の影響を元に戻せません。リセットや再スキャンで取り消し情報は消去されます。" },
+
+  "psStatusDefault": { "message": "提案を生成するにはプロバイダーを設定してください。" },
+  "kindCloud": { "message": "クラウド" },
+  "kindLocal": { "message": "ローカル" },
+  "kindBuiltin": { "message": "デバイス上" },
+  "psBuiltinUnavailableSaved": { "message": "保存済みのデバイス上プロバイダーは現在このブラウザーで利用できません。別のプロバイダーを選択してください。" },
+  "psBuiltinRestored": { "message": "デバイス上プロバイダーを復元しました。提案はこのデバイス内に留まります。" },
+  "psCustomEndpointMissing": { "message": "保存済みのカスタムエンドポイントがありません。再度設定してください。" },
+  "psLocalRestored": { "message": "ローカルプロバイダーを復元しました。リクエストはこのコンピューター内に留まります。" },
+  "psKeyRestored": { "message": "保存済みのキーを復元しました。プロバイダー/モデルのライブ検証は含まれません。" },
+  "psRestoreFailed": { "message": "設定を復元できませんでした。プロバイダーを再度設定してください。" },
+  "psUnsaved": { "message": "未保存の変更があります。提案を生成する前にこのプロバイダーを有効にしてください。" },
+  "psBuiltinUnavailable": { "message": "デバイス上モデルは現在このブラウザーで利用できません。別のプロバイダーを選択してください。" },
+  "psPermissionDeclined": { "message": "ホスト権限が拒否されました。文書は送信されていません。" },
+  "psCheckingBuiltin": { "message": "デバイス上モデルを確認中…" },
+  "psVerifying": { "message": "プロバイダーを検証中…" },
+  "psBuiltinVerified": { "message": "デバイス上プロバイダーを検証して有効にしました。テキストがこのデバイスから出ることはありません。デバイス上の精度は実験的です。" },
+  "psLocalVerified": { "message": "ローカルプロバイダーを検証して有効にしました。リクエストはこのコンピューターまたはネットワーク内に留まり、クラウドには何も送信されません。" },
+  "psCloudVerified": { "message": "プロバイダーを検証して有効にしました。キーは有効です。入力のためのモデル互換性は保証されません。" },
+  "psKeyRemoved": { "message": "保存済みのキーを削除しました。下でホスト権限も取り消せます。" },
+  "psKeyRemoveFailed": { "message": "キーを削除できませんでした。もう一度お試しください。" },
+  "psSummary": { "message": "LLM プロバイダー" },
+  "psKinds": { "message": "クラウド · ローカル · デバイス上" },
+  "psBuiltinDetected": { "message": "デバイス上オプションを検出" },
+  "psProvider": { "message": "プロバイダー" },
+  "psKeySaved": { "message": "キー保存済み" },
+  "psKeySavedTitle": { "message": "このプロバイダーには API キーが保存されています" },
+  "psProviderBadge": {
+    "message": "$KIND$プロバイダー",
+    "placeholders": { "kind": { "content": "$1" } }
+  },
+  "psBuiltinReady": { "message": "ブラウザーのデバイス上モデルが準備できました。API キー不要、ネットワークリクエストなし。抽出テキストがこのデバイスから出ることはありません。デバイス上の精度は実験的です。" },
+  "psBuiltinDownload": { "message": "ブラウザーは初回使用時にデバイス上モデルをダウンロードします。ダウンロードの進行状況は生成中に表示されます。以降、API キーもネットワークリクエストも不要です。" },
+  "psEndpointUrl": { "message": "エンドポイント URL" },
+  "psModelId": { "message": "モデル ID" },
+  "psModelPlaceholderLocal": { "message": "ローカルサーバーに読み込まれたモデル名" },
+  "psModelPlaceholderCloud": { "message": "プロバイダーのアカウントのモデル ID" },
+  "psApiKeyOptional": { "message": "API キー（任意）" },
+  "psApiKey": { "message": "API キー" },
+  "psGetApiKey": { "message": "API キーを取得" },
+  "psKeyPlaceholderLocal": { "message": "ローカルサーバーにキーが不要な場合は空のままにしてください" },
+  "psKeyPlaceholderCloud": { "message": "このデバイスで暗号化して保存" },
+  "psNoticeCloud": {
+    "message": "☁️ **データに関する注意:** Help Me Fill はデータを保存しませんが、提案の生成では**抽出された文書テキストとフィールドのメタデータを $PROVIDER$ に送信します**。次のステップであなたが確認して承認するまで、何も送信されません。",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "psNoticeLocal": {
+    "message": "🏠 **セットアップが必要:** このコンピューターに [$NAME$]($URL$) をインストールして起動し、モデルを読み込んでください（例: `$MODEL$`）。保存時に、サーバーに到達できることを確認する簡単なローカルチェックを実行します。リクエストはこのコンピューター内に留まり、クラウドには何も送信されません。",
+    "placeholders": { "name": { "content": "$1" }, "url": { "content": "$2" }, "model": { "content": "$3" } }
+  },
+  "psNoticeCustom": { "message": "🏠 **セットアップが必要:** ローカルの OpenAI 互換サーバー（Ollama、LM Studio、llamafile、vLLM…）を起動し、上にその `/v1/chat/completions` アドレスを入力してください。`http://` で許可されるホスト: `localhost`、`127.0.0.1`、およびプライベート LAN 範囲（`192.168.x.x`、`10.x.x.x`、`172.16–31.x.x`）。保存時にサーバーに到達できるか簡単なチェックを実行します。リクエストはあなたのコンピューターまたはローカルネットワーク内に留まり、クラウドには何も送信されません。" },
+  "psEnableBuiltinModel": { "message": "デバイス上モデルを有効にする" },
+  "psSaveVerify": { "message": "保存して検証" },
+  "psSaveVerifyKey": { "message": "キーを保存して検証" },
+  "psRemoveKey": { "message": "キーを削除" },
+  "psRevokePermission": { "message": "ホスト権限を取り消す" },
+  "psPermissionRevoked": { "message": "ホスト権限を取り消しました。" },
+  "psPermissionRevokeFailed": { "message": "権限を取り消せませんでした。" },
+  "psKeyHint": { "message": "API キーは AES-GCM で暗号化され、このデバイスにのみ保存されます。ハードウェアに裏付けられた金庫ではなく、選択したプロバイダー以外のどこへも送信されません。クラウドプロバイダーのアカウントがモデルの利用可能性と料金を決定します。ローカルおよびデバイス上のプロバイダーは完全にこのコンピューター上で実行されます。バックエンドやサブスクリプションは含まれません。" },
+
+  "errTargetChanged": { "message": "対象のタブまたはページが変更されました。再度スキャンして確認してください。" },
+  "errConnectionLost": { "message": "ページとの接続が失われました。フォームのページでツールバーアイコンをクリックし、再度スキャンしてください。" },
+  "errInvalidResponse": { "message": "ページが無効な応答を返しました。" },
+  "errOpenFormPage": { "message": "HTTP(S) のフォームページを開き、help-me-fill のツールバーアイコンをクリックしてアクセスを許可してください。" },
+  "errStorePage": { "message": "ブラウザーの拡張機能ストアでは入力できません。通常のフォームページを開いてください。" },
+  "errAccessDenied": { "message": "ページへのアクセスが拒否されました。このタブで拡張機能のツールバーアイコンをクリックし、再度スキャンしてください。制限されたページはサポートされません。" },
+  "errNoDocumentId": { "message": "ブラウザーが文書の識別情報を提供しませんでした。ブラウザーを更新して再試行してください。" },
+  "errPageChangedScanning": { "message": "スキャン中にページが変更されました。再試行してください。" },
+  "errNoAck": { "message": "ページが確認パネルに応答しませんでした。再度スキャンしてください。" },
+  "errConnectionClosed": { "message": "ページとの接続が閉じました。再度スキャンしてください。" },
+  "errCanceled": { "message": "キャンセルしました。新しいリクエストは開始されていません。" },
+  "errGeneric": { "message": "操作を完了できませんでした。セッションをリセットして再試行してください。" },
+
+  "fillUnknownField": { "message": "不明または重複したフィールド ID です。何も入力されていません。" },
+  "fillChangedSinceReview": { "message": "確認後にフィールドが変更されました。再度スキャンして確認してください。" },
+  "fillNeedsApproval": { "message": "既存の値を上書きするには明示的な承認が必要です。" },
+  "fillCanceledOrInactive": { "message": "操作がキャンセルされたか、対象のタブがアクティブではなくなりました。" },
+  "fillValueChangedDuring": { "message": "入力中にフィールドの値が変更されました。再度確認してください。" },
+  "fillAlreadyContains": { "message": "選択した値がすでに入力されています。" },
+  "fillChangedOnFocus": { "message": "フォーカス時に対象が変更されました。残りのフィールドは入力されていません。" },
+  "fillVerified": { "message": "値とネイティブの有効性が検証を通じて保持されました。" },
+  "fillReverted": { "message": "ページがこの値を変更・拒否・置換しました。手動で確認してください。" },
+  "fillStopped": { "message": "対象の変更または実行の失敗により停止しました。" },
+
+  "undoCanceled": { "message": "操作がキャンセルされたかタブが変更されたため、取り消しを停止しました。" },
+  "undoPreserved": { "message": "その後のユーザーまたはページの編集を保持しました。" },
+  "undoTargetChanged": { "message": "取り消し中に対象が変更されました。" },
+  "undoRestored": { "message": "以前の値を復元しました。ページ側の影響は元に戻せません。" },
+  "undoNotRetained": { "message": "ページは以前の値を保持しませんでした。" },
+
+  "ctrlNotAnOption": { "message": "選択した値はフィールドの選択肢の 1 つではありません。" },
+  "ctrlNoSetter": { "message": "このコントロールには対応するネイティブの値セッターがありません。" },
+  "ctrlCheckboxBoolean": { "message": "チェックボックスの値は \"true\" または \"false\" である必要があります。" },
+  "ctrlValueNotOption": { "message": "値はフィールドの選択肢の 1 つではありません。" },
+  "ctrlTooLong": { "message": "値がフィールドの長さの上限を超えています。" },
+  "ctrlTooShort": { "message": "値がフィールドの最小長より短いです。" },
+  "ctrlNormalize": { "message": "ブラウザーがこの値を正規化してしまいます。入力前に編集してください。" },
+  "ctrlConstraint": { "message": "値がフィールドのタイプ・パターン・必須の制約を満たしていません。" },
+
+  "scanTooManyControls": { "message": "このページはコントロールが多すぎて安全にスキャンできません。よりシンプルなフォームを使用してください。" },
+  "scanTooManyFields": { "message": "このページには対応するフィールドが 60 件を超えています。部分的なスキャンは使用されませんでした。" },
+  "scanFormChanged": { "message": "スキャン後にフォームが変更されました。再度スキャンして確認してください。" },
+  "scanFormStructureChanged": { "message": "フォームの構造が変更されました。再度スキャンして確認してください。" },
+
+  "idxBusy": { "message": "別の操作がまだ実行中です。完了するまでお待ちください。" },
+  "idxPageChanged": { "message": "ページが変更されました。再度スキャンしてください。" },
+  "idxScanFirst": { "message": "入力する前にこの文書をスキャンしてください。" },
+  "idxPanelDisconnected": { "message": "確認パネルは接続されていません。何も入力されていません。" },
+  "idxInvalidMessage": { "message": "無効な拡張機能メッセージです。" },
+
+  "parseUnsupportedType": { "message": "PDF、Word (.docx)、Excel (.xlsx/.xls)、Markdown (.md)、またはプレーンテキスト (.txt) ファイルを選択してください。旧式の .doc や画像のみのスキャンはサポートされていません。" },
+  "parseEmpty": { "message": "このファイルは空です。" },
+  "parseTooLarge": { "message": "文書は 10 MiB 以下である必要があります。より小さいファイルを選択してください。" },
+
+  "pdfInvalidType": { "message": "有効な PDF ファイルを選択してください。Word、Excel、Markdown、テキストファイルはそれぞれのパーサーに振り分けられます。OCR はサポートされていません。" },
+  "pdfTooLarge": { "message": "PDF は 10 MiB 以下である必要があります。より小さい文書を選択してください。" },
+  "pdfBadHeader": { "message": "このファイルには有効な PDF ヘッダーが含まれていません。" },
+  "pdfPassword": { "message": "パスワード保護された PDF はサポートされていません。保護されていない文書を選択してください。" },
+  "pdfTooManyPages": { "message": "PDF は最大 20 ページまでです。より短い文書を選択してください。何も切り詰められていません。" },
+  "pdfTooMuchText": { "message": "抽出テキストが 24,000 文字を超えています。より短い PDF を選択してください。何も切り詰められていません。" },
+  "pdfNoText": { "message": "抽出可能なテキストが見つかりませんでした。スキャン済みや画像のみの PDF には OCR が必要ですが、まだ含まれていません。" },
+  "pdfUnreadable": { "message": "この PDF を読み取れませんでした。破損しているか、パスワードで保護されているか、未対応のエンコーディングを使用している可能性があります。" },
+
+  "docxUnreadable": { "message": "この Word ファイルを読み取れませんでした。.docx として再エクスポートして再試行してください。" },
+
+  "xlsxUnreadable": { "message": "このスプレッドシートを読み取れませんでした。.xlsx として再エクスポートして再試行してください。" },
+  "xlsxNoSheets": { "message": "このブックに表示可能なシートがありません。" },
+  "xlsxTooManySheets": {
+    "message": "ブックは表示可能なシートを最大 $COUNT$ 枚まで含められます。より小さいブックを選択してください。何も切り詰められていません。",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+
+  "mergeTooLong": { "message": "結合した抽出テキストが 24,000 文字を超えています。文書を 1 つ削除してください。何も切り詰められていません。" },
+  "mergeDocName": {
+    "message": "$COUNT$ 件の文書",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+
+  "textNoText": { "message": "抽出可能なテキストが見つかりませんでした。スキャン済みや画像のみの文書には OCR が必要ですが、まだ含まれていません。" },
+  "textTooMuch": { "message": "抽出テキストが 24,000 文字を超えています。より短い文書を選択してください。何も切り詰められていません。" },
+
+  "provBadModel": { "message": "プロバイダーの有効なテキストモデル ID を入力してください。" },
+  "provBadKey": { "message": "空白を含まない有効な API キーを入力してください。" },
+  "provBuiltinNoHttp": { "message": "デバイス上プロバイダーは HTTP リクエストを使用しません。" },
+  "provBuiltinNoHttpResponse": { "message": "デバイス上プロバイダーは HTTP 応答を使用しません。" },
+  "provEmptyResponse": { "message": "プロバイダーが空の応答を返しました。" },
+  "provTooBig": { "message": "プロバイダーの応答が 256 KiB を超えました。より短い文書を選択してください。" },
+  "provInvalidResponse": { "message": "プロバイダーが無効な API 応答を返しました。" },
+  "provInputTooBig": { "message": "マッピング入力が空であるか、プロトタイプの上限を超えています。" },
+  "provNoSuggestions": { "message": "有効な提案が返されませんでした。" },
+  "provHttp401": { "message": "API キー、アカウントのアクセス権、ブラウザーアクセスポリシーを確認してください。" },
+  "provHttp429": { "message": "レート制限またはクォータに達しました。待機するか、再試行の前にプロバイダーのアカウントを確認してください。" },
+  "provHttp400": { "message": "モデル ID と、このプロバイダー API および JSON 出力への対応状況を確認してください。" },
+  "provHttpOther": { "message": "プロバイダーが利用できません。後で明示的に再試行してください。" },
+  "provRequestFailed": {
+    "message": "プロバイダーのリクエストが失敗しました（$STATUS$）。$MESSAGE$",
+    "placeholders": { "status": { "content": "$1" }, "message": { "content": "$2" } }
+  },
+  "provTimeout": { "message": "プロバイダーが 60 秒以上かかりました。明示的に再試行してください。自動再試行は行われませんでした。" },
+  "provUnreachable": { "message": "選択したプロバイダーに到達できませんでした。ネットワークアクセスと API ホスト権限を確認してください。" },
+
+  "verifyBuiltinUnreachable": { "message": "デバイス上モデルは現在このブラウザーで到達できません。別のプロバイダーを選択してください。" },
+  "verify401": { "message": "検証に失敗しました: API キーが拒否されました。キー、アカウントのアクセス権、ブラウザーアクセスポリシーを確認してください。" },
+  "verify400": { "message": "検証に失敗しました: エンドポイントまたはモデル一覧が見つかりませんでした。エンドポイント URL とプロバイダー API を確認してください。" },
+  "verify429": { "message": "検証に失敗しました: レート制限またはクォータに達しました。待機してから再試行してください。" },
+  "verifyHttpOther": {
+    "message": "検証に失敗しました（HTTP $STATUS$）。プロバイダーの状況とあなたのアカウントを確認してください。",
+    "placeholders": { "status": { "content": "$1" } }
+  },
+  "verifyTimeout": { "message": "検証が 20 秒後にタイムアウトしました。エンドポイントとネットワークを確認して再試行してください。" },
+  "verifyUnreachable": { "message": "検証のためにプロバイダーに到達できませんでした。エンドポイント、ネットワークアクセス、ホスト権限を確認してください。" },
+
+  "regBadEndpoint": { "message": "有効なローカルエンドポイント URL を入力してください（例: http://localhost:11434/v1/chat/completions）。" },
+  "regNeedHttp": { "message": "カスタムエンドポイントはローカルアドレスで http:// を使用する必要があります。" },
+  "regNeedLocal": { "message": "カスタムエンドポイントは localhost、127.0.0.1、またはプライベート LAN アドレス（192.168.x.x、10.x.x.x、172.16-31.x.x）である必要があります。パブリックホストは許可されていません。" },
+
+  "mapTooBig": { "message": "モデル出力が応答の上限を超えました。" },
+  "mapInvalidJson": { "message": "モデルが有効な JSON を返しませんでした。" },
+  "mapSchema": { "message": "モデル出力が必要とされるマッピングスキーマに一致しませんでした。" },
+  "mapUnknownField": { "message": "モデルが不明または重複したフィールド ID を返しました。" },
+  "mapMissingFields": { "message": "モデルがすべてのフィールドを処理していません。" },
+  "mapQuoteMissing": { "message": "引用された出典テキストが、参照された行に存在しませんでした。" },
+  "mapValueNotOption": { "message": "提案された値がフィールドの選択肢の 1 つではありません。" },
+  "mapCheckbox": { "message": "チェックボックスの割り当ては値 \"true\" を使用する必要があります。ボックスを変更しないままにするには、未マッピングにしてください。" },
+  "mapDateEmpty": { "message": "日付コントロールに空の値が渡されました。" },
+  "mapUnsupported": { "message": "提案された値が、引用された根拠によって裏付けられていませんでした。" },
+  "mapTooLong": { "message": "提案された値がフィールドの長さの上限を超えています。" },
+
+  "builtinNoApi": { "message": "このブラウザーはデバイス上モデルを提供していません。クラウドプロバイダーを選択してください。" },
+  "builtinUnavailable": { "message": "このデバイス、ブラウザー、またはポリシーではデバイス上モデルを利用できません。クラウドプロバイダーを選択してください。" },
+  "builtinDownloading": {
+    "message": "デバイス上モデルをダウンロード中… $PERCENT$%",
+    "placeholders": { "percent": { "content": "$1" } }
+  },
+  "builtinTokensExceeded": {
+    "message": "この文書には約 $TOKENS$ 個のデバイス上トークンが必要ですが、コンテキストウィンドウには $LEFT$ 個しか収まりません。文書を削除するかクラウドプロバイダーを選択してください。何も切り詰められていません。",
+    "placeholders": { "tokens": { "content": "$1" }, "left": { "content": "$2" } }
+  },
+  "builtinTooLarge": { "message": "この文書はデバイス上モデルのコンテキストウィンドウに対して大きすぎます。文書を削除するかクラウドプロバイダーを選択してください。何も切り詰められていません。" },
+  "builtinWaiting": { "message": "デバイス上モデルを待機中…" },
+  "builtinEmpty": { "message": "デバイス上モデルが空の応答を返しました。" },
+  "builtinTimeout": { "message": "デバイス上モデルが 120 秒以上かかりました。明示的に再試行してください。自動再試行は行われませんでした。" },
+  "builtinFailed": {
+    "message": "デバイス上モデルが失敗しました: $MESSAGE$。繰り返される場合はクラウドプロバイダーを選択してください。",
+    "placeholders": { "message": { "content": "$1" } }
+  },
+
+  "anthropicRefused": { "message": "Anthropic が応答を拒否または切り詰めたか、未対応の内容を返しました。モデルを確認するか文書を短くしてください。" },
+  "geminiRefused": { "message": "Gemini が応答を拒否または切り詰めました。モデルを確認するか文書を短くしてください。" },
+  "openaiRefused": { "message": "プロバイダーが応答を拒否または切り詰めたか、このモデルに互換性がありません。対応するテキストモデルまたはより短い文書をお試しください。" }
+}

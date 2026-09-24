@@ -1,5 +1,6 @@
 import mammoth from 'mammoth/mammoth.browser.min.js';
 import { throwIfAborted, UserError } from '../shared/errors';
+import { t } from '../shared/i18n';
 import { finish } from './text';
 import type { DocumentLine, ParsedDocument } from './types';
 
@@ -11,7 +12,7 @@ export async function parseDocx(file: File, signal: AbortSignal): Promise<Parsed
   try {
     value = (await mammoth.extractRawText({ arrayBuffer })).value;
   } catch {
-    throw new UserError('This Word file could not be read. Re-export it as .docx and try again.');
+    throw new UserError(t('docxUnreadable'));
   }
   throwIfAborted(signal);
   const lines: DocumentLine[] = value.split(/\r?\n/g).map(line => line.trim()).filter(Boolean)

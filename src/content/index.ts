@@ -3,6 +3,7 @@ import { scanPage, type Registry } from './scan';
 import { executeFill, type UndoEntry } from './fill';
 import { undoFill } from './undo';
 import { UserError, errorMessage } from '../shared/errors';
+import { t } from '../shared/i18n';
 
 const state = globalThis as typeof globalThis & { __helpMeFillInstalled?: boolean };
 if (!state.__helpMeFillInstalled) {
@@ -22,14 +23,14 @@ if (!state.__helpMeFillInstalled) {
   async function handle(message: ContentMessage): Promise<unknown> {
     if (message.type === 'CANCEL') { canceled = true; return null; }
     if (message.type === 'CLEAR') { canceled = true; registry = undefined; undo = []; completed.clear(); return null; }
-    if (busy) throw new UserError('Another operation is still running. Wait for it to finish.');
+    if (busy) throw new UserError(t('idxBusy'));
     if (message.type === 'SCAN') {
-      if (location.href !== message.expectedUrl) throw new UserError('The page changed. Scan again.');
+      if (location.href !== message.expectedUrl) throw new UserError(t('idxPageChanged'));
       completed.clear(); undo = []; registry = scanPage(); canceled = false;
       return registry.scan;
     }
-    if (!registry) throw new UserError('Scan this document before filling.');
-    if (!connections.has(message.requestId)) throw new UserError('The review panel is no longer connected. Nothing was filled.');
+    if (!registry) throw new UserError(t('idxScanFirst'));
+    if (!connections.has(message.requestId)) throw new UserError(t('idxPanelDisconnected'));
     const snapshot = registry;
     const guard = {
       canceled: () => canceled || !connections.has(message.requestId),
@@ -54,7 +55,7 @@ if (!state.__helpMeFillInstalled) {
   chrome.runtime.onMessage.addListener((raw: unknown, sender, respond) => {
     if (!trusted(sender)) return false;
     const parsed = ContentMessageSchema.safeParse(raw);
-    if (!parsed.success) { respond({ ok: false, error: 'Invalid extension message.' }); return false; }
+    if (!parsed.success) { respond({ ok: false, error: t('idxInvalidMessage') }); return false; }
     const message = parsed.data;
     let task = completed.get(message.requestId);
     if (!task) {
