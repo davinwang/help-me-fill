@@ -3,6 +3,7 @@ import { PROVIDERS, BUILTIN, CUSTOM, isProvider, localEndpointOrigin, type Provi
 import { detectBuiltin, type BuiltinState } from '../../ai/builtin-support';
 import { validateSettings } from '../../ai/provider';
 import { errorMessage, UserError } from '../../shared/errors';
+import { openSecret, sealSecret } from '../../shared/secret-box';
 
 // The custom preset has no registry entry; these helpers keep the select total.
 function kindOf(id: ProviderId): ProviderKind {
@@ -60,15 +61,18 @@ export function ProviderSettings({ disabled, onChange }: Props) {
       }
       const savedEndpoint = id === 'custom' && typeof preferences.endpoint === 'string' ? preferences.endpoint : '';
       if (id === 'custom' && !savedEndpoint) { setStatus('The saved custom endpoint is missing. Configure it again.'); return; }
-      const keys = await chrome.storage.session.get(`key:${id}`);
+      // The key is stored sealed (AES-GCM) in local storage; open it in memory only.
+      const keyStore = await chrome.storage.local.get(`key:${id}`);
       if (!alive) return;
-      const key = typeof keys[`key:${id}`] === 'string' ? keys[`key:${id}`] as string : '';
+      const sealed = typeof keyStore[`key:${id}`] === 'string' ? keyStore[`key:${id}`] as string : '';
+      const key = sealed ? await openSecret(sealed) : '';
+      if (!alive) return;
       setProvider(id); setModel(preferences.model); setKey(key); if (id === 'custom') setEndpoint(savedEndpoint);
       // Local servers may have no key; the granted host permission is the gate.
       if (originFor(id, savedEndpoint) && await chrome.permissions.contains({ origins: [originFor(id, savedEndpoint)] })) {
         if (!alive) return;
         onChange({ provider: id, model: preferences.model, apiKey: key, ...(id === 'custom' ? { endpoint: savedEndpoint } : {}) });
-        setStatus(kindOf(id) === 'local' ? 'Local provider restored. Requests stay on this machine.' : 'Session key restored. Provider/model live verification is not included.');
+        setStatus(kindOf(id) === 'local' ? 'Local provider restored. Requests stay on this machine.' : 'Stored key restored. Provider/model live verification is not included.');
       }
     })().catch(() => { if (alive) setStatus('Settings could not be restored. Configure the provider again.'); });
     return () => { alive = false; };
@@ -90,8 +94,8 @@ export function ProviderSettings({ disabled, onChange }: Props) {
         // This call must remain directly inside the user gesture, before any await.
         const permission = chrome.permissions.request({ origins: [originFor(provider, settings.endpoint)] });
         if (!await permission) throw new UserError('Host permission was declined. No document was sent.');
-        await chrome.storage.session.setAccessLevel({ accessLevel: 'TRUSTED_CONTEXTS' });
-        await chrome.storage.session.set({ [`key:${provider}`]: settings.apiKey });
+        // Seal the key with AES-GCM before it ever reaches persistent storage.
+        await chrome.storage.local.set({ [`key:${provider}`]: await sealSecret(settings.apiKey) });
       }
       await chrome.storage.local.set({ preferences: { provider, model: settings.model, ...(provider === 'custom' ? { endpoint: settings.endpoint } : {}) } });
       onChange(settings);
@@ -105,8 +109,8 @@ export function ProviderSettings({ disabled, onChange }: Props) {
   }
   async function remove() {
     try {
-      await chrome.storage.session.remove(`key:${provider}`);
-      setKey(''); onChange(undefined); setStatus('Session key removed. Host permission can also be revoked below.');
+      await chrome.storage.local.remove(`key:${provider}`);
+      setKey(''); onChange(undefined); setStatus('Stored key removed. Host permission can also be revoked below.');
     } catch { setStatus('Could not remove the key. Try again.'); }
   }
   const kind = kindOf(provider);
@@ -127,7 +131,7 @@ export function ProviderSettings({ disabled, onChange }: Props) {
         : 'The browser will download its on-device model on first use; download progress appears during generation. No API key and no network request afterwards.'}</p> : <>
         {provider === 'custom' && <label>Endpoint URL<input value={endpoint} placeholder="http://localhost:11434/v1/chat/completions" autoComplete="off" spellCheck={false} onChange={event => { setEndpoint(event.target.value); dirty(); }} /></label>}
         <label>Model ID<input value={model} placeholder={kind === 'local' ? 'Model name loaded on your local server' : 'Model ID from your provider account'} autoComplete="off" spellCheck={false} onChange={event => { setModel(event.target.value); dirty(); }} /></label>
-        <label>{kind === 'local' ? 'API key (optional)' : 'API key'}{kind === 'cloud' && provider !== 'custom' && <a className="link-button" href={PROVIDERS[provider].keyUrl} target="_blank" rel="noreferrer">Get API key</a>}<input type="password" value={apiKey} autoComplete="off" spellCheck={false} placeholder={kind === 'local' ? 'Leave blank if your local server needs no key' : 'Stored for this browser session only'} onChange={event => { setKey(event.target.value); dirty(); }} /></label>
+        <label>{kind === 'local' ? 'API key (optional)' : 'API key'}{kind === 'cloud' && provider !== 'custom' && <a className="link-button" href={PROVIDERS[provider].keyUrl} target="_blank" rel="noreferrer">Get API key</a>}<input type="password" value={apiKey} autoComplete="off" spellCheck={false} placeholder={kind === 'local' ? 'Leave blank if your local server needs no key' : 'Encrypted and saved on this device'} onChange={event => { setKey(event.target.value); dirty(); }} /></label>
       </>}
       {kind === 'cloud' && <p className="notice notice-cloud" role="note">☁️ <strong>Data notice:</strong> Help Me Fill stores no data, but generating suggestions <strong>sends your extracted document text and field metadata to {nameOf(provider)}</strong>. Nothing is sent until you review and approve it on the next step.</p>}
       {provider === 'ollama' && <p className="notice notice-local" role="note">🏠 <strong>Setup required:</strong> install and start <a href={PROVIDERS.ollama.keyUrl} target="_blank" rel="noreferrer">Ollama</a> on this computer, then pull a model (for example <code>ollama pull {PROVIDERS.ollama.defaultModel}</code>). Requests stay on this machine — nothing is sent to the cloud.</p>}
@@ -141,6 +145,6 @@ export function ProviderSettings({ disabled, onChange }: Props) {
       }}>Revoke host permission</button>}
     </fieldset>
     <p className="hint" role="status">{status}</p>
-    <p className="hint">Keys are session-only, not an encrypted vault. Cloud provider accounts determine model availability and charges. Local and on-device providers run entirely on this computer. No backend or subscription is included.</p>
+    <p className="hint">API keys are encrypted with AES-GCM and stored only on this device — not a hardware-backed vault, and never sent anywhere except your chosen provider. Cloud provider accounts determine model availability and charges. Local and on-device providers run entirely on this computer. No backend or subscription is included.</p>
   </details>;
 }
