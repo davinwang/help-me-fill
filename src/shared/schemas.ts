@@ -3,11 +3,12 @@ import { z } from 'zod';
 export const LIMITS = { bytes: 10 * 1024 * 1024, pages: 20, characters: 24_000, fields: 60, responseBytes: 256 * 1024, value: 4_000 } as const;
 export const FieldSchema = z.object({
   id: z.string().min(1).max(100),
-  type: z.enum(['text', 'email', 'tel', 'url', 'textarea']),
+  type: z.enum(['text', 'email', 'tel', 'url', 'textarea', 'select', 'checkbox', 'richtext', 'date', 'month', 'time', 'datetime-local']),
   label: z.string().max(240), ariaLabel: z.string().max(240),
   placeholder: z.string().max(240), name: z.string().max(120),
   context: z.string().max(240), required: z.boolean(),
   maxLength: z.number().int().min(-1), pattern: z.string().max(500),
+  options: z.array(z.string().max(240)).max(120).optional(),
 }).strict();
 export type FieldDescriptor = z.infer<typeof FieldSchema>;
 export const LocalFieldSchema = FieldSchema.extend({ currentValue: z.string().max(LIMITS.value) });

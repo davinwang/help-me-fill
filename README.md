@@ -15,8 +15,10 @@ Bring your own AI key. Review every field before it lands. Undo anything.
 
 **[中文 README](./README.zh-CN.md)** · **[Privacy](./docs/PRIVACY.md)** · **[Roadmap](./ROADMAP.md)** · **[Contributing](./CONTRIBUTING.md)** · **[Security](./SECURITY.md)** · **[Changelog](./CHANGELOG.md)**
 
-<!-- TODO: replace with real demo GIF once recorded -->
-<!-- ![Help Me Fill demo](./docs/assets/demo.gif) -->
+<!-- Hero banner: abstract visual, no baked-in text so the tagline below stays
+     selectable, translatable, and screen-reader-friendly. Source master at
+     brand/icon-master.png; regenerate sizes via scripts/render-icons.ps1. -->
+![Help Me Fill — privacy-first AI form filling](./docs/assets/hero-banner.png)
 
 </div>
 
@@ -36,8 +38,9 @@ Help Me Fill takes the opposite bet:
 
 The extension runs entirely in your Chrome/Edge process. When you ask for AI mapping,
 the request goes **directly from your browser to the provider you chose** — Anthropic,
-OpenAI, Google, DeepSeek, Zhipu, OpenRouter, or the **Chrome built-in Gemini Nano
-running on-device** with zero network calls at all.
+OpenAI, Google, DeepSeek, Zhipu, Z.ai, OpenRouter, a **local Ollama** or any
+OpenAI-compatible server on your own machine (LM Studio, llamafile, vLLM), or the
+**Chrome built-in Gemini Nano running on-device** with zero network calls at all.
 
 Everything else — PDF parsing, DOCX parsing, XLSX parsing, form scanning, field mapping,
 safe filling, undo — happens locally, in your browser process, with no telemetry.
@@ -117,20 +120,24 @@ Then in Chrome or Edge:
 
 ## Supported AI providers
 
-All providers are BYO-key. The extension never holds a shared pool of keys and never
-proxies your requests.
+All providers are BYO-key or keyless. The extension never holds a shared pool of
+keys and never proxies your requests. Every option is tagged in the settings UI as
+**Cloud**, **Local**, or **On-device** so you always know where your data is going.
 
-| Provider | Transport | On-device | Key page |
-|---|---|---|---|
-| Chrome built-in AI (Gemini Nano) | `chrome.aiOrigin` | ✅ **Yes** | — (no key needed) |
-| Anthropic (Claude) | HTTPS direct | ❌ | [console.anthropic.com](https://console.anthropic.com/settings/keys) |
-| OpenAI | HTTPS direct | ❌ | [platform.openai.com/api-keys](https://platform.openai.com/api-keys) |
-| Google Gemini | HTTPS direct | ❌ | [aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey) |
-| DeepSeek | HTTPS direct (OpenAI-compat) | ❌ | [platform.deepseek.com](https://platform.deepseek.com/api_keys) |
-| Zhipu (GLM) | HTTPS direct (OpenAI-compat) | ❌ | [open.bigmodel.cn](https://open.bigmodel.cn/usercenter/apikeys) |
-| Z.ai | HTTPS direct (OpenAI-compat) | ❌ | [z.ai](https://z.ai/manage-apikey/apikey-list) |
-| OpenRouter | HTTPS direct (OpenAI-compat) | ❌ | [openrouter.ai/keys](https://openrouter.ai/keys) |
-| Any other OpenAI-compatible endpoint | HTTPS direct | ❌ | Your provider |
+| Provider | Kind | Transport | API key | Notes |
+|---|---|---|---|---|
+| Chrome built-in AI (Gemini Nano) | On-device | `chrome.aiOrigin` | Not needed | Zero network. Requires Chrome 138+ with the flag enabled. |
+| Ollama | Local | OpenAI-compatible | Optional | Preset for `http://localhost:11434`. Any Ollama-pulled model. |
+| Custom local server | Local | OpenAI-compatible | Optional | LM Studio, llamafile, vLLM, or any local OpenAI-compatible endpoint. **Endpoint is validated to `localhost`/`127.0.0.1` only — remote custom URLs are rejected** by `localEndpointOrigin()` in `src/ai/registry.ts`. |
+| Anthropic (Claude) | Cloud | Anthropic | Required | [console.anthropic.com/settings/keys](https://console.anthropic.com/settings/keys) |
+| OpenAI | Cloud | OpenAI | Required | [platform.openai.com/api-keys](https://platform.openai.com/api-keys) |
+| Google Gemini | Cloud | Gemini | Required | [aistudio.google.com/apikey](https://aistudio.google.com/apikey) |
+| DeepSeek | Cloud | OpenAI-compat | Required | [platform.deepseek.com/api_keys](https://platform.deepseek.com/api_keys) |
+| Zhipu (GLM) | Cloud | OpenAI-compat | Required | [open.bigmodel.cn/apikey/platform](https://open.bigmodel.cn/apikey/platform) |
+| Z.ai | Cloud | OpenAI-compat | Required | [z.ai/manage-apikey/apikey-list](https://z.ai/manage-apikey/apikey-list) |
+| OpenRouter | Cloud | OpenAI-compat | Required | [openrouter.ai/settings/keys](https://openrouter.ai/settings/keys) |
+
+**Ten ways to fill a form, three of which never touch the network.**
 
 Adding a new provider is a ~50-line change to `src/ai/registry.ts` and
 `src/ai/transports/`. See [CONTRIBUTING.md](./CONTRIBUTING.md).
@@ -152,11 +159,12 @@ Adding a new provider is a ~50-line change to `src/ai/registry.ts` and
 | Open source | ✅ MIT | ✅ MIT | ❌ | ❌ | ❌ |
 | BYO AI key (no shared account) | ✅ | ✅ | ❌ | ❌ | — |
 | On-device AI option | ✅ Chrome built-in | ✅ Chrome AI | ❌ | ❌ | — |
+| Local LLM support (Ollama, LM Studio, llamafile, vLLM) | ✅ Preset + custom loopback | ✅ Ollama + OpenAI-compat | ❌ | ❌ | — |
 | Fill from PDF / DOCX / XLSX | ✅ | ❌ | Partial (PDF) | ❌ | ❌ |
 | Review before fill | ✅ Full table | ❌ | ❌ | ❌ | ❌ |
 | Undo | ✅ | ❌ | ❌ | ❌ | ❌ |
 | No telemetry | ✅ | ✅ | ❌ | ❌ | Partial |
-| Multi-provider choice | ✅ 7+ | ✅ | ❌ | ❌ | — |
+| Multi-provider choice | ✅ 10 (3 offline) | ✅ | ❌ | ❌ | — |
 | Framework-aware fill (React/Vue/Angular) | ✅ | — | ✅ | ✅ | ✅ |
 
 ## Architecture
