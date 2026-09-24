@@ -1,18 +1,351 @@
 {
-  "appName": {
-    "message": "帮我填 Help Me Fill",
-    "description": "中文商店列表与扩展卡片中展示的完整产品名。"
+  "appName": { "message": "帮我填 Help Me Fill" },
+  "appShortName": { "message": "帮我填" },
+  "appDescription": { "message": "隐私优先的 AI 表单填写工具。把任意 PDF、DOCX、XLSX、Markdown 一键映射为网页表单答案，填写前逐字段审核。自带 API Key，或完全端侧运行，无服务器、无遥测、无账号。" },
+  "actionTitle": { "message": "打开 帮我填" },
+
+  "panelTitle": { "message": "help-me-fill — 审核与填写" },
+  "brandSubtle": { "message": "帮我填" },
+  "errorBoundary": { "message": "面板出现问题。请关闭并重新打开以开始新会话，重试前请先检查你的表单。" },
+  "needsExtension": { "message": "此界面需要扩展 API。请构建项目，在 Chrome 或 Edge 中以“加载已解压的扩展程序”方式载入 dist/，然后点击扩展工具栏图标。" },
+
+  "editLlm": { "message": "编辑 LLM" },
+  "introTitle": { "message": "你的文档，填进正确的字段。" },
+  "introBody": { "message": "本地提取，AI 辅助审核，再由你决定如何填写。" },
+  "configureProviderHint": { "message": "请先配置一个服务商再开始。文档文本提取在本浏览器中本地完成；只有在你批准发送提取文本与字段元数据后，才会联系服务商。" },
+  "workflowLabel": { "message": "流程" },
+  "stepDocument": { "message": "文档" },
+  "stepReview": { "message": "审核" },
+  "stepFill": { "message": "填写" },
+  "progressParsing": { "message": "正在本地提取文档文本…" },
+  "progressScanning": { "message": "正在读取页面支持的字段…" },
+  "progressMapping": { "message": "正在等待你的服务商…" },
+  "progressFilling": { "message": "正在填写并校验所选字段…" },
+  "progressUndoing": { "message": "正在还原未更改的值…" },
+  "progressCanceling": { "message": "正在取消剩余工作。已填写的字段可能保留，请检查结果。" },
+  "cancel": { "message": "取消" },
+  "aiHelpMeFill": { "message": "AI 帮我填" },
+  "backToDocuments": { "message": "返回文档" },
+  "footerNote": { "message": "文档解析始终在本地完成。AI 建议会在你同意后，将提取文本与字段元数据发送给你选择的服务商。关闭本面板可能取消工作；请求绝不会被自动恢复。" },
+  "progressReadingPage": {
+    "message": "正在本地读取第 $PAGE$ 页，共 $TOTAL$ 页…",
+    "placeholders": { "page": { "content": "$1" }, "total": { "content": "$2" } }
   },
-  "appShortName": {
-    "message": "帮我填",
-    "description": "空间受限处（工具栏 tooltip 等）使用的短名。"
+  "errActiveTabChanged": { "message": "活动标签页已更改。请在目标页面点击工具栏图标，然后重新扫描并审核。" },
+  "errDocumentRouteChanged": { "message": "文档或路由已更改。请重新扫描并审核。" },
+  "errTargetTabClosed": { "message": "目标标签页已关闭。" },
+  "errInspectPartial": {
+    "message": "$MESSAGE$ 请在重新扫描前检查页面是否有部分更改。",
+    "placeholders": { "message": { "content": "$1" } }
   },
-  "appDescription": {
-    "message": "隐私优先的 AI 表单填写工具。把任意 PDF、DOCX、XLSX、Markdown 一键映射为网页表单答案，填写前逐字段审核。自带 API Key，或完全端侧运行，无服务器、无遥测、无账号。",
-    "description": "Chrome 应用商店中文描述。"
+  "errNoFields": { "message": "此页面上未找到受支持的字段。" },
+  "errHostPermissionMissing": { "message": "缺少主机权限。请重新启用该服务商。" },
+  "metrics": {
+    "message": "$NAME$ · $MODEL$ · $CALLS$ 次请求 · $SECONDS$ 秒",
+    "placeholders": { "name": { "content": "$1" }, "model": { "content": "$2" }, "calls": { "content": "$3" }, "seconds": { "content": "$4" } }
   },
-  "actionTitle": {
-    "message": "打开 帮我填",
-    "description": "工具栏图标 tooltip。"
-  }
+  "metricsUsage": {
+    "message": "$NAME$ · $MODEL$ · $CALLS$ 次请求 · $SECONDS$ 秒 · 用量：$USAGE$",
+    "placeholders": { "name": { "content": "$1" }, "model": { "content": "$2" }, "calls": { "content": "$3" }, "seconds": { "content": "$4" }, "usage": { "content": "$5" } }
+  },
+
+  "errAddOneDocument": { "message": "请一次添加一个文档；已解析的文档会保留在下方列表中。" },
+  "dropZoneLabel": { "message": "文档上传" },
+  "dropZoneTitle": { "message": "从你的文档开始" },
+  "dropZoneBody": { "message": "将文档拖到此处，或选择一个文件。可按需添加多个。" },
+  "chooseDocument": { "message": "选择文档" },
+  "chooseDocumentFile": { "message": "选择文档文件" },
+  "dropZoneFormats": { "message": "PDF · Word (.docx) · Excel (.xlsx/.xls) · Markdown (.md) · 文本 (.txt) · 每个 10 MiB" },
+
+  "parsed": { "message": "已解析" },
+  "removeDocument": {
+    "message": "移除 $NAME$",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "delete": { "message": "删除" },
+  "details": { "message": "详情" },
+  "unitPages": { "message": "页" },
+  "unitSheets": { "message": "个工作表" },
+  "unitParts": { "message": "个部分" },
+  "docMeta": {
+    "message": "$KIND$ · $PAGES$ $UNITS$ · $CHARS$ 个字符 · 请检查阅读顺序与来源准确性。",
+    "placeholders": { "kind": { "content": "$1" }, "pages": { "content": "$2" }, "units": { "content": "$3" }, "chars": { "content": "$4" } }
+  },
+
+  "consentEyebrow": { "message": "在任何数据离开浏览器之前" },
+  "consentTitle": { "message": "审核你将共享的内容" },
+  "consentBuiltin": { "message": "生成建议由你浏览器的**端侧模型**处理。提取的文档文本与所选表单元数据绝不会离开此设备。不会使用原始文件与已有的字段值。" },
+  "consentLocal": {
+    "message": "生成建议会将提取的文档文本与所选表单元数据发送到本计算机上的 **$PROVIDER$**。不会有任何数据发送到云端。不会使用原始文件与已有的字段值。",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "consentCloud": {
+    "message": "生成建议会将提取的文档文本与所选表单元数据发送到云端服务商 **$PROVIDER$**。不会发送原始文件与已有的字段值。",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "consentProviderFallback": { "message": "你选择的服务商" },
+  "consentDestinationBuiltin": { "message": "端侧模型（无网络请求）" },
+  "destinationLabel": { "message": "目标：" },
+  "modelLabel": { "message": "模型：" },
+  "previewOutgoing": { "message": "预览将发送的数据" },
+  "viewMappingInstructions": { "message": "查看映射指令" },
+  "consentAccuracyBuiltin": { "message": "端侧准确性仍属实验性；每条建议仍需你审核。" },
+  "consentAccuracyLocal": { "message": "本地模型准确性各有差异；每条建议仍需你审核。" },
+  "consentAccuracyCloud": { "message": "适用你服务商的数据保留政策与 API 费用。" },
+  "consentRequestsNote": { "message": "最多发起一次请求，外加至多一次校验修复请求。不会自动切换服务商。" },
+  "generateBuiltin": { "message": "在端侧生成建议" },
+  "generateLocal": { "message": "在本地生成建议" },
+  "generateCloud": {
+    "message": "发送到 $PROVIDER$ 并生成建议",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "generateCloudFallback": { "message": "服务商" },
+  "enableProviderToContinue": { "message": "请在上方启用一个服务商以继续。" },
+
+  "unlabeledField": { "message": "无标签字段" },
+  "reviewEyebrow": { "message": "最终由你决定" },
+  "reviewTitle": { "message": "审核建议" },
+  "reviewHint": { "message": "证据显示文本来自何处，并不代表匹配一定正确。请只选择你想填写的值。" },
+  "selectAll": { "message": "全选受支持的建议" },
+  "clearSelection": { "message": "清除选择" },
+  "chooseOption": { "message": "（请选择一个选项）" },
+  "checkboxTrue": { "message": "true — 勾选此项" },
+  "checkboxFalse": { "message": "false — 保留 / 不勾选" },
+  "proposedValue": { "message": "建议值" },
+  "manualOverride": { "message": "手动修改 · 请仔细核对" },
+  "currentValue": { "message": "当前值：" },
+  "allowOverwrite": { "message": "允许替换此已有值" },
+  "sourceEvidence": { "message": "来源证据" },
+  "noAssignments": { "message": "未返回任何有证据支持的赋值。表单未作更改。" },
+  "unmappedSummary": {
+    "message": "$COUNT$ 个字段未映射",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "fillNotice": { "message": "填写可能触发网站的校验、自动保存或网络请求。本扩展绝不会点击“提交”。撤销无法逆转服务器端的副作用。" },
+  "fillSelected": {
+    "message": "填写所选项（$COUNT$）",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+
+  "fillResultsLabel": { "message": "填写结果" },
+  "operationResults": { "message": "操作结果" },
+  "resultsHint": { "message": "已在此页面校验，但未经服务器确认。再次填写前请重新扫描。" },
+  "fieldFallback": { "message": "字段" },
+  "statusFilled": { "message": "已填写" },
+  "statusRestored": { "message": "已还原" },
+  "statusSkipped": { "message": "已跳过" },
+  "statusFailed": { "message": "失败" },
+  "statusChangedReverted": { "message": "已更改/被回退" },
+  "undoLastFill": { "message": "撤销上次填写" },
+  "undoHint": { "message": "撤销会保留之后的编辑，且无法逆转自动保存或其他页面端副作用。重置或重新扫描会清除撤销记录。" },
+
+  "psStatusDefault": { "message": "请配置一个服务商以生成建议。" },
+  "kindCloud": { "message": "云端" },
+  "kindLocal": { "message": "本地" },
+  "kindBuiltin": { "message": "端侧" },
+  "psBuiltinUnavailableSaved": { "message": "已保存的端侧服务商当前在此浏览器中不可用。请选择其他服务商。" },
+  "psBuiltinRestored": { "message": "端侧服务商已恢复。建议将保留在此设备上。" },
+  "psCustomEndpointMissing": { "message": "已保存的自定义端点缺失。请重新配置。" },
+  "psLocalRestored": { "message": "本地服务商已恢复。请求将保留在此计算机上。" },
+  "psKeyRestored": { "message": "已恢复存储的密钥。不包含服务商/模型的在线校验。" },
+  "psRestoreFailed": { "message": "无法恢复设置。请重新配置服务商。" },
+  "psUnsaved": { "message": "有未保存的更改。请在生成建议前启用此服务商。" },
+  "psBuiltinUnavailable": { "message": "端侧模型当前在此浏览器中不可用。请选择其他服务商。" },
+  "psPermissionDeclined": { "message": "主机权限被拒绝。未发送任何文档。" },
+  "psCheckingBuiltin": { "message": "正在检查端侧模型…" },
+  "psVerifying": { "message": "正在校验服务商…" },
+  "psBuiltinVerified": { "message": "端侧服务商已校验并启用。文本绝不会离开此设备；端侧准确性仍属实验性。" },
+  "psLocalVerified": { "message": "本地服务商已校验并启用。请求将保留在此计算机或网络内；不会发送到云端。" },
+  "psCloudVerified": { "message": "服务商已校验并启用。密钥有效；不保证模型在填写方面的兼容性。" },
+  "psKeyRemoved": { "message": "已移除存储的密钥。也可在下方撤销主机权限。" },
+  "psKeyRemoveFailed": { "message": "无法移除密钥。请重试。" },
+  "psSummary": { "message": "LLM 服务商" },
+  "psKinds": { "message": "云端 · 本地 · 端侧" },
+  "psBuiltinDetected": { "message": "检测到端侧选项" },
+  "psProvider": { "message": "服务商" },
+  "psKeySaved": { "message": "密钥已保存" },
+  "psKeySavedTitle": { "message": "此服务商已保存 API 密钥" },
+  "psProviderBadge": {
+    "message": "$KIND$服务商",
+    "placeholders": { "kind": { "content": "$1" } }
+  },
+  "psBuiltinReady": { "message": "浏览器端侧模型已就绪。无需 API 密钥、无网络请求；提取的文本绝不会离开此设备。端侧准确性仍属实验性。" },
+  "psBuiltinDownload": { "message": "浏览器会在首次使用时下载其端侧模型；下载进度会在生成过程中显示。此后无需 API 密钥，也无网络请求。" },
+  "psEndpointUrl": { "message": "端点 URL" },
+  "psModelId": { "message": "模型 ID" },
+  "psModelPlaceholderLocal": { "message": "本地服务器上加载的模型名称" },
+  "psModelPlaceholderCloud": { "message": "来自你服务商账户的模型 ID" },
+  "psApiKeyOptional": { "message": "API 密钥（可选）" },
+  "psApiKey": { "message": "API 密钥" },
+  "psGetApiKey": { "message": "获取 API 密钥" },
+  "psKeyPlaceholderLocal": { "message": "如果你的本地服务器不需要密钥，请留空" },
+  "psKeyPlaceholderCloud": { "message": "在此设备上加密保存" },
+  "psNoticeCloud": {
+    "message": "☁️ **数据提示：** 帮我填不存储任何数据，但生成建议会**将你提取的文档文本与字段元数据发送到 $PROVIDER$**。在你于下一步审核并批准之前，不会发送任何内容。",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "psNoticeLocal": {
+    "message": "🏠 **需要先设置：** 请在本计算机上安装并启动 [$NAME$]($URL$)，然后加载一个模型（例如 `$MODEL$`）。保存时会快速进行本地检查以确认服务器可达。请求将保留在此计算机上——不会发送到云端。",
+    "placeholders": { "name": { "content": "$1" }, "url": { "content": "$2" }, "model": { "content": "$3" } }
+  },
+  "psNoticeCustom": { "message": "🏠 **需要先设置：** 启动你的本地 OpenAI 兼容服务器（Ollama、LM Studio、llamafile、vLLM…），并在上方填入其 `/v1/chat/completions` 地址。通过 `http://` 允许的主机：`localhost`、`127.0.0.1`，以及私有局域网段（`192.168.x.x`、`10.x.x.x`、`172.16–31.x.x`）。保存时会快速检查服务器是否可达。请求将保留在你的计算机或本地网络内——不会发送到云端。" },
+  "psEnableBuiltinModel": { "message": "启用端侧模型" },
+  "psSaveVerify": { "message": "保存并校验" },
+  "psSaveVerifyKey": { "message": "保存并校验密钥" },
+  "psRemoveKey": { "message": "移除密钥" },
+  "psRevokePermission": { "message": "撤销主机权限" },
+  "psPermissionRevoked": { "message": "主机权限已撤销。" },
+  "psPermissionRevokeFailed": { "message": "无法撤销权限。" },
+  "psKeyHint": { "message": "API 密钥使用 AES-GCM 加密，仅存储在此设备上——并非硬件级保险库，且除你选择的服务商外绝不会发送到任何地方。云端服务商账户决定模型可用性与费用。本地与端侧服务商完全在此计算机上运行。不包含任何后端或订阅。" },
+
+  "errTargetChanged": { "message": "目标标签页或页面已更改。请重新扫描并审核。" },
+  "errConnectionLost": { "message": "页面连接已丢失。请在表单页面点击工具栏图标，然后重新扫描。" },
+  "errInvalidResponse": { "message": "页面返回了无效响应。" },
+  "errOpenFormPage": { "message": "请打开一个 HTTP(S) 表单页面并点击 help-me-fill 工具栏图标以授予访问权限。" },
+  "errStorePage": { "message": "无法在浏览器扩展商店中填写。请打开一个普通表单页面。" },
+  "errAccessDenied": { "message": "页面访问被拒绝。请在此标签页点击扩展工具栏图标，然后重新扫描。不支持受限页面。" },
+  "errNoDocumentId": { "message": "浏览器未提供文档标识。请更新浏览器后重试。" },
+  "errPageChangedScanning": { "message": "扫描过程中页面已更改。请重试。" },
+  "errNoAck": { "message": "页面未响应审核面板。请重新扫描。" },
+  "errConnectionClosed": { "message": "页面连接已关闭。请重新扫描。" },
+  "errCanceled": { "message": "已取消。未发起新请求。" },
+  "errGeneric": { "message": "操作无法完成。请重置会话后重试。" },
+
+  "fillUnknownField": { "message": "字段 ID 未知或重复。未填写任何内容。" },
+  "fillChangedSinceReview": { "message": "自审核以来某字段已更改。请重新扫描并审核。" },
+  "fillNeedsApproval": { "message": "覆盖已有值需要明确批准。" },
+  "fillCanceledOrInactive": { "message": "操作已取消，或目标标签页不再处于活动状态。" },
+  "fillValueChangedDuring": { "message": "填写过程中某字段值已更改。请重新审核。" },
+  "fillAlreadyContains": { "message": "已包含所选值。" },
+  "fillChangedOnFocus": { "message": "聚焦时目标已更改。其余字段未填写。" },
+  "fillVerified": { "message": "值与原生有效性在校验过程中得以保留。" },
+  "fillReverted": { "message": "页面更改、拒绝或替换了此值。请手动检查。" },
+  "fillStopped": { "message": "在目标更改或执行失败后已停止。" },
+
+  "undoCanceled": { "message": "撤销已停止，因为操作被取消或标签页已更改。" },
+  "undoPreserved": { "message": "保留了随后的用户或页面编辑。" },
+  "undoTargetChanged": { "message": "撤销过程中目标已更改。" },
+  "undoRestored": { "message": "已还原之前的值。页面端副作用无法撤销。" },
+  "undoNotRetained": { "message": "页面未保留之前的值。" },
+
+  "ctrlNotAnOption": { "message": "所选值不是字段选项之一。" },
+  "ctrlNoSetter": { "message": "此控件没有受支持的原生值设置器。" },
+  "ctrlCheckboxBoolean": { "message": "复选框的值必须为 “true” 或 “false”。" },
+  "ctrlValueNotOption": { "message": "该值不是字段选项之一。" },
+  "ctrlTooLong": { "message": "值超出字段长度限制。" },
+  "ctrlTooShort": { "message": "值短于字段最小长度。" },
+  "ctrlNormalize": { "message": "浏览器会对此值进行规范化。请在填写前修改它。" },
+  "ctrlConstraint": { "message": "值不满足字段类型、格式或必填约束。" },
+
+  "scanTooManyControls": { "message": "此页面控件过多，无法安全扫描。请使用更简单的表单。" },
+  "scanTooManyFields": { "message": "此页面受支持字段超过 60 个。未使用部分扫描结果。" },
+  "scanFormChanged": { "message": "扫描后表单已更改。请重新扫描并审核。" },
+  "scanFormStructureChanged": { "message": "表单结构已更改。请重新扫描并审核。" },
+
+  "idxBusy": { "message": "另一个操作仍在进行中。请等待其完成。" },
+  "idxPageChanged": { "message": "页面已更改。请重新扫描。" },
+  "idxScanFirst": { "message": "请先扫描此文档再填写。" },
+  "idxPanelDisconnected": { "message": "审核面板已不再连接。未填写任何内容。" },
+  "idxInvalidMessage": { "message": "无效的扩展消息。" },
+
+  "parseUnsupportedType": { "message": "请选择 PDF、Word (.docx)、Excel (.xlsx/.xls)、Markdown (.md) 或纯文本 (.txt) 文件。不支持旧版 .doc 与纯图片扫描件。" },
+  "parseEmpty": { "message": "此文件为空。" },
+  "parseTooLarge": { "message": "文档必须不大于 10 MiB。请选择更小的文件。" },
+
+  "pdfInvalidType": { "message": "请选择有效的 PDF 文件。Word、Excel、Markdown 与文本文件会路由到各自的解析器；不支持 OCR。" },
+  "pdfTooLarge": { "message": "PDF 必须不大于 10 MiB。请选择更小的文档。" },
+  "pdfBadHeader": { "message": "此文件不包含有效的 PDF 文件头。" },
+  "pdfPassword": { "message": "不支持受密码保护的 PDF。请选择未加密的文档。" },
+  "pdfTooManyPages": { "message": "PDF 最多可包含 20 页。请选择更短的文档；未作任何截断。" },
+  "pdfTooMuchText": { "message": "提取的文本超过 24,000 个字符。请选择更短的 PDF；未作任何截断。" },
+  "pdfNoText": { "message": "未找到可提取的文本。扫描件或纯图片 PDF 需要 OCR，目前尚未包含。" },
+  "pdfUnreadable": { "message": "无法读取此 PDF。它可能已损坏、受密码保护，或使用了不受支持的编码。" },
+
+  "docxUnreadable": { "message": "无法读取此 Word 文件。请将其重新导出为 .docx 后重试。" },
+
+  "xlsxUnreadable": { "message": "无法读取此电子表格。请将其重新导出为 .xlsx 后重试。" },
+  "xlsxNoSheets": { "message": "此工作簿没有可见的工作表。" },
+  "xlsxTooManySheets": {
+    "message": "工作簿最多可包含 $COUNT$ 个可见工作表。请选择更小的工作簿；未作任何截断。",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+
+  "mergeTooLong": { "message": "合并后提取的文本超过 24,000 个字符。请移除一个文档；未作任何截断。" },
+  "mergeDocName": {
+    "message": "$COUNT$ 个文档",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+
+  "textNoText": { "message": "未找到可提取的文本。扫描件或纯图片文档需要 OCR，目前尚未包含。" },
+  "textTooMuch": { "message": "提取的文本超过 24,000 个字符。请选择更短的文档；未作任何截断。" },
+
+  "provBadModel": { "message": "请输入来自你服务商的有效文本模型 ID。" },
+  "provBadKey": { "message": "请输入有效的、不含空格的 API 密钥。" },
+  "provBuiltinNoHttp": { "message": "端侧服务商不使用 HTTP 请求。" },
+  "provBuiltinNoHttpResponse": { "message": "端侧服务商不使用 HTTP 响应。" },
+  "provEmptyResponse": { "message": "服务商返回了空响应。" },
+  "provTooBig": { "message": "服务商响应超过 256 KiB。请选择更短的文档。" },
+  "provInvalidResponse": { "message": "服务商返回了无效的 API 响应。" },
+  "provInputTooBig": { "message": "映射输入为空或超出原型限制。" },
+  "provNoSuggestions": { "message": "未返回有效的建议。" },
+  "provHttp401": { "message": "请检查你的 API 密钥、账户访问权限与浏览器访问策略。" },
+  "provHttp429": { "message": "已达到速率限制或配额。请等待，或在重试前检查你的服务商账户。" },
+  "provHttp400": { "message": "请检查模型 ID 及其对此服务商 API 与 JSON 输出的支持情况。" },
+  "provHttpOther": { "message": "服务商不可用。请稍后明确重试。" },
+  "provRequestFailed": {
+    "message": "服务商请求失败（$STATUS$）。$MESSAGE$",
+    "placeholders": { "status": { "content": "$1" }, "message": { "content": "$2" } }
+  },
+  "provTimeout": { "message": "服务商耗时超过 60 秒。请明确重试；未进行自动重试。" },
+  "provUnreachable": { "message": "无法连接到所选服务商。请检查网络访问与 API 主机权限。" },
+
+  "verifyBuiltinUnreachable": { "message": "端侧模型当前在此浏览器中不可达。请选择其他服务商。" },
+  "verify401": { "message": "校验失败：API 密钥被拒绝。请检查密钥、账户访问权限与浏览器访问策略。" },
+  "verify400": { "message": "校验失败：未找到端点或模型列表。请检查端点 URL 与服务商 API。" },
+  "verify429": { "message": "校验失败：已达到速率限制或配额。请等待后重试。" },
+  "verifyHttpOther": {
+    "message": "校验失败（HTTP $STATUS$）。请检查服务商状态与你的账户。",
+    "placeholders": { "status": { "content": "$1" } }
+  },
+  "verifyTimeout": { "message": "校验在 20 秒后超时。请检查端点与网络后重试。" },
+  "verifyUnreachable": { "message": "无法连接到服务商进行校验。请检查端点、网络访问与主机权限。" },
+
+  "regBadEndpoint": { "message": "请输入有效的本地端点 URL，例如 http://localhost:11434/v1/chat/completions。" },
+  "regNeedHttp": { "message": "自定义端点必须在本地地址上使用 http://。" },
+  "regNeedLocal": { "message": "自定义端点必须是 localhost、127.0.0.1 或私有局域网地址（192.168.x.x、10.x.x.x、172.16-31.x.x）。不允许公网主机。" },
+
+  "mapTooBig": { "message": "模型输出超出响应限制。" },
+  "mapInvalidJson": { "message": "模型未返回有效的 JSON。" },
+  "mapSchema": { "message": "模型输出不符合所需的映射结构。" },
+  "mapUnknownField": { "message": "模型返回了未知或重复的字段 ID。" },
+  "mapMissingFields": { "message": "模型未覆盖每一个字段。" },
+  "mapQuoteMissing": { "message": "某条来源引文未出现在其引用的行中。" },
+  "mapValueNotOption": { "message": "某个建议值不是字段选项之一。" },
+  "mapCheckbox": { "message": "复选框赋值必须使用值 “true”；若要保留不勾选，请将该字段留为未映射。" },
+  "mapDateEmpty": { "message": "某日期控件收到了空值。" },
+  "mapUnsupported": { "message": "某个建议值未得到其引用证据的支持。" },
+  "mapTooLong": { "message": "某个建议值超出字段长度限制。" },
+
+  "builtinNoApi": { "message": "此浏览器未提供端侧模型。请选择云端服务商。" },
+  "builtinUnavailable": { "message": "端侧模型在此设备、浏览器或策略下不可用。请选择云端服务商。" },
+  "builtinDownloading": {
+    "message": "正在下载端侧模型… $PERCENT$%",
+    "placeholders": { "percent": { "content": "$1" } }
+  },
+  "builtinTokensExceeded": {
+    "message": "该文档大约需要 $TOKENS$ 个端侧 token，但其上下文窗口只能容纳 $LEFT$ 个。请移除文档或选择云端服务商；未作任何截断。",
+    "placeholders": { "tokens": { "content": "$1" }, "left": { "content": "$2" } }
+  },
+  "builtinTooLarge": { "message": "该文档对于端侧模型的上下文窗口而言过大。请移除文档或选择云端服务商；未作任何截断。" },
+  "builtinWaiting": { "message": "正在等待端侧模型…" },
+  "builtinEmpty": { "message": "端侧模型返回了空响应。" },
+  "builtinTimeout": { "message": "端侧模型耗时超过 120 秒。请明确重试；未进行自动重试。" },
+  "builtinFailed": {
+    "message": "端侧模型失败：$MESSAGE$。如果反复出现，请选择云端服务商。",
+    "placeholders": { "message": { "content": "$1" } }
+  },
+
+  "anthropicRefused": { "message": "Anthropic 拒绝或截断了响应，或返回了不受支持的内容。请检查模型或缩短文档。" },
+  "geminiRefused": { "message": "Gemini 拒绝或截断了响应。请检查模型或缩短文档。" },
+  "openaiRefused": { "message": "服务商拒绝或截断了响应，或此模型不兼容。请尝试受支持的文本模型或更短的文档。" }
 }

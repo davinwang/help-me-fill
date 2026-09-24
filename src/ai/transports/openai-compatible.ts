@@ -1,11 +1,12 @@
 import { resolveProvider, type ProviderSettings, type TransportRequest } from '../registry';
 import { UserError } from '../../shared/errors';
+import { t } from '../../shared/i18n';
 
 export function openaiRequest(settings: ProviderSettings, system: string, user: string): TransportRequest {
   // buildRequest only routes OpenAI-compatible providers here; resolve keeps the
   // transport total on cloud presets, the local preset, and custom endpoints.
   const resolved = resolveProvider(settings);
-  if (resolved.transport === 'builtin') throw new UserError('The on-device provider does not use HTTP requests.');
+  if (resolved.transport === 'builtin') throw new UserError(t('provBuiltinNoHttp'));
   return {
     url: resolved.endpoint,
     // Local servers (Ollama, LM Studio) usually need no key; omit the header
@@ -21,7 +22,7 @@ export function openaiText(data: unknown): string {
   const response = data as { choices?: Array<{ finish_reason?: string; message?: { content?: unknown; refusal?: unknown } }> };
   const choice = response?.choices?.[0];
   if (choice?.finish_reason !== 'stop' || choice.message?.refusal || typeof choice.message?.content !== 'string') {
-    throw new UserError('The provider refused or truncated the response, or this model is incompatible. Try a supported text model or a shorter document.');
+    throw new UserError(t('openaiRefused'));
   }
   return choice.message.content;
 }

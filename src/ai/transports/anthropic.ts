@@ -1,5 +1,6 @@
 import { PROVIDERS, type ProviderSettings, type TransportRequest } from '../registry';
 import { UserError } from '../../shared/errors';
+import { t } from '../../shared/i18n';
 export function anthropicRequest(settings: ProviderSettings, system: string, user: string): TransportRequest {
   return {
     url: PROVIDERS.anthropic.endpoint,
@@ -10,7 +11,7 @@ export function anthropicRequest(settings: ProviderSettings, system: string, use
 export function anthropicText(data: unknown): string {
   const response = data as { stop_reason?: string; content?: Array<{ type: string; text?: string }> };
   if (response?.stop_reason !== 'end_turn' || !Array.isArray(response.content) || response.content.some(block => block.type !== 'text')) {
-    throw new UserError('Anthropic refused or truncated the response, or returned unsupported content. Check the model or shorten the document.');
+    throw new UserError(t('anthropicRefused'));
   }
   return response.content.map(block => block.text ?? '').join('');
 }

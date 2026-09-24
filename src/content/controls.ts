@@ -1,5 +1,6 @@
 import { LIMITS, type LocalField } from '../shared/schemas';
 import { UserError } from '../shared/errors';
+import { t } from '../shared/i18n';
 
 // Every control the filler can read, validate, write, and undo. Text-like
 // inputs and textareas keep their native value; selects resolve to option
@@ -47,7 +48,7 @@ export function writeValue(element: SupportedControl, value: string) {
   }
   if (element.tagName === 'SELECT') {
     const option = findOption(element as HTMLSelectElement, value);
-    if (!option) throw new UserError('The selected value is not one of the field options.');
+    if (!option) throw new UserError(t('ctrlNotAnOption'));
     (element as HTMLSelectElement).value = option.value;
     element.dispatchEvent(new realm.Event('input', { bubbles: true }));
     element.dispatchEvent(new realm.Event('change', { bubbles: true }));
@@ -64,7 +65,7 @@ export function writeValue(element: SupportedControl, value: string) {
   const control = element as HTMLInputElement | HTMLTextAreaElement;
   const prototype = control.tagName === 'TEXTAREA' ? realm.HTMLTextAreaElement.prototype : realm.HTMLInputElement.prototype;
   const setter = Object.getOwnPropertyDescriptor(prototype, 'value')?.set;
-  if (!setter) throw new UserError('This control has no supported native value setter.');
+  if (!setter) throw new UserError(t('ctrlNoSetter'));
   setter.call(control, value);
   control.dispatchEvent(new realm.Event('input', { bubbles: true }));
   control.dispatchEvent(new realm.Event('change', { bubbles: true }));
@@ -72,15 +73,15 @@ export function writeValue(element: SupportedControl, value: string) {
 }
 export function validateWriteValue(element: SupportedControl, value: string): string | undefined {
   const type = controlType(element);
-  if (type === 'checkbox') return value === 'true' || value === 'false' ? undefined : 'Checkbox values must be "true" or "false".';
-  if (type === 'select') return findOption(element as HTMLSelectElement, value) ? undefined : 'The value is not one of the field options.';
-  if (type === 'richtext') return Array.from(value).length > LIMITS.value ? 'Value exceeds the field length limit.' : undefined;
+  if (type === 'checkbox') return value === 'true' || value === 'false' ? undefined : t('ctrlCheckboxBoolean');
+  if (type === 'select') return findOption(element as HTMLSelectElement, value) ? undefined : t('ctrlValueNotOption');
+  if (type === 'richtext') return Array.from(value).length > LIMITS.value ? t('ctrlTooLong') : undefined;
   const control = element as HTMLInputElement | HTMLTextAreaElement;
-  if (control.maxLength >= 0 && value.length > control.maxLength) return 'Value exceeds the field length limit.';
-  if (control.minLength > 0 && value && value.length < control.minLength) return 'Value is shorter than the field minimum.';
+  if (control.maxLength >= 0 && value.length > control.maxLength) return t('ctrlTooLong');
+  if (control.minLength > 0 && value && value.length < control.minLength) return t('ctrlTooShort');
   const probe = control.cloneNode(false) as HTMLInputElement | HTMLTextAreaElement;
   probe.value = value;
-  if (probe.value !== value) return 'The browser would normalize this value. Edit it before filling.';
-  if (!probe.validity.valid) return 'Value does not satisfy the field type, pattern, or required constraint.';
+  if (probe.value !== value) return t('ctrlNormalize');
+  if (!probe.validity.valid) return t('ctrlConstraint');
   return undefined;
 }

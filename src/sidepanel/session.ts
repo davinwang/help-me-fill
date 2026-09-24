@@ -2,6 +2,7 @@ import type { ParsedDocument } from '../parsers/types';
 import { ScanSchema, OperationResultSchema, type BoundScan, type MappingPlan, type Assignment, type OperationResult, type Target } from '../shared/schemas';
 import type { ContentMessage, Reply } from '../shared/messages';
 import { UserError } from '../shared/errors';
+import { t } from '../shared/i18n';
 
 export type ReviewRow = Assignment & { selected: boolean; allowOverwrite: boolean; manual: boolean };
 export type Phase = 'idle' | 'parsing' | 'scanning' | 'ready' | 'mapping' | 'review' | 'filling' | 'complete' | 'undoing';
@@ -55,29 +56,29 @@ export const isBusy = (phase: Phase) => ['parsing', 'scanning', 'mapping', 'fill
 
 export async function assertActive(target: Target) {
   const [tab] = await chrome.tabs.query({ active: true, windowId: target.windowId });
-  if (tab?.id !== target.tabId || tab.url !== target.url) throw new UserError('The target tab or page changed. Scan and review again.');
+  if (tab?.id !== target.tabId || tab.url !== target.url) throw new UserError(t('errTargetChanged'));
 }
 export async function sendPage<T>(target: Target, message: ContentMessage): Promise<T> {
   let reply: Reply<T>;
   try { reply = await chrome.tabs.sendMessage(target.tabId, message, { documentId: target.documentId }); }
-  catch { throw new UserError('The page connection was lost. Click the toolbar icon on the form page, then scan again.'); }
-  if (!reply || !reply.ok) throw new UserError(reply && !reply.ok ? reply.error : 'The page returned an invalid response.');
+  catch { throw new UserError(t('errConnectionLost')); }
+  if (!reply || !reply.ok) throw new UserError(reply && !reply.ok ? reply.error : t('errInvalidResponse'));
   return reply.data;
 }
 export async function scanActivePage(): Promise<BoundScan> {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  if (!tab?.id || !tab.url || !/^https?:\/\//.test(tab.url)) throw new UserError('Open an HTTP(S) form page and click the help-me-fill toolbar icon to grant access.');
+  if (!tab?.id || !tab.url || !/^https?:\/\//.test(tab.url)) throw new UserError(t('errOpenFormPage'));
   const url = new URL(tab.url);
-  if (['chromewebstore.google.com', 'chrome.google.com', 'microsoftedge.microsoft.com'].includes(url.hostname)) throw new UserError('Browser extension stores cannot be filled. Open a normal form page.');
+  if (['chromewebstore.google.com', 'chrome.google.com', 'microsoftedge.microsoft.com'].includes(url.hostname)) throw new UserError(t('errStorePage'));
   let injection: chrome.scripting.InjectionResult[];
   try { injection = await chrome.scripting.executeScript({ target: { tabId: tab.id, frameIds: [0] }, files: ['content/index.js'] }); }
-  catch { throw new UserError('Page access was denied. Click the extension toolbar icon on this tab, then scan again. Restricted pages are not supported.'); }
+  catch { throw new UserError(t('errAccessDenied')); }
   const documentId = injection.find(result => result.frameId === 0)?.documentId;
-  if (!documentId) throw new UserError('The browser did not provide a document identity. Update the browser and try again.');
+  if (!documentId) throw new UserError(t('errNoDocumentId'));
   const target: Target = { tabId: tab.id, windowId: tab.windowId, documentId, url: tab.url };
   await assertActive(target);
   const scan = ScanSchema.parse(await sendPage(target, { type: 'SCAN', requestId: crypto.randomUUID(), expectedUrl: target.url }));
-  if (scan.url !== target.url) throw new UserError('The page changed while scanning. Try again.');
+  if (scan.url !== target.url) throw new UserError(t('errPageChangedScanning'));
   return { ...scan, target };
 }
 export async function executeOnPage(scan: BoundScan, message: Extract<ContentMessage, { type: 'FILL' | 'UNDO' }>): Promise<OperationResult> {
@@ -85,12 +86,12 @@ export async function executeOnPage(scan: BoundScan, message: Extract<ContentMes
   const port = chrome.tabs.connect(scan.target.tabId, { documentId: scan.target.documentId, name: `help-me-fill:${message.requestId}` });
   try {
     await new Promise<void>((resolve, reject) => {
-      const timeout = setTimeout(() => reject(new UserError('The page did not acknowledge the review panel. Scan again.')), 3_000);
+      const timeout = setTimeout(() => reject(new UserError(t('errNoAck'))), 3_000);
       const ready = (data: unknown) => {
         if (data && typeof data === 'object' && 'ready' in data && data.ready === true) { clearTimeout(timeout); port.onMessage.removeListener(ready); resolve(); }
       };
       port.onMessage.addListener(ready);
-      port.onDisconnect.addListener(() => { void chrome.runtime.lastError; clearTimeout(timeout); reject(new UserError('The page connection closed. Scan again.')); });
+      port.onDisconnect.addListener(() => { void chrome.runtime.lastError; clearTimeout(timeout); reject(new UserError(t('errConnectionClosed'))); });
     });
     return OperationResultSchema.parse(await sendPage(scan.target, message));
   } finally { port.disconnect(); }

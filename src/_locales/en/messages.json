@@ -14,5 +14,350 @@
   "actionTitle": {
     "message": "Open Help Me Fill",
     "description": "Tooltip on the toolbar action button."
-  }
+  },
+
+  "panelTitle": { "message": "help-me-fill — Review & fill" },
+  "brandSubtle": { "message": "Help Me Fill" },
+  "errorBoundary": { "message": "The panel encountered a problem. Close and reopen it to start a fresh session. Inspect your form before retrying." },
+  "needsExtension": { "message": "This UI needs extension APIs. Build the project, load dist/ unpacked in Chrome or Edge, and click the extension toolbar icon." },
+
+  "editLlm": { "message": "Edit LLM" },
+  "introTitle": { "message": "Your document. The right fields." },
+  "introBody": { "message": "Extract locally, review with AI, then fill on your terms." },
+  "configureProviderHint": { "message": "Configure a provider to start. Document text extraction runs locally in this browser; the provider is contacted only after you approve sending the extracted text and field metadata." },
+  "workflowLabel": { "message": "Workflow" },
+  "stepDocument": { "message": "Document" },
+  "stepReview": { "message": "Review" },
+  "stepFill": { "message": "Fill" },
+  "progressParsing": { "message": "Extracting document text locally…" },
+  "progressScanning": { "message": "Reading supported page fields…" },
+  "progressMapping": { "message": "Waiting for your provider…" },
+  "progressFilling": { "message": "Filling and verifying selected fields…" },
+  "progressUndoing": { "message": "Restoring unchanged values…" },
+  "progressCanceling": { "message": "Canceling remaining work. Already filled fields may remain; inspect the results." },
+  "cancel": { "message": "Cancel" },
+  "aiHelpMeFill": { "message": "AI help me fill" },
+  "backToDocuments": { "message": "Back to documents" },
+  "footerNote": { "message": "Document parsing stays local. AI suggestions send extracted text and field metadata to your chosen provider after consent. Closing this panel may cancel work; requests are never resumed automatically." },
+  "progressReadingPage": {
+    "message": "Reading page $PAGE$ of $TOTAL$ locally…",
+    "placeholders": { "page": { "content": "$1" }, "total": { "content": "$2" } }
+  },
+  "errActiveTabChanged": { "message": "The active tab changed. Click the toolbar icon on the intended page, then scan and review again." },
+  "errDocumentRouteChanged": { "message": "The document or route changed. Scan and review again." },
+  "errTargetTabClosed": { "message": "The target tab was closed." },
+  "errInspectPartial": {
+    "message": "$MESSAGE$ Inspect the page for partial changes before rescanning.",
+    "placeholders": { "message": { "content": "$1" } }
+  },
+  "errNoFields": { "message": "No supported fields were found on this page." },
+  "errHostPermissionMissing": { "message": "Host permission is missing. Enable the provider again." },
+  "metrics": {
+    "message": "$NAME$ · $MODEL$ · $CALLS$ request(s) · $SECONDS$ s",
+    "placeholders": { "name": { "content": "$1" }, "model": { "content": "$2" }, "calls": { "content": "$3" }, "seconds": { "content": "$4" } }
+  },
+  "metricsUsage": {
+    "message": "$NAME$ · $MODEL$ · $CALLS$ request(s) · $SECONDS$ s · usage: $USAGE$",
+    "placeholders": { "name": { "content": "$1" }, "model": { "content": "$2" }, "calls": { "content": "$3" }, "seconds": { "content": "$4" }, "usage": { "content": "$5" } }
+  },
+
+  "errAddOneDocument": { "message": "Add one document at a time; parsed documents stay in the list below." },
+  "dropZoneLabel": { "message": "Document upload" },
+  "dropZoneTitle": { "message": "Start with your documents" },
+  "dropZoneBody": { "message": "Drop documents here, or choose a file. Add as many as you need." },
+  "chooseDocument": { "message": "Choose document" },
+  "chooseDocumentFile": { "message": "Choose a document file" },
+  "dropZoneFormats": { "message": "PDF · Word (.docx) · Excel (.xlsx/.xls) · Markdown (.md) · Text (.txt) · 10 MiB each" },
+
+  "parsed": { "message": "Parsed" },
+  "removeDocument": {
+    "message": "Remove $NAME$",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "delete": { "message": "Delete" },
+  "details": { "message": "Details" },
+  "unitPages": { "message": "pages" },
+  "unitSheets": { "message": "sheets" },
+  "unitParts": { "message": "parts" },
+  "docMeta": {
+    "message": "$KIND$ · $PAGES$ $UNITS$ · $CHARS$ characters · Check reading order and source accuracy.",
+    "placeholders": { "kind": { "content": "$1" }, "pages": { "content": "$2" }, "units": { "content": "$3" }, "chars": { "content": "$4" } }
+  },
+
+  "consentEyebrow": { "message": "Before anything leaves your browser" },
+  "consentTitle": { "message": "Review what you share" },
+  "consentBuiltin": { "message": "Generating suggestions is handled by your browser's **on-device model**. Extracted document text and selected form metadata never leave this device. Original files and existing field values are not used." },
+  "consentLocal": {
+    "message": "Generating suggestions sends extracted document text and selected form metadata to **$PROVIDER$** on this computer. Nothing is sent to the cloud. Original files and existing field values are not used.",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "consentCloud": {
+    "message": "Generating suggestions sends extracted document text and selected form metadata to **$PROVIDER$**, a cloud provider. Original files and existing field values are not sent.",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "consentProviderFallback": { "message": "your selected provider" },
+  "consentDestinationBuiltin": { "message": "On-device model (no network request)" },
+  "destinationLabel": { "message": "Destination:" },
+  "modelLabel": { "message": "Model:" },
+  "previewOutgoing": { "message": "Preview outgoing data" },
+  "viewMappingInstructions": { "message": "View mapping instructions" },
+  "consentAccuracyBuiltin": { "message": "On-device accuracy is experimental; every suggestion still needs your review." },
+  "consentAccuracyLocal": { "message": "Local model accuracy varies; every suggestion still needs your review." },
+  "consentAccuracyCloud": { "message": "Your provider's retention policy and API charges apply." },
+  "consentRequestsNote": { "message": "One request plus at most one validation-repair request may be made. No automatic provider fallback." },
+  "generateBuiltin": { "message": "Generate suggestions on-device" },
+  "generateLocal": { "message": "Generate suggestions locally" },
+  "generateCloud": {
+    "message": "Send to $PROVIDER$ and generate suggestions",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "generateCloudFallback": { "message": "provider" },
+  "enableProviderToContinue": { "message": "Enable a provider above to continue." },
+
+  "unlabeledField": { "message": "Unlabeled field" },
+  "reviewEyebrow": { "message": "You make the final call" },
+  "reviewTitle": { "message": "Review suggestions" },
+  "reviewHint": { "message": "Evidence shows where text came from, not that the match is correct. Select only the values you want to fill." },
+  "selectAll": { "message": "Select all supported suggestions" },
+  "clearSelection": { "message": "Clear selection" },
+  "chooseOption": { "message": "(choose an option)" },
+  "checkboxTrue": { "message": "true — tick this box" },
+  "checkboxFalse": { "message": "false — leave / untick" },
+  "proposedValue": { "message": "Proposed value" },
+  "manualOverride": { "message": "Manual override · Check carefully" },
+  "currentValue": { "message": "Current value:" },
+  "allowOverwrite": { "message": "Allow replacing this existing value" },
+  "sourceEvidence": { "message": "Source evidence" },
+  "noAssignments": { "message": "No supported, evidence-backed assignments were returned. The form has not been changed." },
+  "unmappedSummary": {
+    "message": "$COUNT$ fields left unmapped",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "fillNotice": { "message": "Filling can trigger the site's validation, autosave, or network requests. This extension never clicks Submit. Undo cannot reverse server-side effects." },
+  "fillSelected": {
+    "message": "Fill selected ($COUNT$)",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+
+  "fillResultsLabel": { "message": "Fill results" },
+  "operationResults": { "message": "Operation results" },
+  "resultsHint": { "message": "Verified on this page, not confirmed by the server. Rescan before another fill." },
+  "fieldFallback": { "message": "Field" },
+  "statusFilled": { "message": "filled" },
+  "statusRestored": { "message": "restored" },
+  "statusSkipped": { "message": "skipped" },
+  "statusFailed": { "message": "failed" },
+  "statusChangedReverted": { "message": "changed/reverted" },
+  "undoLastFill": { "message": "Undo last fill" },
+  "undoHint": { "message": "Undo preserves later edits and cannot reverse autosave or other page-side effects. Resetting or rescanning clears undo." },
+
+  "psStatusDefault": { "message": "Configure a provider to generate suggestions." },
+  "kindCloud": { "message": "Cloud" },
+  "kindLocal": { "message": "Local" },
+  "kindBuiltin": { "message": "On-device" },
+  "psBuiltinUnavailableSaved": { "message": "The saved on-device provider is not available in this browser right now. Choose another provider." },
+  "psBuiltinRestored": { "message": "On-device provider restored. Suggestions stay on this device." },
+  "psCustomEndpointMissing": { "message": "The saved custom endpoint is missing. Configure it again." },
+  "psLocalRestored": { "message": "Local provider restored. Requests stay on this machine." },
+  "psKeyRestored": { "message": "Stored key restored. Provider/model live verification is not included." },
+  "psRestoreFailed": { "message": "Settings could not be restored. Configure the provider again." },
+  "psUnsaved": { "message": "Unsaved changes. Enable this provider before generating suggestions." },
+  "psBuiltinUnavailable": { "message": "The on-device model is not available in this browser right now. Choose another provider." },
+  "psPermissionDeclined": { "message": "Host permission was declined. No document was sent." },
+  "psCheckingBuiltin": { "message": "Checking the on-device model…" },
+  "psVerifying": { "message": "Verifying provider…" },
+  "psBuiltinVerified": { "message": "On-device provider verified and enabled. Text never leaves this device; on-device accuracy is experimental." },
+  "psLocalVerified": { "message": "Local provider verified and enabled. Requests stay on this machine or network; nothing is sent to the cloud." },
+  "psCloudVerified": { "message": "Provider verified and enabled. The key works; model compatibility for filling is not guaranteed." },
+  "psKeyRemoved": { "message": "Stored key removed. Host permission can also be revoked below." },
+  "psKeyRemoveFailed": { "message": "Could not remove the key. Try again." },
+  "psSummary": { "message": "LLM provider" },
+  "psKinds": { "message": "Cloud · Local · On-device" },
+  "psBuiltinDetected": { "message": "On-device option detected" },
+  "psProvider": { "message": "Provider" },
+  "psKeySaved": { "message": "Key saved" },
+  "psKeySavedTitle": { "message": "An API key is saved for this provider" },
+  "psProviderBadge": {
+    "message": "$KIND$ provider",
+    "placeholders": { "kind": { "content": "$1" } }
+  },
+  "psBuiltinReady": { "message": "The browser on-device model is ready. No API key, no network request; extracted text never leaves this device. On-device accuracy is experimental." },
+  "psBuiltinDownload": { "message": "The browser will download its on-device model on first use; download progress appears during generation. No API key and no network request afterwards." },
+  "psEndpointUrl": { "message": "Endpoint URL" },
+  "psModelId": { "message": "Model ID" },
+  "psModelPlaceholderLocal": { "message": "Model name loaded on your local server" },
+  "psModelPlaceholderCloud": { "message": "Model ID from your provider account" },
+  "psApiKeyOptional": { "message": "API key (optional)" },
+  "psApiKey": { "message": "API key" },
+  "psGetApiKey": { "message": "Get API key" },
+  "psKeyPlaceholderLocal": { "message": "Leave blank if your local server needs no key" },
+  "psKeyPlaceholderCloud": { "message": "Encrypted and saved on this device" },
+  "psNoticeCloud": {
+    "message": "☁️ **Data notice:** Help Me Fill stores no data, but generating suggestions **sends your extracted document text and field metadata to $PROVIDER$**. Nothing is sent until you review and approve it on the next step.",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "psNoticeLocal": {
+    "message": "🏠 **Setup required:** install and start [$NAME$]($URL$) on this computer, then load a model (for example `$MODEL$`). Saving runs a quick local check that the server is reachable. Requests stay on this machine — nothing is sent to the cloud.",
+    "placeholders": { "name": { "content": "$1" }, "url": { "content": "$2" }, "model": { "content": "$3" } }
+  },
+  "psNoticeCustom": { "message": "🏠 **Setup required:** start your local OpenAI-compatible server (Ollama, LM Studio, llamafile, vLLM…) and enter its `/v1/chat/completions` address above. Allowed hosts over `http://`: `localhost`, `127.0.0.1`, and private LAN ranges (`192.168.x.x`, `10.x.x.x`, `172.16–31.x.x`). Saving runs a quick check that the server is reachable. Requests stay on your machine or local network — nothing is sent to the cloud." },
+  "psEnableBuiltinModel": { "message": "Enable on-device model" },
+  "psSaveVerify": { "message": "Save & verify" },
+  "psSaveVerifyKey": { "message": "Save & verify key" },
+  "psRemoveKey": { "message": "Remove key" },
+  "psRevokePermission": { "message": "Revoke host permission" },
+  "psPermissionRevoked": { "message": "Host permission revoked." },
+  "psPermissionRevokeFailed": { "message": "Permission could not be revoked." },
+  "psKeyHint": { "message": "API keys are encrypted with AES-GCM and stored only on this device — not a hardware-backed vault, and never sent anywhere except your chosen provider. Cloud provider accounts determine model availability and charges. Local and on-device providers run entirely on this computer. No backend or subscription is included." },
+
+  "errTargetChanged": { "message": "The target tab or page changed. Scan and review again." },
+  "errConnectionLost": { "message": "The page connection was lost. Click the toolbar icon on the form page, then scan again." },
+  "errInvalidResponse": { "message": "The page returned an invalid response." },
+  "errOpenFormPage": { "message": "Open an HTTP(S) form page and click the help-me-fill toolbar icon to grant access." },
+  "errStorePage": { "message": "Browser extension stores cannot be filled. Open a normal form page." },
+  "errAccessDenied": { "message": "Page access was denied. Click the extension toolbar icon on this tab, then scan again. Restricted pages are not supported." },
+  "errNoDocumentId": { "message": "The browser did not provide a document identity. Update the browser and try again." },
+  "errPageChangedScanning": { "message": "The page changed while scanning. Try again." },
+  "errNoAck": { "message": "The page did not acknowledge the review panel. Scan again." },
+  "errConnectionClosed": { "message": "The page connection closed. Scan again." },
+  "errCanceled": { "message": "Canceled. No new request was started." },
+  "errGeneric": { "message": "The operation could not complete. Reset the session and try again." },
+
+  "fillUnknownField": { "message": "Unknown or duplicate field ID. Nothing was filled." },
+  "fillChangedSinceReview": { "message": "A field changed since review. Scan and review again." },
+  "fillNeedsApproval": { "message": "Overwriting an existing value requires explicit approval." },
+  "fillCanceledOrInactive": { "message": "The operation was canceled or the target tab is no longer active." },
+  "fillValueChangedDuring": { "message": "A field value changed during filling. Review again." },
+  "fillAlreadyContains": { "message": "Already contains the selected value." },
+  "fillChangedOnFocus": { "message": "The target changed on focus. Remaining fields were not filled." },
+  "fillVerified": { "message": "Value and native validity persisted through verification." },
+  "fillReverted": { "message": "The page changed, rejected, or replaced this value. Inspect it manually." },
+  "fillStopped": { "message": "Stopped after a target change or execution failure." },
+
+  "undoCanceled": { "message": "Undo stopped because the operation was canceled or the tab changed." },
+  "undoPreserved": { "message": "Preserved a subsequent user or page edit." },
+  "undoTargetChanged": { "message": "The target changed during undo." },
+  "undoRestored": { "message": "Previous value restored. Page-side effects cannot be undone." },
+  "undoNotRetained": { "message": "The page did not retain the previous value." },
+
+  "ctrlNotAnOption": { "message": "The selected value is not one of the field options." },
+  "ctrlNoSetter": { "message": "This control has no supported native value setter." },
+  "ctrlCheckboxBoolean": { "message": "Checkbox values must be \"true\" or \"false\"." },
+  "ctrlValueNotOption": { "message": "The value is not one of the field options." },
+  "ctrlTooLong": { "message": "Value exceeds the field length limit." },
+  "ctrlTooShort": { "message": "Value is shorter than the field minimum." },
+  "ctrlNormalize": { "message": "The browser would normalize this value. Edit it before filling." },
+  "ctrlConstraint": { "message": "Value does not satisfy the field type, pattern, or required constraint." },
+
+  "scanTooManyControls": { "message": "This page has too many controls to scan safely. Use a simpler form." },
+  "scanTooManyFields": { "message": "This page has more than 60 supported fields. No partial scan was used." },
+  "scanFormChanged": { "message": "The form changed after scanning. Scan and review again." },
+  "scanFormStructureChanged": { "message": "The form structure changed. Scan and review again." },
+
+  "idxBusy": { "message": "Another operation is still running. Wait for it to finish." },
+  "idxPageChanged": { "message": "The page changed. Scan again." },
+  "idxScanFirst": { "message": "Scan this document before filling." },
+  "idxPanelDisconnected": { "message": "The review panel is no longer connected. Nothing was filled." },
+  "idxInvalidMessage": { "message": "Invalid extension message." },
+
+  "parseUnsupportedType": { "message": "Choose a PDF, Word (.docx), Excel (.xlsx/.xls), Markdown (.md), or plain text (.txt) file. Legacy .doc and image-only scans are not supported." },
+  "parseEmpty": { "message": "This file is empty." },
+  "parseTooLarge": { "message": "Documents must be 10 MiB or smaller. Choose a smaller file." },
+
+  "pdfInvalidType": { "message": "Choose a valid PDF file. Word, Excel, Markdown, and text files are routed to their own parsers; OCR is not supported." },
+  "pdfTooLarge": { "message": "PDFs must be 10 MiB or smaller. Choose a smaller document." },
+  "pdfBadHeader": { "message": "This file does not contain a valid PDF header." },
+  "pdfPassword": { "message": "Password-protected PDFs are not supported. Choose an unprotected document." },
+  "pdfTooManyPages": { "message": "PDFs may contain at most 20 pages. Choose a shorter document; nothing was truncated." },
+  "pdfTooMuchText": { "message": "Extracted text exceeds 24,000 characters. Choose a shorter PDF; nothing was truncated." },
+  "pdfNoText": { "message": "No extractable text was found. Scanned or image-only PDFs require OCR, which is not included yet." },
+  "pdfUnreadable": { "message": "This PDF could not be read. It may be corrupt, password-protected, or use unsupported encoding." },
+
+  "docxUnreadable": { "message": "This Word file could not be read. Re-export it as .docx and try again." },
+
+  "xlsxUnreadable": { "message": "This spreadsheet could not be read. Re-export it as .xlsx and try again." },
+  "xlsxNoSheets": { "message": "This workbook has no visible sheets." },
+  "xlsxTooManySheets": {
+    "message": "Workbooks may contain at most $COUNT$ visible sheets. Choose a smaller workbook; nothing was truncated.",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+
+  "mergeTooLong": { "message": "Combined extracted text exceeds 24,000 characters. Remove a document; nothing was truncated." },
+  "mergeDocName": {
+    "message": "$COUNT$ documents",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+
+  "textNoText": { "message": "No extractable text was found. Scanned or image-only documents require OCR, which is not included yet." },
+  "textTooMuch": { "message": "Extracted text exceeds 24,000 characters. Choose a shorter document; nothing was truncated." },
+
+  "provBadModel": { "message": "Enter a valid text-model ID from your provider." },
+  "provBadKey": { "message": "Enter a valid API key without spaces." },
+  "provBuiltinNoHttp": { "message": "The on-device provider does not use HTTP requests." },
+  "provBuiltinNoHttpResponse": { "message": "The on-device provider does not use HTTP responses." },
+  "provEmptyResponse": { "message": "The provider returned an empty response." },
+  "provTooBig": { "message": "The provider response exceeded 256 KiB. Choose a shorter document." },
+  "provInvalidResponse": { "message": "The provider returned an invalid API response." },
+  "provInputTooBig": { "message": "The mapping input is empty or exceeds the prototype limits." },
+  "provNoSuggestions": { "message": "No valid suggestions were returned." },
+  "provHttp401": { "message": "Check your API key, account access, and browser-access policy." },
+  "provHttp429": { "message": "Rate limit or quota reached. Wait or check your provider account before retrying." },
+  "provHttp400": { "message": "Check the model ID and its support for this provider API and JSON output." },
+  "provHttpOther": { "message": "The provider is unavailable. Retry explicitly later." },
+  "provRequestFailed": {
+    "message": "Provider request failed ($STATUS$). $MESSAGE$",
+    "placeholders": { "status": { "content": "$1" }, "message": { "content": "$2" } }
+  },
+  "provTimeout": { "message": "The provider took longer than 60 seconds. Retry explicitly; no automatic retry was made." },
+  "provUnreachable": { "message": "Could not reach the selected provider. Check network access and API host permission." },
+
+  "verifyBuiltinUnreachable": { "message": "The on-device model is not reachable in this browser right now. Choose another provider." },
+  "verify401": { "message": "Verification failed: the API key was rejected. Check the key, account access, and browser-access policy." },
+  "verify400": { "message": "Verification failed: the endpoint or model list was not found. Check the endpoint URL and provider API." },
+  "verify429": { "message": "Verification failed: rate limit or quota reached. Wait, then try again." },
+  "verifyHttpOther": {
+    "message": "Verification failed (HTTP $STATUS$). Check the provider status and your account.",
+    "placeholders": { "status": { "content": "$1" } }
+  },
+  "verifyTimeout": { "message": "Verification timed out after 20 seconds. Check the endpoint and network, then try again." },
+  "verifyUnreachable": { "message": "Could not reach the provider to verify. Check the endpoint, network access, and host permission." },
+
+  "regBadEndpoint": { "message": "Enter a valid local endpoint URL, e.g. http://localhost:11434/v1/chat/completions." },
+  "regNeedHttp": { "message": "The custom endpoint must use http:// on a local address." },
+  "regNeedLocal": { "message": "The custom endpoint must be localhost, 127.0.0.1, or a private LAN address (192.168.x.x, 10.x.x.x, 172.16-31.x.x). Public hosts are not permitted." },
+
+  "mapTooBig": { "message": "The model output exceeded the response limit." },
+  "mapInvalidJson": { "message": "The model did not return valid JSON." },
+  "mapSchema": { "message": "The model output did not match the required mapping schema." },
+  "mapUnknownField": { "message": "The model returned an unknown or duplicate field ID." },
+  "mapMissingFields": { "message": "The model did not account for every field." },
+  "mapQuoteMissing": { "message": "A source quote was not present on its cited line." },
+  "mapValueNotOption": { "message": "A proposed value is not one of the field options." },
+  "mapCheckbox": { "message": "Checkbox assignments must use the value \"true\"; leave a box unmapped to leave it untouched." },
+  "mapDateEmpty": { "message": "A date control received an empty value." },
+  "mapUnsupported": { "message": "A proposed value was not supported by its cited evidence." },
+  "mapTooLong": { "message": "A proposed value exceeds the field length limit." },
+
+  "builtinNoApi": { "message": "This browser does not expose an on-device model. Choose a cloud provider." },
+  "builtinUnavailable": { "message": "The on-device model is unavailable on this device, browser, or policy. Choose a cloud provider." },
+  "builtinDownloading": {
+    "message": "Downloading the on-device model… $PERCENT$%",
+    "placeholders": { "percent": { "content": "$1" } }
+  },
+  "builtinTokensExceeded": {
+    "message": "The document needs about $TOKENS$ on-device tokens but only $LEFT$ fit its context window. Remove documents or choose a cloud provider; nothing was truncated.",
+    "placeholders": { "tokens": { "content": "$1" }, "left": { "content": "$2" } }
+  },
+  "builtinTooLarge": { "message": "The document is too large for the on-device model context window. Remove documents or choose a cloud provider; nothing was truncated." },
+  "builtinWaiting": { "message": "Waiting for the on-device model…" },
+  "builtinEmpty": { "message": "The on-device model returned an empty response." },
+  "builtinTimeout": { "message": "The on-device model took longer than 120 seconds. Retry explicitly; no automatic retry was made." },
+  "builtinFailed": {
+    "message": "The on-device model failed: $MESSAGE$. Choose a cloud provider if this repeats.",
+    "placeholders": { "message": { "content": "$1" } }
+  },
+
+  "anthropicRefused": { "message": "Anthropic refused or truncated the response, or returned unsupported content. Check the model or shorten the document." },
+  "geminiRefused": { "message": "Gemini refused or truncated the response. Check the model or shorten the document." },
+  "openaiRefused": { "message": "The provider refused or truncated the response, or this model is incompatible. Try a supported text model or a shorter document." }
 }

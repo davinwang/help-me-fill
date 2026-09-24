@@ -1,0 +1,351 @@
+{
+  "appName": { "message": "幫我填 Help Me Fill" },
+  "appShortName": { "message": "幫我填" },
+  "appDescription": { "message": "隱私優先的 AI 表單填寫工具。把任意 PDF、DOCX、XLSX、Markdown 一鍵對應為網頁表單答案，填寫前逐欄位審核。自帶 API Key，或完全裝置端執行，無伺服器、無遥測、無帳號。" },
+  "actionTitle": { "message": "開啟 幫我填" },
+
+  "panelTitle": { "message": "help-me-fill — 審核與填寫" },
+  "brandSubtle": { "message": "幫我填" },
+  "errorBoundary": { "message": "面板發生問題。請關閉並重新開啟以開始新的工作階段，重試前請先檢查你的表單。" },
+  "needsExtension": { "message": "此介面需要擴充功能 API。請建置專案，在 Chrome 或 Edge 中以「載入未封裝項目」方式載入 dist/，然後點擊擴充功能工具列圖示。" },
+
+  "editLlm": { "message": "編輯 LLM" },
+  "introTitle": { "message": "你的文件，填進正確的欄位。" },
+  "introBody": { "message": "本機擷取，AI 輔助審核，再由你決定如何填寫。" },
+  "configureProviderHint": { "message": "請先設定一個服務商再開始。文件文字擷取在此瀏覽器中於本機完成；只有在你核准傳送擷取文字與欄位中繼資料後，才會聯絡服務商。" },
+  "workflowLabel": { "message": "流程" },
+  "stepDocument": { "message": "文件" },
+  "stepReview": { "message": "審核" },
+  "stepFill": { "message": "填寫" },
+  "progressParsing": { "message": "正在本機擷取文件文字…" },
+  "progressScanning": { "message": "正在讀取頁面支援的欄位…" },
+  "progressMapping": { "message": "正在等待你的服務商…" },
+  "progressFilling": { "message": "正在填寫並驗證所選欄位…" },
+  "progressUndoing": { "message": "正在還原未變更的值…" },
+  "progressCanceling": { "message": "正在取消剩餘工作。已填寫的欄位可能保留，請檢查結果。" },
+  "cancel": { "message": "取消" },
+  "aiHelpMeFill": { "message": "AI 幫我填" },
+  "backToDocuments": { "message": "返回文件" },
+  "footerNote": { "message": "文件解析一律在本機完成。AI 建議會在你同意後，將擷取文字與欄位中繼資料傳送給你選擇的服務商。關閉此面板可能取消工作；請求絕不會自動恢復。" },
+  "progressReadingPage": {
+    "message": "正在本機讀取第 $PAGE$ 頁，共 $TOTAL$ 頁…",
+    "placeholders": { "page": { "content": "$1" }, "total": { "content": "$2" } }
+  },
+  "errActiveTabChanged": { "message": "使用中的分頁已變更。請在目標頁面點擊工具列圖示，然後重新掃描並審核。" },
+  "errDocumentRouteChanged": { "message": "文件或路由已變更。請重新掃描並審核。" },
+  "errTargetTabClosed": { "message": "目標分頁已關閉。" },
+  "errInspectPartial": {
+    "message": "$MESSAGE$ 請在重新掃描前檢查頁面是否有部分變更。",
+    "placeholders": { "message": { "content": "$1" } }
+  },
+  "errNoFields": { "message": "此頁面上未找到支援的欄位。" },
+  "errHostPermissionMissing": { "message": "缺少主機權限。請重新啟用該服務商。" },
+  "metrics": {
+    "message": "$NAME$ · $MODEL$ · $CALLS$ 次請求 · $SECONDS$ 秒",
+    "placeholders": { "name": { "content": "$1" }, "model": { "content": "$2" }, "calls": { "content": "$3" }, "seconds": { "content": "$4" } }
+  },
+  "metricsUsage": {
+    "message": "$NAME$ · $MODEL$ · $CALLS$ 次請求 · $SECONDS$ 秒 · 用量：$USAGE$",
+    "placeholders": { "name": { "content": "$1" }, "model": { "content": "$2" }, "calls": { "content": "$3" }, "seconds": { "content": "$4" }, "usage": { "content": "$5" } }
+  },
+
+  "errAddOneDocument": { "message": "請一次新增一個文件；已解析的文件會保留在下方清單中。" },
+  "dropZoneLabel": { "message": "文件上傳" },
+  "dropZoneTitle": { "message": "從你的文件開始" },
+  "dropZoneBody": { "message": "將文件拖到此處，或選擇一個檔案。可視需要新增多個。" },
+  "chooseDocument": { "message": "選擇文件" },
+  "chooseDocumentFile": { "message": "選擇文件檔案" },
+  "dropZoneFormats": { "message": "PDF · Word (.docx) · Excel (.xlsx/.xls) · Markdown (.md) · 文字 (.txt) · 每個 10 MiB" },
+
+  "parsed": { "message": "已解析" },
+  "removeDocument": {
+    "message": "移除 $NAME$",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "delete": { "message": "刪除" },
+  "details": { "message": "詳情" },
+  "unitPages": { "message": "頁" },
+  "unitSheets": { "message": "個工作表" },
+  "unitParts": { "message": "個部分" },
+  "docMeta": {
+    "message": "$KIND$ · $PAGES$ $UNITS$ · $CHARS$ 個字元 · 請檢查閱讀順序與來源準確性。",
+    "placeholders": { "kind": { "content": "$1" }, "pages": { "content": "$2" }, "units": { "content": "$3" }, "chars": { "content": "$4" } }
+  },
+
+  "consentEyebrow": { "message": "在任何資料離開瀏覽器之前" },
+  "consentTitle": { "message": "審核你將分享的內容" },
+  "consentBuiltin": { "message": "產生建議由你瀏覽器的**裝置端模型**處理。擷取的文件文字與所選表單中繼資料絕不會離開此裝置。不會使用原始檔案與既有的欄位值。" },
+  "consentLocal": {
+    "message": "產生建議會將擷取的文件文字與所選表單中繼資料傳送到本電腦上的 **$PROVIDER$**。不會有任何資料傳送到雲端。不會使用原始檔案與既有的欄位值。",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "consentCloud": {
+    "message": "產生建議會將擷取的文件文字與所選表單中繼資料傳送到雲端服務商 **$PROVIDER$**。不會傳送原始檔案與既有的欄位值。",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "consentProviderFallback": { "message": "你選擇的服務商" },
+  "consentDestinationBuiltin": { "message": "裝置端模型（無網路請求）" },
+  "destinationLabel": { "message": "目標：" },
+  "modelLabel": { "message": "模型：" },
+  "previewOutgoing": { "message": "預覽將傳送的資料" },
+  "viewMappingInstructions": { "message": "檢視對應指令" },
+  "consentAccuracyBuiltin": { "message": "裝置端準確性仍屬實驗性；每筆建議仍需你審核。" },
+  "consentAccuracyLocal": { "message": "本機模型準確性各有差異；每筆建議仍需你審核。" },
+  "consentAccuracyCloud": { "message": "適用你服務商的資料保留政策與 API 費用。" },
+  "consentRequestsNote": { "message": "最多發起一次請求，外加至多一次驗證修復請求。不會自動切換服務商。" },
+  "generateBuiltin": { "message": "在裝置端產生建議" },
+  "generateLocal": { "message": "在本機產生建議" },
+  "generateCloud": {
+    "message": "傳送到 $PROVIDER$ 並產生建議",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "generateCloudFallback": { "message": "服務商" },
+  "enableProviderToContinue": { "message": "請在上方啟用一個服務商以繼續。" },
+
+  "unlabeledField": { "message": "無標籤欄位" },
+  "reviewEyebrow": { "message": "最終由你決定" },
+  "reviewTitle": { "message": "審核建議" },
+  "reviewHint": { "message": "證據顯示文字來自何處，並不代表對應一定正確。請只選擇你想填寫的值。" },
+  "selectAll": { "message": "全選支援的建議" },
+  "clearSelection": { "message": "清除選擇" },
+  "chooseOption": { "message": "（請選擇一個選項）" },
+  "checkboxTrue": { "message": "true — 勾選此項" },
+  "checkboxFalse": { "message": "false — 保留 / 不勾選" },
+  "proposedValue": { "message": "建議值" },
+  "manualOverride": { "message": "手動修改 · 請仔細核對" },
+  "currentValue": { "message": "目前值：" },
+  "allowOverwrite": { "message": "允許取代此既有值" },
+  "sourceEvidence": { "message": "來源證據" },
+  "noAssignments": { "message": "未傳回任何有證據支援的指派。表單未作變更。" },
+  "unmappedSummary": {
+    "message": "$COUNT$ 個欄位未對應",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "fillNotice": { "message": "填寫可能觸發網站的驗證、自動儲存或網路請求。此擴充功能絕不會點擊「提交」。復原無法逆轉伺服器端的副作用。" },
+  "fillSelected": {
+    "message": "填寫所選項（$COUNT$）",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+
+  "fillResultsLabel": { "message": "填寫結果" },
+  "operationResults": { "message": "操作結果" },
+  "resultsHint": { "message": "已在此頁面驗證，但未經伺服器確認。再次填寫前請重新掃描。" },
+  "fieldFallback": { "message": "欄位" },
+  "statusFilled": { "message": "已填寫" },
+  "statusRestored": { "message": "已還原" },
+  "statusSkipped": { "message": "已跳過" },
+  "statusFailed": { "message": "失敗" },
+  "statusChangedReverted": { "message": "已變更/被回退" },
+  "undoLastFill": { "message": "復原上次填寫" },
+  "undoHint": { "message": "復原會保留之後的編輯，且無法逆轉自動儲存或其他頁面端副作用。重設或重新掃描會清除復原紀錄。" },
+
+  "psStatusDefault": { "message": "請設定一個服務商以產生建議。" },
+  "kindCloud": { "message": "雲端" },
+  "kindLocal": { "message": "本機" },
+  "kindBuiltin": { "message": "裝置端" },
+  "psBuiltinUnavailableSaved": { "message": "已儲存的裝置端服務商目前在此瀏覽器中不可用。請選擇其他服務商。" },
+  "psBuiltinRestored": { "message": "裝置端服務商已還原。建議將保留在此裝置上。" },
+  "psCustomEndpointMissing": { "message": "已儲存的自訂端點缺失。請重新設定。" },
+  "psLocalRestored": { "message": "本機服務商已還原。請求將保留在此電腦上。" },
+  "psKeyRestored": { "message": "已還原儲存的金鑰。不包含服務商/模型的線上驗證。" },
+  "psRestoreFailed": { "message": "無法還原設定。請重新設定服務商。" },
+  "psUnsaved": { "message": "有未儲存的變更。請在產生建議前啟用此服務商。" },
+  "psBuiltinUnavailable": { "message": "裝置端模型目前在此瀏覽器中不可用。請選擇其他服務商。" },
+  "psPermissionDeclined": { "message": "主機權限被拒絕。未傳送任何文件。" },
+  "psCheckingBuiltin": { "message": "正在檢查裝置端模型…" },
+  "psVerifying": { "message": "正在驗證服務商…" },
+  "psBuiltinVerified": { "message": "裝置端服務商已驗證並啟用。文字絕不會離開此裝置；裝置端準確性仍屬實驗性。" },
+  "psLocalVerified": { "message": "本機服務商已驗證並啟用。請求將保留在此電腦或網路內；不會傳送到雲端。" },
+  "psCloudVerified": { "message": "服務商已驗證並啟用。金鑰有效；不保證模型在填寫方面的相容性。" },
+  "psKeyRemoved": { "message": "已移除儲存的金鑰。也可在下方撤銷主機權限。" },
+  "psKeyRemoveFailed": { "message": "無法移除金鑰。請重試。" },
+  "psSummary": { "message": "LLM 服務商" },
+  "psKinds": { "message": "雲端 · 本機 · 裝置端" },
+  "psBuiltinDetected": { "message": "偵測到裝置端選項" },
+  "psProvider": { "message": "服務商" },
+  "psKeySaved": { "message": "金鑰已儲存" },
+  "psKeySavedTitle": { "message": "此服務商已儲存 API 金鑰" },
+  "psProviderBadge": {
+    "message": "$KIND$服務商",
+    "placeholders": { "kind": { "content": "$1" } }
+  },
+  "psBuiltinReady": { "message": "瀏覽器裝置端模型已就緒。無需 API 金鑰、無網路請求；擷取的文字絕不會離開此裝置。裝置端準確性仍屬實驗性。" },
+  "psBuiltinDownload": { "message": "瀏覽器會在首次使用時下載其裝置端模型；下載進度會在產生過程中顯示。此後無需 API 金鑰，也無網路請求。" },
+  "psEndpointUrl": { "message": "端點 URL" },
+  "psModelId": { "message": "模型 ID" },
+  "psModelPlaceholderLocal": { "message": "本機伺服器上載入的模型名稱" },
+  "psModelPlaceholderCloud": { "message": "來自你服務商帳戶的模型 ID" },
+  "psApiKeyOptional": { "message": "API 金鑰（選填）" },
+  "psApiKey": { "message": "API 金鑰" },
+  "psGetApiKey": { "message": "取得 API 金鑰" },
+  "psKeyPlaceholderLocal": { "message": "如果你的本機伺服器不需要金鑰，請留空" },
+  "psKeyPlaceholderCloud": { "message": "在此裝置上加密儲存" },
+  "psNoticeCloud": {
+    "message": "☁️ **資料提示：** 幫我填不儲存任何資料，但產生建議會**將你擷取的文件文字與欄位中繼資料傳送到 $PROVIDER$**。在你於下一步審核並核准之前，不會傳送任何內容。",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "psNoticeLocal": {
+    "message": "🏠 **需要先設定：** 請在本電腦上安裝並啟動 [$NAME$]($URL$)，然後載入一個模型（例如 `$MODEL$`）。儲存時會快速進行本機檢查以確認伺服器可達。請求將保留在此電腦上——不會傳送到雲端。",
+    "placeholders": { "name": { "content": "$1" }, "url": { "content": "$2" }, "model": { "content": "$3" } }
+  },
+  "psNoticeCustom": { "message": "🏠 **需要先設定：** 啟動你的本機 OpenAI 相容伺服器（Ollama、LM Studio、llamafile、vLLM…），並在上方填入其 `/v1/chat/completions` 位址。透過 `http://` 允許的主機：`localhost`、`127.0.0.1`，以及私有區域網路位址區間（`192.168.x.x`、`10.x.x.x`、`172.16–31.x.x`）。儲存時會快速檢查伺服器是否可達。請求將保留在你的電腦或本機網路內——不會傳送到雲端。" },
+  "psEnableBuiltinModel": { "message": "啟用裝置端模型" },
+  "psSaveVerify": { "message": "儲存並驗證" },
+  "psSaveVerifyKey": { "message": "儲存並驗證金鑰" },
+  "psRemoveKey": { "message": "移除金鑰" },
+  "psRevokePermission": { "message": "撤銷主機權限" },
+  "psPermissionRevoked": { "message": "主機權限已撤銷。" },
+  "psPermissionRevokeFailed": { "message": "無法撤銷權限。" },
+  "psKeyHint": { "message": "API 金鑰使用 AES-GCM 加密，僅儲存在此裝置上——並非硬體級保險庫，且除你選擇的服務商外絕不會傳送到任何地方。雲端服務商帳戶決定模型可用性與費用。本機與裝置端服務商完全在此電腦上執行。不包含任何後端或訂閱。" },
+
+  "errTargetChanged": { "message": "目標分頁或頁面已變更。請重新掃描並審核。" },
+  "errConnectionLost": { "message": "頁面連線已遺失。請在表單頁面點擊工具列圖示，然後重新掃描。" },
+  "errInvalidResponse": { "message": "頁面傳回無效回應。" },
+  "errOpenFormPage": { "message": "請開啟一個 HTTP(S) 表單頁面並點擊 help-me-fill 工具列圖示以授予存取權。" },
+  "errStorePage": { "message": "無法在瀏覽器擴充功能商店中填寫。請開啟一個一般表單頁面。" },
+  "errAccessDenied": { "message": "頁面存取被拒絕。請在此分頁點擊擴充功能工具列圖示，然後重新掃描。不支援受限頁面。" },
+  "errNoDocumentId": { "message": "瀏覽器未提供文件識別。請更新瀏覽器後重試。" },
+  "errPageChangedScanning": { "message": "掃描過程中頁面已變更。請重試。" },
+  "errNoAck": { "message": "頁面未回應審核面板。請重新掃描。" },
+  "errConnectionClosed": { "message": "頁面連線已關閉。請重新掃描。" },
+  "errCanceled": { "message": "已取消。未發起新請求。" },
+  "errGeneric": { "message": "操作無法完成。請重設工作階段後重試。" },
+
+  "fillUnknownField": { "message": "欄位 ID 未知或重複。未填寫任何內容。" },
+  "fillChangedSinceReview": { "message": "自審核以來某欄位已變更。請重新掃描並審核。" },
+  "fillNeedsApproval": { "message": "覆寫既有值需要明確核准。" },
+  "fillCanceledOrInactive": { "message": "操作已取消，或目標分頁不再處於使用中狀態。" },
+  "fillValueChangedDuring": { "message": "填寫過程中某欄位值已變更。請重新審核。" },
+  "fillAlreadyContains": { "message": "已包含所選值。" },
+  "fillChangedOnFocus": { "message": "取得焦點時目標已變更。其餘欄位未填寫。" },
+  "fillVerified": { "message": "值與原生有效性在驗證過程中得以保留。" },
+  "fillReverted": { "message": "頁面變更、拒絕或取代了此值。請手動檢查。" },
+  "fillStopped": { "message": "在目標變更或執行失敗後已停止。" },
+
+  "undoCanceled": { "message": "復原已停止，因為操作被取消或分頁已變更。" },
+  "undoPreserved": { "message": "保留了隨後的使用者或頁面編輯。" },
+  "undoTargetChanged": { "message": "復原過程中目標已變更。" },
+  "undoRestored": { "message": "已還原之前的值。頁面端副作用無法復原。" },
+  "undoNotRetained": { "message": "頁面未保留之前的值。" },
+
+  "ctrlNotAnOption": { "message": "所選值不是欄位選項之一。" },
+  "ctrlNoSetter": { "message": "此控制項沒有支援的原生值設定器。" },
+  "ctrlCheckboxBoolean": { "message": "核取方塊的值必須為 “true” 或 “false”。" },
+  "ctrlValueNotOption": { "message": "該值不是欄位選項之一。" },
+  "ctrlTooLong": { "message": "值超出欄位長度限制。" },
+  "ctrlTooShort": { "message": "值短於欄位最小長度。" },
+  "ctrlNormalize": { "message": "瀏覽器會將此值標準化。請在填寫前修改它。" },
+  "ctrlConstraint": { "message": "值不符合欄位類型、格式或必填限制。" },
+
+  "scanTooManyControls": { "message": "此頁面控制項過多，無法安全掃描。請使用較簡單的表單。" },
+  "scanTooManyFields": { "message": "此頁面支援欄位超過 60 個。未使用部分掃描結果。" },
+  "scanFormChanged": { "message": "掃描後表單已變更。請重新掃描並審核。" },
+  "scanFormStructureChanged": { "message": "表單結構已變更。請重新掃描並審核。" },
+
+  "idxBusy": { "message": "另一個操作仍在進行中。請等待其完成。" },
+  "idxPageChanged": { "message": "頁面已變更。請重新掃描。" },
+  "idxScanFirst": { "message": "請先掃描此文件再填寫。" },
+  "idxPanelDisconnected": { "message": "審核面板已不再連線。未填寫任何內容。" },
+  "idxInvalidMessage": { "message": "無效的擴充功能訊息。" },
+
+  "parseUnsupportedType": { "message": "請選擇 PDF、Word (.docx)、Excel (.xlsx/.xls)、Markdown (.md) 或純文字 (.txt) 檔案。不支援舊版 .doc 與純圖片掃描件。" },
+  "parseEmpty": { "message": "此檔案為空。" },
+  "parseTooLarge": { "message": "文件必須不大於 10 MiB。請選擇較小的檔案。" },
+
+  "pdfInvalidType": { "message": "請選擇有效的 PDF 檔案。Word、Excel、Markdown 與文字檔案會路由至各自的解析器；不支援 OCR。" },
+  "pdfTooLarge": { "message": "PDF 必須不大於 10 MiB。請選擇較小的文件。" },
+  "pdfBadHeader": { "message": "此檔案不包含有效的 PDF 檔頭。" },
+  "pdfPassword": { "message": "不支援受密碼保護的 PDF。請選擇未加密的文件。" },
+  "pdfTooManyPages": { "message": "PDF 最多可包含 20 頁。請選擇較短的文件；未作任何截斷。" },
+  "pdfTooMuchText": { "message": "擷取的文字超過 24,000 個字元。請選擇較短的 PDF；未作任何截斷。" },
+  "pdfNoText": { "message": "未找到可擷取的文字。掃描件或純圖片 PDF 需要 OCR，目前尚未包含。" },
+  "pdfUnreadable": { "message": "無法讀取此 PDF。它可能已損毀、受密碼保護，或使用了不支援的編碼。" },
+
+  "docxUnreadable": { "message": "無法讀取此 Word 檔案。請將其重新匯出為 .docx 後重試。" },
+
+  "xlsxUnreadable": { "message": "無法讀取此試算表。請將其重新匯出為 .xlsx 後重試。" },
+  "xlsxNoSheets": { "message": "此活頁簿沒有可見的工作表。" },
+  "xlsxTooManySheets": {
+    "message": "活頁簿最多可包含 $COUNT$ 個可見工作表。請選擇較小的活頁簿；未作任何截斷。",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+
+  "mergeTooLong": { "message": "合併後擷取的文字超過 24,000 個字元。請移除一個文件；未作任何截斷。" },
+  "mergeDocName": {
+    "message": "$COUNT$ 個文件",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+
+  "textNoText": { "message": "未找到可擷取的文字。掃描件或純圖片文件需要 OCR，目前尚未包含。" },
+  "textTooMuch": { "message": "擷取的文字超過 24,000 個字元。請選擇較短的文件；未作任何截斷。" },
+
+  "provBadModel": { "message": "請輸入來自你服務商的有效文字模型 ID。" },
+  "provBadKey": { "message": "請輸入有效的、不含空格的 API 金鑰。" },
+  "provBuiltinNoHttp": { "message": "裝置端服務商不使用 HTTP 請求。" },
+  "provBuiltinNoHttpResponse": { "message": "裝置端服務商不使用 HTTP 回應。" },
+  "provEmptyResponse": { "message": "服務商傳回空白回應。" },
+  "provTooBig": { "message": "服務商回應超過 256 KiB。請選擇較短的文件。" },
+  "provInvalidResponse": { "message": "服務商傳回無效的 API 回應。" },
+  "provInputTooBig": { "message": "對應輸入為空或超出原型限制。" },
+  "provNoSuggestions": { "message": "未傳回有效的建議。" },
+  "provHttp401": { "message": "請檢查你的 API 金鑰、帳戶存取權與瀏覽器存取策略。" },
+  "provHttp429": { "message": "已達到速率限制或配額。請等待，或在重試前檢查你的服務商帳戶。" },
+  "provHttp400": { "message": "請檢查模型 ID 及其對此服務商 API 與 JSON 輸出的支援情況。" },
+  "provHttpOther": { "message": "服務商不可用。請稍後明確重試。" },
+  "provRequestFailed": {
+    "message": "服務商請求失敗（$STATUS$）。$MESSAGE$",
+    "placeholders": { "status": { "content": "$1" }, "message": { "content": "$2" } }
+  },
+  "provTimeout": { "message": "服務商耗時超過 60 秒。請明確重試；未進行自動重試。" },
+  "provUnreachable": { "message": "無法連線到所選服務商。請檢查網路存取與 API 主機權限。" },
+
+  "verifyBuiltinUnreachable": { "message": "裝置端模型目前在此瀏覽器中無法連線。請選擇其他服務商。" },
+  "verify401": { "message": "驗證失敗：API 金鑰被拒絕。請檢查金鑰、帳戶存取權與瀏覽器存取策略。" },
+  "verify400": { "message": "驗證失敗：未找到端點或模型清單。請檢查端點 URL 與服務商 API。" },
+  "verify429": { "message": "驗證失敗：已達到速率限制或配額。請等待後重試。" },
+  "verifyHttpOther": {
+    "message": "驗證失敗（HTTP $STATUS$）。請檢查服務商狀態與你的帳戶。",
+    "placeholders": { "status": { "content": "$1" } }
+  },
+  "verifyTimeout": { "message": "驗證在 20 秒後逾時。請檢查端點與網路後重試。" },
+  "verifyUnreachable": { "message": "無法連線到服務商進行驗證。請檢查端點、網路存取與主機權限。" },
+
+  "regBadEndpoint": { "message": "請輸入有效的本機端點 URL，例如 http://localhost:11434/v1/chat/completions。" },
+  "regNeedHttp": { "message": "自訂端點必須在本機位址上使用 http://。" },
+  "regNeedLocal": { "message": "自訂端點必須是 localhost、127.0.0.1 或私有區域網路位址（192.168.x.x、10.x.x.x、172.16-31.x.x）。不允許公網主機。" },
+
+  "mapTooBig": { "message": "模型輸出超出回應限制。" },
+  "mapInvalidJson": { "message": "模型未傳回有效的 JSON。" },
+  "mapSchema": { "message": "模型輸出不符合所需的對應結構。" },
+  "mapUnknownField": { "message": "模型傳回未知或重複的欄位 ID。" },
+  "mapMissingFields": { "message": "模型未涵蓋每一個欄位。" },
+  "mapQuoteMissing": { "message": "某筆來源引文未出現在其引用的行中。" },
+  "mapValueNotOption": { "message": "某筆建議值不是欄位選項之一。" },
+  "mapCheckbox": { "message": "核取方塊指派必須使用值 “true”；若要保留不勾選，請將該欄位留為未對應。" },
+  "mapDateEmpty": { "message": "某日期控制項收到空值。" },
+  "mapUnsupported": { "message": "某筆建議值未獲得其引用證據的支持。" },
+  "mapTooLong": { "message": "某筆建議值超出欄位長度限制。" },
+
+  "builtinNoApi": { "message": "此瀏覽器未提供裝置端模型。請選擇雲端服務商。" },
+  "builtinUnavailable": { "message": "裝置端模型在此裝置、瀏覽器或原則下不可用。請選擇雲端服務商。" },
+  "builtinDownloading": {
+    "message": "正在下載裝置端模型… $PERCENT$%",
+    "placeholders": { "percent": { "content": "$1" } }
+  },
+  "builtinTokensExceeded": {
+    "message": "該文件大約需要 $TOKENS$ 個裝置端 token，但其內容視窗只能容納 $LEFT$ 個。請移除文件或選擇雲端服務商；未作任何截斷。",
+    "placeholders": { "tokens": { "content": "$1" }, "left": { "content": "$2" } }
+  },
+  "builtinTooLarge": { "message": "該文件對裝置端模型的內容視窗而言過大。請移除文件或選擇雲端服務商；未作任何截斷。" },
+  "builtinWaiting": { "message": "正在等待裝置端模型…" },
+  "builtinEmpty": { "message": "裝置端模型傳回空白回應。" },
+  "builtinTimeout": { "message": "裝置端模型耗時超過 120 秒。請明確重試；未進行自動重試。" },
+  "builtinFailed": {
+    "message": "裝置端模型失敗：$MESSAGE$。如果反覆出現，請選擇雲端服務商。",
+    "placeholders": { "message": { "content": "$1" } }
+  },
+
+  "anthropicRefused": { "message": "Anthropic 拒絕或截斷了回應，或傳回了不支援的內容。請檢查模型或縮短文件。" },
+  "geminiRefused": { "message": "Gemini 拒絕或截斷了回應。請檢查模型或縮短文件。" },
+  "openaiRefused": { "message": "服務商拒絕或截斷了回應，或此模型不相容。請嘗試支援的文字模型或較短的文件。" }
+}

@@ -1,0 +1,351 @@
+{
+  "appName": { "message": "Help Me Fill" },
+  "appShortName": { "message": "Help Me Fill" },
+  "appDescription": { "message": "أداة تعبئة النماذج بالذكاء الاصطناعي التي تضع الخصوصية أولًا. حوّل أي PDF أو DOCX أو XLSX أو Markdown إلى نموذج ويب معبّأ، مع المراجعة قبل التعبئة. أحضر مفتاح الذكاء الاصطناعي الخاص بك، أو شغّلها بالكامل على الجهاز. بلا خوادم، بلا قياس عن بُعد، بلا حساب." },
+  "actionTitle": { "message": "فتح Help Me Fill" },
+
+  "panelTitle": { "message": "help-me-fill — المراجعة والتعبئة" },
+  "brandSubtle": { "message": "Help Me Fill" },
+  "errorBoundary": { "message": "واجهت اللوحة مشكلة. أغلقها ثم أعد فتحها لبدء جلسة جديدة. افحص نموذجك قبل إعادة المحاولة." },
+  "needsExtension": { "message": "تحتاج هذه الواجهة إلى واجهات برمجة التطبيقات الخاصة بالإضافة. قم ببناء المشروع، وحمّل dist/ كإضافة غير معبّأة في Chrome أو Edge، ثم انقر على أيقونة الإضافة في شريط الأدوات." },
+
+  "editLlm": { "message": "تحرير LLM" },
+  "introTitle": { "message": "مستندك. في الحقول الصحيحة." },
+  "introBody": { "message": "استخرج محليًا، وراجع بالذكاء الاصطناعي، ثم عبّئ وفق شروطك." },
+  "configureProviderHint": { "message": "قم بتكوين مزوّد للبدء. يتم استخراج نص المستند محليًا في هذا المتصفح؛ ولا يتم الاتصال بالمزوّد إلا بعد موافقتك على إرسال النص المستخرج والبيانات الوصفية للحقول." },
+  "workflowLabel": { "message": "سير العمل" },
+  "stepDocument": { "message": "المستند" },
+  "stepReview": { "message": "المراجعة" },
+  "stepFill": { "message": "التعبئة" },
+  "progressParsing": { "message": "جارٍ استخراج نص المستند محليًا…" },
+  "progressScanning": { "message": "جارٍ قراءة حقول الصفحة المدعومة…" },
+  "progressMapping": { "message": "في انتظار مزوّدك…" },
+  "progressFilling": { "message": "جارٍ تعبئة الحقول المحددة والتحقق منها…" },
+  "progressUndoing": { "message": "جارٍ استعادة القيم غير المتغيرة…" },
+  "progressCanceling": { "message": "جارٍ إلغاء العمل المتبقي. قد تبقى الحقول التي تمت تعبئتها؛ افحص النتائج." },
+  "cancel": { "message": "إلغاء" },
+  "aiHelpMeFill": { "message": "أيها الذكاء الاصطناعي، ساعدني في التعبئة" },
+  "backToDocuments": { "message": "العودة إلى المستندات" },
+  "footerNote": { "message": "يبقى تحليل المستند محليًا. ترسل اقتراحات الذكاء الاصطناعي النص المستخرج والبيانات الوصفية للحقول إلى المزوّد الذي تختاره بعد الموافقة. قد يؤدي إغلاق هذه اللوحة إلى إلغاء العمل؛ ولا تُستأنف الطلبات تلقائيًا أبدًا." },
+  "progressReadingPage": {
+    "message": "جارٍ قراءة الصفحة $PAGE$ من $TOTAL$ محليًا…",
+    "placeholders": { "page": { "content": "$1" }, "total": { "content": "$2" } }
+  },
+  "errActiveTabChanged": { "message": "تغيّر علامة التبويب النشطة. انقر على أيقونة شريط الأدوات في الصفحة المقصودة، ثم أعد الفحص والمراجعة." },
+  "errDocumentRouteChanged": { "message": "تغيّر المستند أو المسار. أعد الفحص والمراجعة." },
+  "errTargetTabClosed": { "message": "تم إغلاق علامة التبويب المستهدفة." },
+  "errInspectPartial": {
+    "message": "$MESSAGE$ افحص الصفحة بحثًا عن تغييرات جزئية قبل إعادة الفحص.",
+    "placeholders": { "message": { "content": "$1" } }
+  },
+  "errNoFields": { "message": "لم يتم العثور على حقول مدعومة في هذه الصفحة." },
+  "errHostPermissionMissing": { "message": "إذن المضيف مفقود. قم بتمكين المزوّد مرة أخرى." },
+  "metrics": {
+    "message": "$NAME$ · $MODEL$ · $CALLS$ طلب · $SECONDS$ ثانية",
+    "placeholders": { "name": { "content": "$1" }, "model": { "content": "$2" }, "calls": { "content": "$3" }, "seconds": { "content": "$4" } }
+  },
+  "metricsUsage": {
+    "message": "$NAME$ · $MODEL$ · $CALLS$ طلب · $SECONDS$ ثانية · الاستخدام: $USAGE$",
+    "placeholders": { "name": { "content": "$1" }, "model": { "content": "$2" }, "calls": { "content": "$3" }, "seconds": { "content": "$4" }, "usage": { "content": "$5" } }
+  },
+
+  "errAddOneDocument": { "message": "أضف مستندًا واحدًا في كل مرة؛ تبقى المستندات المحلّلة في القائمة أدناه." },
+  "dropZoneLabel": { "message": "رفع المستندات" },
+  "dropZoneTitle": { "message": "ابدأ بمستنداتك" },
+  "dropZoneBody": { "message": "أفلت المستندات هنا، أو اختر ملفًا. أضف ما تحتاجه." },
+  "chooseDocument": { "message": "اختر مستندًا" },
+  "chooseDocumentFile": { "message": "اختر ملف مستند" },
+  "dropZoneFormats": { "message": "PDF · Word (.docx) · Excel (.xlsx/.xls) · Markdown (.md) · نص (.txt) · 10 ميبيبايت لكل ملف" },
+
+  "parsed": { "message": "تم التحليل" },
+  "removeDocument": {
+    "message": "إزالة $NAME$",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "delete": { "message": "حذف" },
+  "details": { "message": "التفاصيل" },
+  "unitPages": { "message": "صفحات" },
+  "unitSheets": { "message": "أوراق" },
+  "unitParts": { "message": "أجزاء" },
+  "docMeta": {
+    "message": "$KIND$ · $PAGES$ $UNITS$ · $CHARS$ حرفًا · تحقق من ترتيب القراءة ودقة المصدر.",
+    "placeholders": { "kind": { "content": "$1" }, "pages": { "content": "$2" }, "units": { "content": "$3" }, "chars": { "content": "$4" } }
+  },
+
+  "consentEyebrow": { "message": "قبل أن يغادر أي شيء متصفحك" },
+  "consentTitle": { "message": "راجع ما تشاركه" },
+  "consentBuiltin": { "message": "تتم معالجة إنشاء الاقتراحات بواسطة **النموذج على الجهاز** في متصفحك. لا يغادر نص المستند المستخرج والبيانات الوصفية للنموذج المحددة هذا الجهاز أبدًا. لا يتم استخدام الملفات الأصلية ولا قيم الحقول الموجودة." },
+  "consentLocal": {
+    "message": "يرسل إنشاء الاقتراحات نص المستند المستخرج والبيانات الوصفية للنموذج المحددة إلى **$PROVIDER$** على هذا الحاسوب. لا يتم إرسال أي شيء إلى السحابة. لا يتم استخدام الملفات الأصلية ولا قيم الحقول الموجودة.",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "consentCloud": {
+    "message": "يرسل إنشاء الاقتراحات نص المستند المستخرج والبيانات الوصفية للنموذج المحددة إلى **$PROVIDER$**، وهو مزوّد سحابي. لا يتم إرسال الملفات الأصلية ولا قيم الحقول الموجودة.",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "consentProviderFallback": { "message": "المزوّد الذي اخترته" },
+  "consentDestinationBuiltin": { "message": "النموذج على الجهاز (بلا طلب شبكة)" },
+  "destinationLabel": { "message": "الوجهة:" },
+  "modelLabel": { "message": "النموذج:" },
+  "previewOutgoing": { "message": "معاينة البيانات الصادرة" },
+  "viewMappingInstructions": { "message": "عرض تعليمات الربط" },
+  "consentAccuracyBuiltin": { "message": "دقة النموذج على الجهاز تجريبية؛ ولا يزال كل اقتراح بحاجة إلى مراجعتك." },
+  "consentAccuracyLocal": { "message": "تختلف دقة النموذج المحلي؛ ولا يزال كل اقتراح بحاجة إلى مراجعتك." },
+  "consentAccuracyCloud": { "message": "تنطبق سياسة الاحتفاظ الخاصة بمزوّدك ورسوم واجهة برمجة التطبيقات." },
+  "consentRequestsNote": { "message": "قد يتم إجراء طلب واحد بالإضافة إلى طلب إصلاح تحقق واحد على الأكثر. لا يوجد تراجع تلقائي إلى مزوّد آخر." },
+  "generateBuiltin": { "message": "إنشاء الاقتراحات على الجهاز" },
+  "generateLocal": { "message": "إنشاء الاقتراحات محليًا" },
+  "generateCloud": {
+    "message": "الإرسال إلى $PROVIDER$ وإنشاء الاقتراحات",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "generateCloudFallback": { "message": "المزوّد" },
+  "enableProviderToContinue": { "message": "قم بتمكين مزوّد أعلاه للمتابعة." },
+
+  "unlabeledField": { "message": "حقل بلا تسمية" },
+  "reviewEyebrow": { "message": "أنت صاحب القرار النهائي" },
+  "reviewTitle": { "message": "مراجعة الاقتراحات" },
+  "reviewHint": { "message": "توضّح الأدلة مصدر النص، لا أن المطابقة صحيحة. حدد فقط القيم التي تريد تعبئتها." },
+  "selectAll": { "message": "تحديد كل الاقتراحات المدعومة" },
+  "clearSelection": { "message": "مسح التحديد" },
+  "chooseOption": { "message": "(اختر خيارًا)" },
+  "checkboxTrue": { "message": "true — ضع علامة في هذا المربع" },
+  "checkboxFalse": { "message": "false — اتركه / أزل العلامة" },
+  "proposedValue": { "message": "القيمة المقترحة" },
+  "manualOverride": { "message": "تعديل يدوي · تحقق بعناية" },
+  "currentValue": { "message": "القيمة الحالية:" },
+  "allowOverwrite": { "message": "السماح باستبدال هذه القيمة الموجودة" },
+  "sourceEvidence": { "message": "أدلة المصدر" },
+  "noAssignments": { "message": "لم تُرجَع أي تعيينات مدعومة ومستندة إلى أدلة. لم يتم تغيير النموذج." },
+  "unmappedSummary": {
+    "message": "$COUNT$ حقول غير مربوطة",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "fillNotice": { "message": "قد تؤدي التعبئة إلى تشغيل تحقق الموقع أو الحفظ التلقائي أو طلبات الشبكة. لا تنقر هذه الإضافة أبدًا على «إرسال». لا يمكن للتراجع عكس الآثار من جانب الخادم." },
+  "fillSelected": {
+    "message": "تعبئة المحدد ($COUNT$)",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+
+  "fillResultsLabel": { "message": "نتائج التعبئة" },
+  "operationResults": { "message": "نتائج العملية" },
+  "resultsHint": { "message": "تم التحقق في هذه الصفحة، ولم يؤكده الخادم. أعد الفحص قبل تعبئة أخرى." },
+  "fieldFallback": { "message": "حقل" },
+  "statusFilled": { "message": "تمت التعبئة" },
+  "statusRestored": { "message": "تمت الاستعادة" },
+  "statusSkipped": { "message": "تم التخطي" },
+  "statusFailed": { "message": "فشل" },
+  "statusChangedReverted": { "message": "تغيّر/تراجع" },
+  "undoLastFill": { "message": "التراجع عن آخر تعبئة" },
+  "undoHint": { "message": "يحافظ التراجع على التعديلات اللاحقة ولا يمكنه عكس الحفظ التلقائي أو غيره من الآثار من جانب الصفحة. تؤدي إعادة التعيين أو إعادة الفحص إلى مسح التراجع." },
+
+  "psStatusDefault": { "message": "قم بتكوين مزوّد لإنشاء الاقتراحات." },
+  "kindCloud": { "message": "سحابي" },
+  "kindLocal": { "message": "محلي" },
+  "kindBuiltin": { "message": "على الجهاز" },
+  "psBuiltinUnavailableSaved": { "message": "المزوّد على الجهاز المحفوظ غير متاح في هذا المتصفح حاليًا. اختر مزوّدًا آخر." },
+  "psBuiltinRestored": { "message": "تمت استعادة المزوّد على الجهاز. تبقى الاقتراحات على هذا الجهاز." },
+  "psCustomEndpointMissing": { "message": "نقطة النهاية المخصصة المحفوظة مفقودة. قم بتكوينها مرة أخرى." },
+  "psLocalRestored": { "message": "تمت استعادة المزوّد المحلي. تبقى الطلبات على هذا الحاسوب." },
+  "psKeyRestored": { "message": "تمت استعادة المفتاح المحفوظ. لا يتضمن ذلك التحقق المباشر من المزوّد/النموذج." },
+  "psRestoreFailed": { "message": "تعذّرت استعادة الإعدادات. قم بتكوين المزوّد مرة أخرى." },
+  "psUnsaved": { "message": "تغييرات غير محفوظة. قم بتمكين هذا المزوّد قبل إنشاء الاقتراحات." },
+  "psBuiltinUnavailable": { "message": "النموذج على الجهاز غير متاح في هذا المتصفح حاليًا. اختر مزوّدًا آخر." },
+  "psPermissionDeclined": { "message": "تم رفض إذن المضيف. لم يتم إرسال أي مستند." },
+  "psCheckingBuiltin": { "message": "جارٍ التحقق من النموذج على الجهاز…" },
+  "psVerifying": { "message": "جارٍ التحقق من المزوّد…" },
+  "psBuiltinVerified": { "message": "تم التحقق من المزوّد على الجهاز وتمكينه. لا يغادر النص هذا الجهاز أبدًا؛ ودقة النموذج على الجهاز تجريبية." },
+  "psLocalVerified": { "message": "تم التحقق من المزوّد المحلي وتمكينه. تبقى الطلبات على هذا الحاسوب أو الشبكة؛ ولا يتم إرسال أي شيء إلى السحابة." },
+  "psCloudVerified": { "message": "تم التحقق من المزوّد وتمكينه. المفتاح يعمل؛ ولا يُضمن توافق النموذج للتعبئة." },
+  "psKeyRemoved": { "message": "تمت إزالة المفتاح المحفوظ. يمكن أيضًا إبطال إذن المضيف أدناه." },
+  "psKeyRemoveFailed": { "message": "تعذّرت إزالة المفتاح. حاول مرة أخرى." },
+  "psSummary": { "message": "مزوّد LLM" },
+  "psKinds": { "message": "سحابي · محلي · على الجهاز" },
+  "psBuiltinDetected": { "message": "تم اكتشاف خيار على الجهاز" },
+  "psProvider": { "message": "المزوّد" },
+  "psKeySaved": { "message": "تم حفظ المفتاح" },
+  "psKeySavedTitle": { "message": "تم حفظ مفتاح واجهة برمجة تطبيقات لهذا المزوّد" },
+  "psProviderBadge": {
+    "message": "مزوّد $KIND$",
+    "placeholders": { "kind": { "content": "$1" } }
+  },
+  "psBuiltinReady": { "message": "النموذج على الجهاز في المتصفح جاهز. بلا مفتاح واجهة برمجة تطبيقات، وبلا طلب شبكة؛ ولا يغادر النص المستخرج هذا الجهاز أبدًا. دقة النموذج على الجهاز تجريبية." },
+  "psBuiltinDownload": { "message": "سينزّل المتصفح نموذجه على الجهاز عند أول استخدام؛ ويظهر تقدّم التنزيل أثناء الإنشاء. بعد ذلك لا حاجة لمفتاح واجهة برمجة تطبيقات ولا لطلب شبكة." },
+  "psEndpointUrl": { "message": "عنوان نقطة النهاية" },
+  "psModelId": { "message": "معرّف النموذج" },
+  "psModelPlaceholderLocal": { "message": "اسم النموذج المحمّل على خادمك المحلي" },
+  "psModelPlaceholderCloud": { "message": "معرّف النموذج من حساب المزوّد الخاص بك" },
+  "psApiKeyOptional": { "message": "مفتاح واجهة برمجة التطبيقات (اختياري)" },
+  "psApiKey": { "message": "مفتاح واجهة برمجة التطبيقات" },
+  "psGetApiKey": { "message": "الحصول على مفتاح واجهة برمجة التطبيقات" },
+  "psKeyPlaceholderLocal": { "message": "اتركه فارغًا إذا لم يكن خادمك المحلي بحاجة إلى مفتاح" },
+  "psKeyPlaceholderCloud": { "message": "يُشفَّر ويُحفظ على هذا الجهاز" },
+  "psNoticeCloud": {
+    "message": "☁️ **تنبيه البيانات:** لا يخزّن Help Me Fill أي بيانات، لكن إنشاء الاقتراحات **يرسل نص مستندك المستخرج والبيانات الوصفية للحقول إلى $PROVIDER$**. لا يتم إرسال أي شيء حتى تراجعها وتوافق عليها في الخطوة التالية.",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "psNoticeLocal": {
+    "message": "🏠 **يلزم الإعداد:** قم بتثبيت [$NAME$]($URL$) وتشغيله على هذا الحاسوب، ثم حمّل نموذجًا (على سبيل المثال `$MODEL$`). يُجري الحفظ فحصًا محليًا سريعًا للتأكد من إمكانية الوصول إلى الخادم. تبقى الطلبات على هذا الحاسوب — ولا يتم إرسال أي شيء إلى السحابة.",
+    "placeholders": { "name": { "content": "$1" }, "url": { "content": "$2" }, "model": { "content": "$3" } }
+  },
+  "psNoticeCustom": { "message": "🏠 **يلزم الإعداد:** شغّل خادمك المحلي المتوافق مع OpenAI (مثل Ollama أو LM Studio أو llamafile أو vLLM…) وأدخل أعلاه عنوان `/v1/chat/completions` الخاص به. المضيفات المسموحة عبر `http://`: و`localhost` و`127.0.0.1` ونطاقات الشبكة المحلية الخاصة (`192.168.x.x` و`10.x.x.x` و`172.16–31.x.x`). يُجري الحفظ فحصًا سريعًا للتأكد من إمكانية الوصول إلى الخادم. تبقى الطلبات على حاسوبك أو شبكتك المحلية — ولا يتم إرسال أي شيء إلى السحابة." },
+  "psEnableBuiltinModel": { "message": "تمكين النموذج على الجهاز" },
+  "psSaveVerify": { "message": "حفظ وتحقق" },
+  "psSaveVerifyKey": { "message": "حفظ المفتاح والتحقق" },
+  "psRemoveKey": { "message": "إزالة المفتاح" },
+  "psRevokePermission": { "message": "إبطال إذن المضيف" },
+  "psPermissionRevoked": { "message": "تم إبطال إذن المضيف." },
+  "psPermissionRevokeFailed": { "message": "تعذّر إبطال الإذن." },
+  "psKeyHint": { "message": "تُشفَّر مفاتيح واجهة برمجة التطبيقات باستخدام AES-GCM وتُخزَّن على هذا الجهاز فقط — وليست خزنة مدعومة بعتاد، ولا تُرسل إلى أي مكان باستثناء المزوّد الذي تختاره. تحدد حسابات المزوّدين السحابيين توافر النموذج والرسوم. تعمل المزوّدات المحلية وعلى الجهاز بالكامل على هذا الحاسوب. لا يتضمن ذلك أي خادم خلفي أو اشتراك." },
+
+  "errTargetChanged": { "message": "تغيّرت علامة التبويب أو الصفحة المستهدفة. أعد الفحص والمراجعة." },
+  "errConnectionLost": { "message": "فُقد الاتصال بالصفحة. انقر على أيقونة شريط الأدوات في صفحة النموذج، ثم أعد الفحص." },
+  "errInvalidResponse": { "message": "أعادت الصفحة استجابة غير صالحة." },
+  "errOpenFormPage": { "message": "افتح صفحة نموذج HTTP(S) وانقر على أيقونة شريط الأدوات الخاصة بـ help-me-fill لمنح الوصول." },
+  "errStorePage": { "message": "لا يمكن تعبئة متاجر إضافات المتصفح. افتح صفحة نموذج عادية." },
+  "errAccessDenied": { "message": "تم رفض الوصول إلى الصفحة. انقر على أيقونة الإضافة في شريط الأدوات في علامة التبويب هذه، ثم أعد الفحص. الصفحات المقيّدة غير مدعومة." },
+  "errNoDocumentId": { "message": "لم يقدّم المتصفح هوية للمستند. حدّث المتصفح وحاول مرة أخرى." },
+  "errPageChangedScanning": { "message": "تغيّرت الصفحة أثناء الفحص. حاول مرة أخرى." },
+  "errNoAck": { "message": "لم تُقرّ الصفحة بلوحة المراجعة. أعد الفحص." },
+  "errConnectionClosed": { "message": "أُغلق الاتصال بالصفحة. أعد الفحص." },
+  "errCanceled": { "message": "تم الإلغاء. لم يبدأ أي طلب جديد." },
+  "errGeneric": { "message": "تعذّر إكمال العملية. أعد ضبط الجلسة وحاول مرة أخرى." },
+
+  "fillUnknownField": { "message": "معرّف الحقل غير معروف أو مكرر. لم تتم تعبئة أي شيء." },
+  "fillChangedSinceReview": { "message": "تغيّر حقل منذ المراجعة. أعد الفحص والمراجعة." },
+  "fillNeedsApproval": { "message": "يتطلب استبدال قيمة موجودة موافقة صريحة." },
+  "fillCanceledOrInactive": { "message": "أُلغيت العملية أو أن علامة التبويب المستهدفة لم تعد نشطة." },
+  "fillValueChangedDuring": { "message": "تغيّرت قيمة حقل أثناء التعبئة. راجع مرة أخرى." },
+  "fillAlreadyContains": { "message": "يحتوي بالفعل على القيمة المحددة." },
+  "fillChangedOnFocus": { "message": "تغيّر الهدف عند التركيز. لم تتم تعبئة الحقول المتبقية." },
+  "fillVerified": { "message": "بقيت القيمة والصلاحية الأصلية طوال التحقق." },
+  "fillReverted": { "message": "غيّرت الصفحة هذه القيمة أو رفضتها أو استبدلتها. افحصها يدويًا." },
+  "fillStopped": { "message": "توقف بعد تغيير في الهدف أو فشل في التنفيذ." },
+
+  "undoCanceled": { "message": "توقف التراجع لأن العملية أُلغيت أو تغيّرت علامة التبويب." },
+  "undoPreserved": { "message": "تم الحفاظ على تعديل لاحق من المستخدم أو الصفحة." },
+  "undoTargetChanged": { "message": "تغيّر الهدف أثناء التراجع." },
+  "undoRestored": { "message": "تمت استعادة القيمة السابقة. لا يمكن التراجع عن الآثار من جانب الصفحة." },
+  "undoNotRetained": { "message": "لم تحتفظ الصفحة بالقيمة السابقة." },
+
+  "ctrlNotAnOption": { "message": "القيمة المحددة ليست أحد خيارات الحقل." },
+  "ctrlNoSetter": { "message": "لا يملك عنصر التحكم هذا مُعيِّن قيمة أصلي مدعوم." },
+  "ctrlCheckboxBoolean": { "message": "يجب أن تكون قيم مربعات الاختيار \"true\" أو \"false\"." },
+  "ctrlValueNotOption": { "message": "القيمة ليست أحد خيارات الحقل." },
+  "ctrlTooLong": { "message": "تتجاوز القيمة حد طول الحقل." },
+  "ctrlTooShort": { "message": "القيمة أقصر من الحد الأدنى للحقل." },
+  "ctrlNormalize": { "message": "سيقوم المتصفح بتسوية هذه القيمة. حرّرها قبل التعبئة." },
+  "ctrlConstraint": { "message": "لا تحقق القيمة نوع الحقل أو النمط أو قيد الإلزام." },
+
+  "scanTooManyControls": { "message": "تحتوي هذه الصفحة على عناصر تحكم كثيرة جدًا بحيث لا يمكن فحصها بأمان. استخدم نموذجًا أبسط." },
+  "scanTooManyFields": { "message": "تحتوي هذه الصفحة على أكثر من 60 حقلًا مدعومًا. لم يُستخدم أي فحص جزئي." },
+  "scanFormChanged": { "message": "تغيّر النموذج بعد الفحص. أعد الفحص والمراجعة." },
+  "scanFormStructureChanged": { "message": "تغيّرت بنية النموذج. أعد الفحص والمراجعة." },
+
+  "idxBusy": { "message": "لا تزال هناك عملية أخرى قيد التشغيل. انتظر حتى تكتمل." },
+  "idxPageChanged": { "message": "تغيّرت الصفحة. أعد الفحص." },
+  "idxScanFirst": { "message": "افحص هذا المستند قبل التعبئة." },
+  "idxPanelDisconnected": { "message": "لم تعد لوحة المراجعة متصلة. لم تتم تعبئة أي شيء." },
+  "idxInvalidMessage": { "message": "رسالة إضافة غير صالحة." },
+
+  "parseUnsupportedType": { "message": "اختر ملف PDF أو Word (.docx) أو Excel (.xlsx/.xls) أو Markdown (.md) أو نص عادي (.txt). ملفات ‎.doc القديمة والمستندات الممسوحة ضوئيًا image-only غير مدعومة." },
+  "parseEmpty": { "message": "هذا الملف فارغ." },
+  "parseTooLarge": { "message": "يجب ألا تزيد المستندات عن 10 ميبيبايت. اختر ملفًا أصغر." },
+
+  "pdfInvalidType": { "message": "اختر ملف PDF صالحًا. يتم توجيه ملفات Word وExcel وMarkdown والنص إلى محللاتها الخاصة؛ ولا يدعم التعرّف الضوئي على الحروف (OCR)." },
+  "pdfTooLarge": { "message": "يجب ألا تزيد ملفات PDF عن 10 ميبيبايت. اختر مستندًا أصغر." },
+  "pdfBadHeader": { "message": "لا يحتوي هذا الملف على ترويسة PDF صالحة." },
+  "pdfPassword": { "message": "ملفات PDF المحمية بكلمة مرور غير مدعومة. اختر مستندًا غير محمي." },
+  "pdfTooManyPages": { "message": "يمكن أن تحتوي ملفات PDF على 20 صفحة كحد أقصى. اختر مستندًا أقصر؛ لم يتم اقتطاع أي شيء." },
+  "pdfTooMuchText": { "message": "يتجاوز النص المستخرج 24٬000 حرف. اختر ملف PDF أقصر؛ لم يتم اقتطاع أي شيء." },
+  "pdfNoText": { "message": "لم يتم العثور على نص قابل للاستخراج. تتطلب ملفات PDF الممسوحة ضوئيًا أو image-only التعرّف الضوئي على الحروف، وهو غير متضمّن بعد." },
+  "pdfUnreadable": { "message": "تعذّرت قراءة ملف PDF هذا. قد يكون تالفًا أو محميًا بكلمة مرور أو يستخدم ترميزًا غير مدعوم." },
+
+  "docxUnreadable": { "message": "تعذّرت قراءة ملف Word هذا. أعد تصديره كـ ‎.docx وحاول مرة أخرى." },
+
+  "xlsxUnreadable": { "message": "تعذّرت قراءة جدول البيانات هذا. أعد تصديره كـ ‎.xlsx وحاول مرة أخرى." },
+  "xlsxNoSheets": { "message": "لا يحتوي هذا المصنف على أوراق مرئية." },
+  "xlsxTooManySheets": {
+    "message": "يمكن أن تحتوي المصنفات على $COUNT$ ورقة مرئية كحد أقصى. اختر مصنفًا أصغر؛ لم يتم اقتطاع أي شيء.",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+
+  "mergeTooLong": { "message": "يتجاوز النص المستخرج المجمّع 24٬000 حرف. أزل مستندًا؛ لم يتم اقتطاع أي شيء." },
+  "mergeDocName": {
+    "message": "$COUNT$ مستندات",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+
+  "textNoText": { "message": "لم يتم العثور على نص قابل للاستخراج. تتطلب المستندات الممسوحة ضوئيًا أو image-only التعرّف الضوئي على الحروف، وهو غير متضمّن بعد." },
+  "textTooMuch": { "message": "يتجاوز النص المستخرج 24٬000 حرف. اختر مستندًا أقصر؛ لم يتم اقتطاع أي شيء." },
+
+  "provBadModel": { "message": "أدخل معرّف نموذج نصي صالحًا من مزوّدك." },
+  "provBadKey": { "message": "أدخل مفتاح واجهة برمجة تطبيقات صالحًا بدون مسافات." },
+  "provBuiltinNoHttp": { "message": "لا يستخدم المزوّد على الجهاز طلبات HTTP." },
+  "provBuiltinNoHttpResponse": { "message": "لا يستخدم المزوّد على الجهاز استجابات HTTP." },
+  "provEmptyResponse": { "message": "أعاد المزوّد استجابة فارغة." },
+  "provTooBig": { "message": "تجاوزت استجابة المزوّد 256 كيبيبايت. اختر مستندًا أقصر." },
+  "provInvalidResponse": { "message": "أعاد المزوّد استجابة واجهة برمجة تطبيقات غير صالحة." },
+  "provInputTooBig": { "message": "إدخال الربط فارغ أو يتجاوز حدود النموذج الأولي." },
+  "provNoSuggestions": { "message": "لم تُرجَع أي اقتراحات صالحة." },
+  "provHttp401": { "message": "تحقق من مفتاح واجهة برمجة التطبيقات ووصول الحساب وسياسة وصول المتصفح." },
+  "provHttp429": { "message": "تم بلوغ حد المعدل أو الحصة. انتظر أو تحقق من حساب المزوّد قبل إعادة المحاولة." },
+  "provHttp400": { "message": "تحقق من معرّف النموذج ودعمه لواجهة برمجة تطبيقات هذا المزوّد ولإخراج JSON." },
+  "provHttpOther": { "message": "المزوّد غير متاح. أعد المحاولة صراحةً لاحقًا." },
+  "provRequestFailed": {
+    "message": "فشل طلب المزوّد ($STATUS$). $MESSAGE$",
+    "placeholders": { "status": { "content": "$1" }, "message": { "content": "$2" } }
+  },
+  "provTimeout": { "message": "استغرق المزوّد أكثر من 60 ثانية. أعد المحاولة صراحةً؛ لم تتم أي إعادة محاولة تلقائية." },
+  "provUnreachable": { "message": "تعذّر الوصول إلى المزوّد المحدد. تحقق من وصول الشبكة وإذن مضيف واجهة برمجة التطبيقات." },
+
+  "verifyBuiltinUnreachable": { "message": "لا يمكن الوصول إلى النموذج على الجهاز في هذا المتصفح حاليًا. اختر مزوّدًا آخر." },
+  "verify401": { "message": "فشل التحقق: تم رفض مفتاح واجهة برمجة التطبيقات. تحقق من المفتاح ووصول الحساب وسياسة وصول المتصفح." },
+  "verify400": { "message": "فشل التحقق: لم يتم العثور على نقطة النهاية أو قائمة النماذج. تحقق من عنوان نقطة النهاية وواجهة برمجة تطبيقات المزوّد." },
+  "verify429": { "message": "فشل التحقق: تم بلوغ حد المعدل أو الحصة. انتظر ثم حاول مرة أخرى." },
+  "verifyHttpOther": {
+    "message": "فشل التحقق (HTTP $STATUS$). تحقق من حالة المزوّد وحسابك.",
+    "placeholders": { "status": { "content": "$1" } }
+  },
+  "verifyTimeout": { "message": "انتهت مهلة التحقق بعد 20 ثانية. تحقق من نقطة النهاية والشبكة ثم حاول مرة أخرى." },
+  "verifyUnreachable": { "message": "تعذّر الوصول إلى المزوّد للتحقق. تحقق من نقطة النهاية ووصول الشبكة وإذن المضيف." },
+
+  "regBadEndpoint": { "message": "أدخل عنوان نقطة نهاية محلية صالحًا، مثل http://localhost:11434/v1/chat/completions." },
+  "regNeedHttp": { "message": "يجب أن تستخدم نقطة النهاية المخصصة http:// على عنوان محلي." },
+  "regNeedLocal": { "message": "يجب أن تكون نقطة النهاية المخصصة localhost أو 127.0.0.1 أو عنوان شبكة محلية خاصة (192.168.x.x أو 10.x.x.x أو 172.16-31.x.x). المضيفات العامة غير مسموح بها." },
+
+  "mapTooBig": { "message": "تجاوز مخرج النموذج حد الاستجابة." },
+  "mapInvalidJson": { "message": "لم يُرجع النموذج JSON صالحًا." },
+  "mapSchema": { "message": "لم يطابق مخرج النموذج مخطط الربط المطلوب." },
+  "mapUnknownField": { "message": "أعاد النموذج معرّف حقل غير معروف أو مكرر." },
+  "mapMissingFields": { "message": "لم يراعِ النموذج كل حقل." },
+  "mapQuoteMissing": { "message": "لم يكن اقتباس المصدر موجودًا في السطر المشار إليه." },
+  "mapValueNotOption": { "message": "إحدى القيم المقترحة ليست أحد خيارات الحقل." },
+  "mapCheckbox": { "message": "يجب أن تستخدم تعيينات مربع الاختيار القيمة \"true\"؛ اترك المربع غير مربوط لعدم المساس به." },
+  "mapDateEmpty": { "message": "تلقى عنصر تحكم التاريخ قيمة فارغة." },
+  "mapUnsupported": { "message": "لم تكن إحدى القيم المقترحة مدعومة بأدلتها المشار إليها." },
+  "mapTooLong": { "message": "تتجاوز إحدى القيم المقترحة حد طول الحقل." },
+
+  "builtinNoApi": { "message": "لا يعرض هذا المتصفح نموذجًا على الجهاز. اختر مزوّدًا سحابيًا." },
+  "builtinUnavailable": { "message": "النموذج على الجهاز غير متاح على هذا الجهاز أو المتصفح أو السياسة. اختر مزوّدًا سحابيًا." },
+  "builtinDownloading": {
+    "message": "جارٍ تنزيل النموذج على الجهاز… $PERCENT$٪",
+    "placeholders": { "percent": { "content": "$1" } }
+  },
+  "builtinTokensExceeded": {
+    "message": "يحتاج المستند إلى نحو $TOKENS$ رمزًا على الجهاز لكن لا تتسع نافذة سياقه إلا لـ $LEFT$. أزل مستندات أو اختر مزوّدًا سحابيًا؛ لم يتم اقتطاع أي شيء.",
+    "placeholders": { "tokens": { "content": "$1" }, "left": { "content": "$2" } }
+  },
+  "builtinTooLarge": { "message": "المستند كبير جدًا على نافذة سياق النموذج على الجهاز. أزل مستندات أو اختر مزوّدًا سحابيًا؛ لم يتم اقتطاع أي شيء." },
+  "builtinWaiting": { "message": "في انتظار النموذج على الجهاز…" },
+  "builtinEmpty": { "message": "أعاد النموذج على الجهاز استجابة فارغة." },
+  "builtinTimeout": { "message": "استغرق النموذج على الجهاز أكثر من 120 ثانية. أعد المحاولة صراحةً؛ لم تتم أي إعادة محاولة تلقائية." },
+  "builtinFailed": {
+    "message": "فشل النموذج على الجهاز: $MESSAGE$. اختر مزوّدًا سحابيًا إذا تكرر ذلك.",
+    "placeholders": { "message": { "content": "$1" } }
+  },
+
+  "anthropicRefused": { "message": "رفض Anthropic الاستجابة أو اقتطعها، أو أعاد محتوى غير مدعوم. تحقق من النموذج أو قصّر المستند." },
+  "geminiRefused": { "message": "رفض Gemini الاستجابة أو اقتطعها. تحقق من النموذج أو قصّر المستند." },
+  "openaiRefused": { "message": "رفض المزوّد الاستجابة أو اقتطعها، أو أن هذا النموذج غير متوافق. جرّب نموذج نص مدعوم أو مستندًا أقصر." }
+}

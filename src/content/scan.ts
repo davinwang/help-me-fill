@@ -1,5 +1,6 @@
 import { LIMITS, type LocalField, type Scan } from '../shared/schemas';
 import { UserError } from '../shared/errors';
+import { t } from '../shared/i18n';
 import { controlType, isRichText, optionsOf, readValue, TEXT_INPUT_TYPES, type SupportedControl } from './controls';
 
 export type TextControl = SupportedControl;
@@ -72,12 +73,12 @@ export function fingerprint(element: TextControl): string {
 }
 export function scanPage(doc: Document = document): Registry {
   const nodes = doc.querySelectorAll<TextControl>(EDITABLE_SELECTOR);
-  if (nodes.length > 1_000) throw new UserError('This page has too many controls to scan safely. Use a simpler form.');
+  if (nodes.length > 1_000) throw new UserError(t('scanTooManyControls'));
   const fields = new Map<string, RegisteredField>(), exclusions: Record<string, number> = {};
   for (const element of nodes) {
     const reason = exclusion(element);
     if (reason) { exclusions[reason] = (exclusions[reason] ?? 0) + 1; continue; }
-    if (fields.size >= LIMITS.fields) throw new UserError('This page has more than 60 supported fields. No partial scan was used.');
+    if (fields.size >= LIMITS.fields) throw new UserError(t('scanTooManyFields'));
     const id = crypto.randomUUID(), descriptor = describe(element, id);
     fields.set(id, { element, descriptor, signature: fingerprint(element) });
   }
@@ -86,13 +87,13 @@ export function scanPage(doc: Document = document): Registry {
   return { scan: { scanId: crypto.randomUUID(), url: doc.location.href, fields: [...fields.values()].map(item => item.descriptor), exclusions }, fields };
 }
 export function assertRegistry(registry: Registry, expectedUrl: string, scanId: string) {
-  if (registry.scan.scanId !== scanId || registry.scan.url !== expectedUrl || document.location.href !== expectedUrl) throw new UserError('The document or route changed. Scan and review again.');
+  if (registry.scan.scanId !== scanId || registry.scan.url !== expectedUrl || document.location.href !== expectedUrl) throw new UserError(t('errDocumentRouteChanged'));
   for (const field of registry.fields.values()) {
-    if (!field.element.isConnected || exclusion(field.element) || fingerprint(field.element) !== field.signature) throw new UserError('The form changed after scanning. Scan and review again.');
+    if (!field.element.isConnected || exclusion(field.element) || fingerprint(field.element) !== field.signature) throw new UserError(t('scanFormChanged'));
   }
   // Added eligible fields also invalidate the scan, even if old references survived.
   const current = Array.from(document.querySelectorAll<TextControl>(EDITABLE_SELECTOR)).filter(element => !exclusion(element));
   if (current.length !== registry.fields.size || current.some(element => ![...registry.fields.values()].some(field => field.element === element))) {
-    throw new UserError('The form structure changed. Scan and review again.');
+    throw new UserError(t('scanFormStructureChanged'));
   }
 }

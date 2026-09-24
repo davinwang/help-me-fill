@@ -1,6 +1,7 @@
 import * as XLSX from 'xlsx';
 import { LIMITS } from '../shared/schemas';
 import { throwIfAborted, UserError } from '../shared/errors';
+import { t } from '../shared/i18n';
 import { finish } from './text';
 import type { DocumentLine, ParsedDocument } from './types';
 
@@ -12,13 +13,13 @@ export async function parseWorkbook(file: File, signal: AbortSignal): Promise<Pa
   try {
     book = XLSX.read(data, { dense: true });
   } catch {
-    throw new UserError('This spreadsheet could not be read. Re-export it as .xlsx and try again.');
+    throw new UserError(t('xlsxUnreadable'));
   }
   // Provenance over flattening: every line keeps its sheet and row, and cells of a
   // row stay together instead of becoming unqualified CSV.
   const visible = book.SheetNames.filter((name, index) => !book.Workbook?.Sheets?.[index]?.Hidden);
-  if (!visible.length) throw new UserError('This workbook has no visible sheets.');
-  if (visible.length > LIMITS.pages) throw new UserError(`Workbooks may contain at most ${LIMITS.pages} visible sheets. Choose a smaller workbook; nothing was truncated.`);
+  if (!visible.length) throw new UserError(t('xlsxNoSheets'));
+  if (visible.length > LIMITS.pages) throw new UserError(t('xlsxTooManySheets', [LIMITS.pages]));
   const lines: DocumentLine[] = [];
   visible.forEach((name, sheet) => {
     // raw:false keeps displayed text, so leading zeros and identifiers survive.

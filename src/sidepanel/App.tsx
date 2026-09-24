@@ -10,6 +10,7 @@ import { createProvider } from '../ai/provider';
 import { resolveProvider, type ProviderSettings as Settings } from '../ai/registry';
 import { compactFields } from '../ai/prompts';
 import { UserError, errorMessage } from '../shared/errors';
+import { t } from '../shared/i18n';
 import { initialSession, sessionReducer, isBusy, scanActivePage, sendPage, executeOnPage, assertActive, type Action, type Phase } from './session';
 
 export function App() {
@@ -34,13 +35,13 @@ export function App() {
   useEffect(() => {
     const activated = ({ tabId, windowId }: { tabId: number; windowId: number }) => {
       const target = latest.current.scan?.target;
-      if (target && target.windowId === windowId && target.tabId !== tabId) invalidate('The active tab changed. Click the toolbar icon on the intended page, then scan and review again.');
+      if (target && target.windowId === windowId && target.tabId !== tabId) invalidate(t('errActiveTabChanged'));
     };
     const updated = (tabId: number, info: { status?: string; url?: string }) => {
       const target = latest.current.scan?.target;
-      if (target?.tabId === tabId && (info.status === 'loading' || (info.url && info.url !== target.url))) invalidate('The document or route changed. Scan and review again.');
+      if (target?.tabId === tabId && (info.status === 'loading' || (info.url && info.url !== target.url))) invalidate(t('errDocumentRouteChanged'));
     };
-    const removed = (tabId: number) => { if (latest.current.scan?.target.tabId === tabId) invalidate('The target tab was closed.'); };
+    const removed = (tabId: number) => { if (latest.current.scan?.target.tabId === tabId) invalidate(t('errTargetTabClosed')); };
     const unload = () => { epoch.current++; controller.current?.abort(); clearPage(); };
     chrome.tabs.onActivated.addListener(activated); chrome.tabs.onUpdated.addListener(updated); chrome.tabs.onRemoved.addListener(removed);
     window.addEventListener('pagehide', unload);
@@ -57,7 +58,7 @@ export function App() {
       if (epoch.current === id) dispatch(action);
     } catch (error) {
       if (epoch.current === id) dispatch(phase === 'filling' || phase === 'undoing'
-        ? { type: 'INVALIDATE', error: `${errorMessage(error)} Inspect the page for partial changes before rescanning.` }
+        ? { type: 'INVALIDATE', error: t('errInspectPartial', [errorMessage(error)]) }
         : { type: 'ERROR', error: errorMessage(error) });
     } finally { if (epoch.current === id) { running.current = false; controller.current = undefined; } }
   }
@@ -65,7 +66,7 @@ export function App() {
     if (running.current) return;
     const previous = latest.current.documents;
     void run('parsing', async signal => {
-      const document = await parseDocument(file, signal, (page, total) => { if (!signal.aborted) dispatch({ type: 'PROGRESS', text: `Reading page ${page} of ${total} locally…` }); });
+      const document = await parseDocument(file, signal, (page, total) => { if (!signal.aborted) dispatch({ type: 'PROGRESS', text: t('progressReadingPage', [page, total]) }); });
       mergeDocuments([...previous, document]); // Enforce the combined text limit before the document joins the session.
       return { type: 'DOCUMENT', document };
     });
@@ -74,7 +75,7 @@ export function App() {
     clearPage();
     void run('scanning', async () => {
       const scan = await scanActivePage();
-      if (!scan.fields.length) throw new UserError('No supported fields were found on this page.');
+      if (!scan.fields.length) throw new UserError(t('errNoFields'));
       return { type: 'SCAN', scan };
     });
   }
@@ -84,10 +85,13 @@ export function App() {
     void run('mapping', async signal => {
       await assertActive(snapshot.target);
       const info = resolveProvider(config);
-      if (info.kind !== 'builtin' && !await chrome.permissions.contains({ origins: [info.origin] })) throw new UserError('Host permission is missing. Enable the provider again.');
+      if (info.kind !== 'builtin' && !await chrome.permissions.contains({ origins: [info.origin] })) throw new UserError(t('errHostPermissionMissing'));
       const outcome = await createProvider(config).map({ lines: document.lines, fields: compactFields(snapshot.fields), signal, onProgress: text => { if (!signal.aborted) dispatch({ type: 'PROGRESS', text }); } });
       await assertActive(snapshot.target);
-      return { type: 'PLAN', plan: outcome.plan, metrics: `${info.name} · ${config.model} · ${outcome.calls} request(s) · ${(outcome.elapsedMs / 1000).toFixed(1)} s${outcome.usage ? ` · usage: ${JSON.stringify(outcome.usage)}` : ''}` };
+      const seconds = (outcome.elapsedMs / 1000).toFixed(1);
+      return { type: 'PLAN', plan: outcome.plan, metrics: outcome.usage
+        ? t('metricsUsage', [info.name, config.model, outcome.calls, seconds, JSON.stringify(outcome.usage)])
+        : t('metrics', [info.name, config.model, outcome.calls, seconds]) };
     });
   }
   function fill() {
@@ -106,34 +110,34 @@ export function App() {
     controller.current?.abort();
     const scan = state.scan;
     if (scan) void sendPage(scan.target, { type: 'CANCEL', requestId: crypto.randomUUID() }).catch(() => {});
-    dispatch({ type: 'PROGRESS', text: 'Canceling remaining work. Already filled fields may remain; inspect the results.' });
+    dispatch({ type: 'PROGRESS', text: t('progressCanceling') });
   }
   const boundScan = settings && state.stage === 'review' ? state.scan : undefined;
   return <main>
-    <header><div className="brand"><span className="brand-icon" aria-hidden="true">h</span><div><h1>help-me-fill</h1><span className="subtle">帮我填</span></div></div>{settings && <button type="button" className="link-button" disabled={busy} onClick={() => setEditing(value => !value)}>Edit LLM</button>}</header>
+    <header><div className="brand"><span className="brand-icon" aria-hidden="true">h</span><div><h1>help-me-fill</h1><span className="subtle">{t('brandSubtle')}</span></div></div>{settings && <button type="button" className="link-button" disabled={busy} onClick={() => setEditing(value => !value)}>{t('editLlm')}</button>}</header>
     {!settings && <>
-      <div className="intro"><h2>Your document. The right fields.</h2><p>Extract locally, review with AI, then fill on your terms.</p></div>
+      <div className="intro"><h2>{t('introTitle')}</h2><p>{t('introBody')}</p></div>
       <ProviderSettings disabled={busy} onChange={providerChanged} />
       {state.error && <div className="error" role="alert">{state.error}</div>}
-      <p className="hint">Configure a provider to start. Document text extraction runs locally in this browser; the provider is contacted only after you approve sending the extracted text and field metadata.</p>
+      <p className="hint">{t('configureProviderHint')}</p>
     </>}
     {settings && <>
       {editing && <ProviderSettings disabled={busy} onChange={providerChanged} />}
       {state.error && <div className="error" role="alert">{state.error}</div>}
-      <ol className="steps" aria-label="Workflow"><li className={state.stage === 'review' ? 'done' : 'active'}>1 Document</li><li className={state.plan || state.result ? 'done' : boundScan ? 'active' : ''}>2 Review</li><li className={state.result ? 'done' : state.plan ? 'active' : ''}>3 Fill</li></ol>
-      {busy && <div className="progress" role="status"><span className="spinner" aria-hidden="true" /><span>{state.progress ?? ({ parsing: 'Extracting document text locally…', scanning: 'Reading supported page fields…', mapping: 'Waiting for your provider…', filling: 'Filling and verifying selected fields…', undoing: 'Restoring unchanged values…' } as Record<string, string>)[state.phase]}</span><button type="button" className="link-button" onClick={cancel}>Cancel</button></div>}
+      <ol className="steps" aria-label={t('workflowLabel')}><li className={state.stage === 'review' ? 'done' : 'active'}>1 {t('stepDocument')}</li><li className={state.plan || state.result ? 'done' : boundScan ? 'active' : ''}>2 {t('stepReview')}</li><li className={state.result ? 'done' : state.plan ? 'active' : ''}>3 {t('stepFill')}</li></ol>
+      {busy && <div className="progress" role="status"><span className="spinner" aria-hidden="true" /><span>{state.progress ?? ({ parsing: t('progressParsing'), scanning: t('progressScanning'), mapping: t('progressMapping'), filling: t('progressFilling'), undoing: t('progressUndoing') } as Record<string, string>)[state.phase]}</span><button type="button" className="link-button" onClick={cancel}>{t('cancel')}</button></div>}
       {!boundScan && <>
         <DropZone disabled={busy} onFile={upload} onError={error => dispatch({ type: 'ERROR', error })} />
         {state.documents.map((document, index) => <DocumentPreview key={`${document.name}-${index}`} document={document} disabled={busy} onRemove={() => { clearPage(); dispatch({ type: 'REMOVE_DOCUMENT', index }); }} />)}
-        <button type="button" className="wide" disabled={busy || !state.documents.length} onClick={scan}>AI help me fill</button>
+        <button type="button" className="wide" disabled={busy || !state.documents.length} onClick={scan}>{t('aiHelpMeFill')}</button>
       </>}
       {boundScan && <>
-        <button type="button" className="link-button back" disabled={busy} onClick={() => { clearPage(); dispatch({ type: 'BACK' }); }}>← Back to documents</button>
+        <button type="button" className="link-button back" disabled={busy} onClick={() => { clearPage(); dispatch({ type: 'BACK' }); }}>← {t('backToDocuments')}</button>
         {!state.plan && <DisclosurePreview document={mergeDocuments(state.documents)} scan={boundScan} settings={settings} disabled={busy} onGenerate={generate} />}
         {state.plan && <ReviewTable state={state} dispatch={dispatch} disabled={busy || state.phase === 'complete'} onFill={fill} />}
         {state.result && <FillResults result={state.result} scan={boundScan} disabled={busy} onUndo={undo} />}
       </>}
     </>}
-    <footer>Document parsing stays local. AI suggestions send extracted text and field metadata to your chosen provider after consent. Closing this panel may cancel work; requests are never resumed automatically.</footer>
+    <footer>{t('footerNote')}</footer>
   </main>;
 }
