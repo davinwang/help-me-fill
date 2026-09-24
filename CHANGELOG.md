@@ -8,6 +8,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Ollama preset** (`src/ai/registry.ts`) — local, keyless, OpenAI-compatible
+  at `http://localhost:11434`. Default model `llama3.2`.
+- **Custom local server preset** — user-configurable endpoint for LM Studio,
+  llamafile, vLLM, or any local OpenAI-compatible server. Endpoint validated
+  by `localEndpointOrigin()` to loopback only; remote URLs are rejected with
+  a `UserError`. API key optional; `Authorization` header omitted when empty.
+- **`kind` field on every provider** (`cloud` / `local` / `builtin`) driving
+  settings-UI badges, cloud data notice beside Enable, local install hints,
+  and consent copy that distinguishes the three modes.
+- **`resolveProvider()`** in `src/ai/registry.ts` as the single source of
+  truth for a provider's network identity, replacing scattered lookups.
+- `http://localhost/*` and `http://127.0.0.1/*` added to manifest
+  `optional_host_permissions` and to the `scripts/build.mjs` assertion list,
+  preserving the exact-permission-set invariant.
+- **Brand icon set** at 16/32/48/128/512 PNGs under `brand/icons/`, sourced
+  from `brand/icon-master.png`. Replaces the previous procedural pixel-loop
+  generator in `scripts/build.mjs`.
+- **Hero banner** at `docs/assets/hero-banner.png`, referenced from the top
+  of both READMEs.
+- `scripts/render-icons.ps1` — Windows PowerShell helper that regenerates
+  the size variants from the master using built-in System.Drawing. No npm
+  dependency required.
 - Project documentation foundation: `README.md`, `README.zh-CN.md`,
   `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `ROADMAP.md`,
   `docs/PRIVACY.md`.
@@ -34,8 +56,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   "Help Me Fill" in English and "帮我填" in Simplified Chinese.
 - Manifest `description` rewritten for Chrome Web Store search clarity.
 - Manifest adds `homepage_url`, `author`, and `default_locale`.
+- Manifest `icons` adds size 32 for HiDPI toolbars.
 - `package.json` adds `license`, `author`, `homepage`, `repository`, `bugs`,
   `keywords`, and `description` metadata fields.
+- README provider tables restructured to show Cloud / Local / On-device kind
+  per row, with the new Ollama and Custom local server entries. Comparison
+  table adds a "Local LLM support" row.
+- `scripts/build.mjs` copies icons from `brand/icons/` instead of generating
+  them procedurally; the `zlib` import and CRC32/PNG-chunk helpers are gone.
 
 ### Removed
 - **Moonshot (Kimi)** host permission (`https://api.moonshot.cn/*`) dropped

@@ -1,6 +1,5 @@
 import { build } from 'vite';
-import { mkdir, copyFile, cp, writeFile, readFile, stat } from 'node:fs/promises';
-import { deflateSync } from 'node:zlib';
+import { mkdir, copyFile, cp, readFile, stat } from 'node:fs/promises';
 import assert from 'node:assert/strict';
 import { Script } from 'node:vm';
 
@@ -17,35 +16,14 @@ await copyFile('node_modules/pdfjs-dist/build/pdf.worker.min.mjs', 'dist/pdf/pdf
 await cp('node_modules/pdfjs-dist/cmaps', 'dist/pdf/cmaps', { recursive: true });
 await cp('node_modules/pdfjs-dist/standard_fonts', 'dist/pdf/standard_fonts', { recursive: true });
 
-// Generate original PNG icons without native build dependencies.
-function crc32(data) {
-  let crc = 0xffffffff;
-  for (const byte of data) {
-    crc ^= byte;
-    for (let bit = 0; bit < 8; bit++) crc = (crc >>> 1) ^ ((crc & 1) ? 0xedb88320 : 0);
-  }
-  return (crc ^ 0xffffffff) >>> 0;
-}
-function chunk(type, data) {
-  const name = Buffer.from(type), length = Buffer.alloc(4), crc = Buffer.alloc(4);
-  length.writeUInt32BE(data.length); crc.writeUInt32BE(crc32(Buffer.concat([name, data])));
-  return Buffer.concat([length, name, data, crc]);
-}
+// Icons are pre-rendered PNGs committed under brand/icons/. The master source
+// is brand/icon-master.png; regenerate the size variants any time it changes
+// with: powershell -ExecutionPolicy Bypass -File scripts/render-icons.ps1
+// The old procedural pixel-loop generator was removed - real brand assets beat
+// a synthetic purple rectangle for store listing conversion.
 await mkdir('dist/icons', { recursive: true });
-for (const size of [16, 48, 128]) {
-  const pixels = Buffer.alloc(size * (size * 4 + 1));
-  for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) {
-    const nx = x / size, ny = y / size;
-    const paper = nx > .23 && nx < .77 && ny > .16 && ny < .84;
-    const line = nx > .34 && nx < .66 && [.34, .48, .62].some(v => Math.abs(ny - v) < .024);
-    const rgb = paper && !line ? [247, 248, 255] : [77, 69, 205];
-    const offset = y * (size * 4 + 1) + 1 + x * 4;
-    pixels.set([...rgb, 255], offset);
-  }
-  const header = Buffer.alloc(13); header.writeUInt32BE(size); header.writeUInt32BE(size, 4); header[8] = 8; header[9] = 6;
-  await writeFile(`dist/icons/${size}.png`, Buffer.concat([
-    Buffer.from([137,80,78,71,13,10,26,10]), chunk('IHDR', header), chunk('IDAT', deflateSync(pixels)), chunk('IEND', Buffer.alloc(0)),
-  ]));
+for (const size of [16, 32, 48, 128]) {
+  await copyFile(`brand/icons/${size}.png`, `dist/icons/${size}.png`);
 }
 // Fail the build if the packaged content script needs module loading, permissions
 // expand unexpectedly, or manifest resources are missing from the unpacked output.

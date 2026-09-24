@@ -114,6 +114,11 @@ that provider**:
 - `https://api.deepseek.com/*` — only if you configure DeepSeek
 - `https://open.bigmodel.cn/*` — only if you configure Zhipu or Z.ai
 - `https://openrouter.ai/*` — only if you configure OpenRouter
+- `http://localhost/*` and `http://127.0.0.1/*` — only if you configure Ollama
+  or a custom local server. Loopback traffic never leaves your machine. The
+  custom endpoint is validated by `localEndpointOrigin()` in
+  `src/ai/registry.ts` to reject any non-loopback URL, so this permission
+  cannot be abused to reach remote hosts.
 
 We do not request `<all_urls>`. We do not request `tabs`, `webRequest`,
 `cookies`, `history`, `bookmarks`, or `notifications`. The build script has a

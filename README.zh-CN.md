@@ -15,6 +15,8 @@
 
 **[English README](./README.md)** · **[隐私政策](./docs/PRIVACY.md)** · **[路线图](./ROADMAP.md)** · **[贡献指南](./CONTRIBUTING.md)** · **[安全披露](./SECURITY.md)** · **[更新日志](./CHANGELOG.md)**
 
+![Help Me Fill —— 隐私优先的 AI 表单填写](./docs/assets/hero-banner.png)
+
 </div>
 
 ---
@@ -32,8 +34,9 @@ Help Me Fill 走了相反的路：
 
 整个插件运行在你的 Chrome / Edge 进程里。当你调用 AI 映射时，请求
 **从你的浏览器直接发往你自己选择的模型提供方** —— Anthropic、OpenAI、Google、
-DeepSeek、智谱 GLM、Z.ai、OpenRouter，甚至可以是 **Chrome 内置的 Gemini Nano
-端侧模型**（零联网调用）。
+DeepSeek、智谱 GLM、Z.ai、OpenRouter，也可以是**本地 Ollama** 或你自己机器上
+任意兼容 OpenAI 协议的服务（LM Studio、llamafile、vLLM），甚至可以是
+**Chrome 内置的 Gemini Nano 端侧模型**（零联网调用）。
 
 其他所有环节 —— PDF 解析、DOCX 解析、XLSX 解析、表单扫描、字段映射、
 安全填写、撤销 —— 全部在本地浏览器进程完成，不上报任何埋点。
@@ -112,19 +115,23 @@ npm run build
 
 ## 支持的模型提供方
 
-全部为 BYO-Key 模式，插件本身不持有任何共享 Key，也不代理请求。
+全部为 BYO-Key 或无 Key 模式，插件本身不持有任何共享 Key，也不代理请求。
+设置界面中每个选项都标记为**云端**、**本地**或**端侧**，让你随时知道数据流向。
 
-| 提供方 | 传输方式 | 端侧 | 获取 Key |
-|---|---|---|---|
-| Chrome 内置 AI（Gemini Nano） | `chrome.aiOrigin` | ✅ **是** | — （无需 Key） |
-| Anthropic（Claude） | HTTPS 直连 | ❌ | [console.anthropic.com](https://console.anthropic.com/settings/keys) |
-| OpenAI | HTTPS 直连 | ❌ | [platform.openai.com/api-keys](https://platform.openai.com/api-keys) |
-| Google Gemini | HTTPS 直连 | ❌ | [aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey) |
-| DeepSeek | HTTPS 直连（OpenAI 兼容） | ❌ | [platform.deepseek.com](https://platform.deepseek.com/api_keys) |
-| 智谱 GLM | HTTPS 直连（OpenAI 兼容） | ❌ | [open.bigmodel.cn](https://open.bigmodel.cn/usercenter/apikeys) |
-| Z.ai | HTTPS 直连（OpenAI 兼容） | ❌ | [z.ai](https://z.ai/manage-apikey/apikey-list) |
-| OpenRouter | HTTPS 直连（OpenAI 兼容） | ❌ | [openrouter.ai/keys](https://openrouter.ai/keys) |
-| 任意其他 OpenAI 兼容端点 | HTTPS 直连 | ❌ | 你的提供方 |
+| 提供方 | 类型 | 传输方式 | API Key | 说明 |
+|---|---|---|---|---|
+| Chrome 内置 AI（Gemini Nano） | 端侧 | `chrome.aiOrigin` | 无需 | 零联网。需要 Chrome 138+ 并开启对应 flag |
+| Ollama | 本地 | OpenAI 兼容 | 可选 | 预设 `http://localhost:11434`。任意 Ollama 拉取的模型 |
+| 自定义本地服务 | 本地 | OpenAI 兼容 | 可选 | LM Studio、llamafile、vLLM，或任意本地兼容 OpenAI 协议的端点。**端点会强制校验为 `localhost` / `127.0.0.1`**，远程地址会被 `localEndpointOrigin()`（`src/ai/registry.ts`）直接拒绝 |
+| Anthropic（Claude） | 云端 | Anthropic | 必填 | [console.anthropic.com/settings/keys](https://console.anthropic.com/settings/keys) |
+| OpenAI | 云端 | OpenAI | 必填 | [platform.openai.com/api-keys](https://platform.openai.com/api-keys) |
+| Google Gemini | 云端 | Gemini | 必填 | [aistudio.google.com/apikey](https://aistudio.google.com/apikey) |
+| DeepSeek | 云端 | OpenAI 兼容 | 必填 | [platform.deepseek.com/api_keys](https://platform.deepseek.com/api_keys) |
+| 智谱 GLM | 云端 | OpenAI 兼容 | 必填 | [open.bigmodel.cn/apikey/platform](https://open.bigmodel.cn/apikey/platform) |
+| Z.ai | 云端 | OpenAI 兼容 | 必填 | [z.ai/manage-apikey/apikey-list](https://z.ai/manage-apikey/apikey-list) |
+| OpenRouter | 云端 | OpenAI 兼容 | 必填 | [openrouter.ai/settings/keys](https://openrouter.ai/settings/keys) |
+
+**十种填表方式，其中三种永远不联网。**
 
 新增提供方只需修改 `src/ai/registry.ts` 和 `src/ai/transports/`，约 50 行代码。
 详见 [CONTRIBUTING.md](./CONTRIBUTING.md)。
@@ -146,11 +153,12 @@ npm run build
 | 开源 | ✅ MIT | ✅ MIT | ❌ | ❌ | ❌ |
 | 自带 AI Key | ✅ | ✅ | ❌ | ❌ | — |
 | 端侧 AI | ✅ Chrome 内置 | ✅ Chrome AI | ❌ | ❌ | — |
+| 本地大模型（Ollama / LM Studio / llamafile / vLLM） | ✅ 预设 + 自定义回环 | ✅ Ollama + OpenAI 兼容 | ❌ | ❌ | — |
 | 支持 PDF / DOCX / XLSX 填写 | ✅ | ❌ | 部分（PDF） | ❌ | ❌ |
 | 填写前审核 | ✅ 完整表格 | ❌ | ❌ | ❌ | ❌ |
 | 撤销 | ✅ | ❌ | ❌ | ❌ | ❌ |
 | 无遥测 | ✅ | ✅ | ❌ | ❌ | 部分 |
-| 多提供方选择 | ✅ 7+ | ✅ | ❌ | ❌ | — |
+| 多提供方选择 | ✅ 10 种（其中 3 种离线） | ✅ | ❌ | ❌ | — |
 | 框架感知填写（React/Vue/Angular） | ✅ | — | ✅ | ✅ | ✅ |
 
 ## 架构
