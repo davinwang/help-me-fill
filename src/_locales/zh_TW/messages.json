@@ -165,10 +165,6 @@
   "psProvider": { "message": "服務商" },
   "psKeySaved": { "message": "金鑰已儲存" },
   "psKeySavedTitle": { "message": "此服務商已儲存 API 金鑰" },
-  "psProviderBadge": {
-    "message": "$KIND$服務商",
-    "placeholders": { "kind": { "content": "$1" } }
-  },
   "psBuiltinReady": { "message": "瀏覽器裝置端模型已就緒。無需 API 金鑰、無網路請求；擷取的文字絕不會離開此裝置。裝置端準確性仍屬實驗性。" },
   "psBuiltinDownload": { "message": "瀏覽器會在首次使用時下載其裝置端模型；下載進度會在產生過程中顯示。此後無需 API 金鑰，也無網路請求。" },
   "psEndpointUrl": { "message": "端點 URL" },

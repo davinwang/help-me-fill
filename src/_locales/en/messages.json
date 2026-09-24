@@ -177,10 +177,6 @@
   "psProvider": { "message": "Provider" },
   "psKeySaved": { "message": "Key saved" },
   "psKeySavedTitle": { "message": "An API key is saved for this provider" },
-  "psProviderBadge": {
-    "message": "$KIND$ provider",
-    "placeholders": { "kind": { "content": "$1" } }
-  },
   "psBuiltinReady": { "message": "The browser on-device model is ready. No API key, no network request; extracted text never leaves this device. On-device accuracy is experimental." },
   "psBuiltinDownload": { "message": "The browser will download its on-device model on first use; download progress appears during generation. No API key and no network request afterwards." },
   "psEndpointUrl": { "message": "Endpoint URL" },

@@ -165,10 +165,6 @@
   "psProvider": { "message": "Fournisseur" },
   "psKeySaved": { "message": "Clé enregistrée" },
   "psKeySavedTitle": { "message": "Une clé API est enregistrée pour ce fournisseur" },
-  "psProviderBadge": {
-    "message": "Fournisseur $KIND$",
-    "placeholders": { "kind": { "content": "$1" } }
-  },
   "psBuiltinReady": { "message": "Le modèle sur l'appareil du navigateur est prêt. Aucune clé API, aucune requête réseau ; le texte extrait ne quitte jamais cet appareil. La précision sur l'appareil est expérimentale." },
   "psBuiltinDownload": { "message": "Le navigateur téléchargera son modèle sur l'appareil à la première utilisation ; la progression du téléchargement s'affiche pendant la génération. Aucune clé API et aucune requête réseau ensuite." },
   "psEndpointUrl": { "message": "URL du point de terminaison" },

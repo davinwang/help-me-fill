@@ -165,10 +165,6 @@
   "psProvider": { "message": "Anbieter" },
   "psKeySaved": { "message": "Schlüssel gespeichert" },
   "psKeySavedTitle": { "message": "Für diesen Anbieter ist ein API-Schlüssel gespeichert" },
-  "psProviderBadge": {
-    "message": "$KIND$-Anbieter",
-    "placeholders": { "kind": { "content": "$1" } }
-  },
   "psBuiltinReady": { "message": "Das Gerätemodell des Browsers ist bereit. Kein API-Schlüssel, keine Netzwerkanfrage; extrahierter Text verlässt dieses Gerät nie. Die Genauigkeit auf dem Gerät ist experimentell." },
   "psBuiltinDownload": { "message": "Der Browser lädt sein Gerätemodell bei der ersten Verwendung herunter; der Download-Fortschritt wird während der Erstellung angezeigt. Danach kein API-Schlüssel und keine Netzwerkanfrage." },
   "psEndpointUrl": { "message": "Endpunkt-URL" },
