@@ -30,7 +30,7 @@ describe('scanner', () => {
     expect(scanPage().scan.fields[0].ariaLabel).toBe('Company');
   });
   it('never includes nested control contents in labels, accessible names, or headings', () => {
-    document.body.innerHTML = '<fieldset><legend>Applicant<select><option>Private selection</option></select></legend><label id="notes">Notes<textarea aria-labelledby="notes">Private existing text</textarea></label></fieldset>';
+    document.body.innerHTML = '<fieldset><legend>Applicant<select multiple><option>Private selection</option></select></legend><label id="notes">Notes<textarea aria-labelledby="notes">Private existing text</textarea></label></fieldset>';
     const field = scanPage().scan.fields[0];
     expect(field.label).toBe('Notes'); expect(field.ariaLabel).toBe('Notes'); expect(field.context).toBe('Applicant');
     expect(field.currentValue).toBe('Private existing text');
@@ -125,5 +125,74 @@ describe('safe execution', () => {
     const { registry, writes, url, id } = setup(); const undo: UndoEntry[] = [];
     await complete(executeFill(registry, writes, url, id, guard, undo)); input().value = 'User edit';
     const result = await undoFill(registry, undo, url, id, guard); expect(result[0].status).toBe('skipped'); expect(input().value).toBe('User edit');
+  });
+});
+describe('extended controls', () => {
+  function setupFor(value: string) {
+    const registry = scanPage(), field = registry.scan.fields[0];
+    const writes = [{ fieldId: field.id, value, expectedValue: field.currentValue, allowOverwrite: false }];
+    return { registry, writes, url: registry.scan.url, id: registry.scan.scanId };
+  }
+  it('scans select, checkbox, date, and editable regions with options and current values', () => {
+    document.body.innerHTML = '<label>Country<select name="country"><option>China</option><option selected>United States</option></select></label>'
+      + '<label>Consent<input type="checkbox" name="consent"></label>'
+      + '<label>Birth date<input type="date" name="dob"></label>'
+      + '<div contenteditable="true" aria-label="Biography">Existing bio</div>';
+    const fields = scanPage().scan.fields;
+    expect(fields.map(field => field.type)).toEqual(['select', 'checkbox', 'date', 'richtext']);
+    expect(fields[0].options).toEqual(['China', 'United States']);
+    expect(fields[0].currentValue).toBe('United States');
+    expect(fields[1].currentValue).toBe('false');
+    expect(fields[3].currentValue).toBe('Existing bio');
+  });
+  it('excludes multi-select, option-less select, and nested editable regions', () => {
+    document.body.innerHTML = '<select multiple><option>a</option></select><select></select><div contenteditable="true"><div contenteditable="true">inner</div></div>';
+    const scan = scanPage().scan;
+    expect(scan.fields).toHaveLength(1);
+    expect(scan.exclusions['Multi-select controls']).toBe(1);
+    expect(scan.exclusions['Select without options']).toBe(1);
+    expect(scan.exclusions['Nested editable regions']).toBe(1);
+  });
+  it('fills a select by option label and restores on undo', async () => {
+    document.body.innerHTML = '<label>Country<select name="country"><option selected></option><option>China</option><option>United States</option></select></label>';
+    const { registry, writes, url, id } = setupFor('United States'); const undo: UndoEntry[] = [];
+    const results = await complete(executeFill(registry, writes, url, id, guard, undo));
+    expect(results[0].status).toBe('filled'); expect(document.querySelector('select')!.value).toBe('United States');
+    const restored = await complete(undoFill(registry, undo, url, id, guard));
+    expect(restored[0].status).toBe('restored'); expect(document.querySelector('select')!.selectedOptions[0].text).toBe('');
+  });
+  it('rejects a select value outside the option list before writing', async () => {
+    document.body.innerHTML = '<label>Country<select name="country"><option selected></option><option>China</option></select></label>';
+    const { registry, writes, url, id } = setupFor('Atlantis');
+    await expect(executeFill(registry, writes, url, id, guard, [])).rejects.toThrow('options');
+    expect(document.querySelector('select')!.selectedOptions[0].text).toBe('');
+  });
+  it('ticks and unticks checkboxes as booleans', async () => {
+    document.body.innerHTML = '<label>Consent<input type="checkbox" name="consent"></label>';
+    const { registry, writes, url, id } = setupFor('true'); const undo: UndoEntry[] = [];
+    const results = await complete(executeFill(registry, writes, url, id, guard, undo));
+    expect(results[0].status).toBe('filled'); expect(document.querySelector<HTMLInputElement>('input')!.checked).toBe(true);
+    await complete(undoFill(registry, undo, url, id, guard));
+    expect(document.querySelector<HTMLInputElement>('input')!.checked).toBe(false);
+  });
+  it('rejects non-boolean checkbox values', async () => {
+    document.body.innerHTML = '<label>Consent<input type="checkbox" name="consent"></label>';
+    const { registry, writes, url, id } = setupFor('yes');
+    await expect(executeFill(registry, writes, url, id, guard, [])).rejects.toThrow('true');
+  });
+  it('writes ISO dates through the native date control', async () => {
+    document.body.innerHTML = '<label>Birth date<input type="date" name="dob"></label>';
+    const { registry, writes, url, id } = setupFor('1990-03-04');
+    const results = await complete(executeFill(registry, writes, url, id, guard, []));
+    expect(results[0].status).toBe('filled'); expect(document.querySelector<HTMLInputElement>('input')!.value).toBe('1990-03-04');
+  });
+  it('writes rich text as plain text only, never markup', async () => {
+    document.body.innerHTML = '<div contenteditable="true" aria-label="Biography"></div>';
+    const { registry, writes, url, id } = setupFor('Plain <img src=x onerror=alert(1)> text');
+    const results = await complete(executeFill(registry, writes, url, id, guard, []));
+    expect(results[0].status).toBe('filled');
+    const editable = document.querySelector('[contenteditable]')!;
+    expect(editable.textContent).toBe('Plain <img src=x onerror=alert(1)> text');
+    expect(editable.querySelector('img')).toBeNull();
   });
 });

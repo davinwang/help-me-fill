@@ -1,11 +1,13 @@
 import { LIMITS, type LocalField, type Scan } from '../shared/schemas';
 import { UserError } from '../shared/errors';
+import { controlType, isRichText, optionsOf, readValue, TEXT_INPUT_TYPES, type SupportedControl } from './controls';
 
-export type TextControl = HTMLInputElement | HTMLTextAreaElement;
+export type TextControl = SupportedControl;
 export type RegisteredField = { element: TextControl; descriptor: LocalField; signature: string };
 export type Registry = { scan: Scan; fields: Map<string, RegisteredField> };
 const text = (value: string | null | undefined, max = 240) => (value ?? '').replace(/\s+/g, ' ').trim().slice(0, max);
 const sensitive = /(?:password|passcode|\botp\b|\bpin\b|\bcvv\b|\bcvc\b|credit.?card|card.?number|security.?code|verification.?code|one.?time|routing.?number|bank.?account|\biban\b|social.?security|\bssn\b|captcha|密码|验证码|银行卡|信用卡|安全码)/i;
+const EDITABLE_SELECTOR = 'input, textarea, select, [contenteditable]:not([contenteditable="false"])';
 
 export function isVisible(element: HTMLElement): boolean {
   if (element.closest('[hidden], [inert], [aria-hidden="true"]')) return false;
@@ -33,34 +35,43 @@ export function describe(element: TextControl, id: string): LocalField {
   const doc = element.ownerDocument;
   const ariaIds = (element.getAttribute('aria-labelledby') ?? '').split(/\s+/).filter(Boolean);
   const ariaLabel = text(ariaIds.map(id => labelText(doc.getElementById(id))).join(' ') || element.getAttribute('aria-label'));
-  const label = text(Array.from(element.labels ?? []).map(node => labelText(node)).join(' '));
+  const label = text(('labels' in element ? Array.from((element as HTMLInputElement).labels ?? []) : []).map(node => labelText(node)).join(' '));
   const group = element.closest('fieldset');
   const heading = labelText(group?.querySelector('legend') ?? element.closest('section')?.querySelector('h1,h2,h3'));
+  const placeholder = 'placeholder' in element ? text((element as HTMLInputElement).placeholder) : text(element.getAttribute('data-placeholder'));
+  const required = 'required' in element ? Boolean((element as HTMLInputElement).required) : element.getAttribute('aria-required') === 'true';
+  const maxLength = 'maxLength' in element ? (element as HTMLInputElement).maxLength : -1;
   return {
-    id, type: element.tagName === 'TEXTAREA' ? 'textarea' : (element as HTMLInputElement).type as LocalField['type'],
-    label, ariaLabel, placeholder: text(element.placeholder), name: text(element.name, 120), context: text(heading),
-    required: element.required, maxLength: element.maxLength,
+    id, type: controlType(element),
+    label, ariaLabel, placeholder, name: text(element.getAttribute('name'), 120), context: text(heading),
+    required, maxLength,
     pattern: element.tagName === 'INPUT' ? text((element as HTMLInputElement).pattern, 500) : '',
-    currentValue: element.value,
+    options: optionsOf(element),
+    currentValue: readValue(element),
   };
 }
 export function exclusion(element: TextControl): string | undefined {
-  if (element.tagName === 'INPUT' && !['text', 'email', 'tel', 'url'].includes((element as HTMLInputElement).type)) return 'Unsupported input type';
-  if (element.matches(':disabled') || element.readOnly || element.getAttribute('aria-disabled') === 'true') return 'Disabled or read-only';
+  if (element.tagName === 'INPUT' && !(TEXT_INPUT_TYPES as readonly string[]).includes((element as HTMLInputElement).type) && (element as HTMLInputElement).type !== 'checkbox') return 'Unsupported input type';
+  if (element.tagName === 'SELECT') {
+    if ((element as HTMLSelectElement).multiple) return 'Multi-select controls';
+    if (!optionsOf(element).length) return 'Select without options';
+  }
+  if (isRichText(element) && element.parentElement?.closest('[contenteditable]:not([contenteditable="false"])')) return 'Nested editable regions';
+  if (element.matches(':disabled') || ('readOnly' in element && (element as HTMLInputElement).readOnly) || element.getAttribute('aria-disabled') === 'true') return 'Disabled or read-only';
   if (!isVisible(element)) return 'Hidden controls';
-  const autocomplete = (element.autocomplete || element.form?.autocomplete || '').toLowerCase().split(/\s+/);
+  const autocomplete = (('autocomplete' in element ? (element as HTMLInputElement).autocomplete : '') || ('form' in element ? (element as HTMLInputElement).form?.autocomplete : '') || '').toLowerCase().split(/\s+/);
   if (autocomplete.some(token => token.startsWith('cc-') || ['one-time-code', 'current-password', 'new-password', 'username'].includes(token))) return 'Authentication or payment controls';
   const descriptor = describe(element, 'check');
   if (sensitive.test([descriptor.label, descriptor.ariaLabel, descriptor.placeholder, descriptor.name, element.id].join(' '))) return 'Potentially sensitive controls';
-  if (element.value.length > LIMITS.value || (element.getAttribute('pattern')?.length ?? 0) > 500) return 'Control exceeds safety limits';
+  if (readValue(element).length > LIMITS.value || (element.getAttribute('pattern')?.length ?? 0) > 500) return 'Control exceeds safety limits';
   return undefined;
 }
 export function fingerprint(element: TextControl): string {
   const { currentValue: _value, ...descriptor } = describe(element, 'fingerprint');
-  return JSON.stringify({ ...descriptor, domId: element.id, autocomplete: element.autocomplete, form: element.form?.id ?? '' });
+  return JSON.stringify({ ...descriptor, domId: element.id, autocomplete: 'autocomplete' in element ? (element as HTMLInputElement).autocomplete : '', form: 'form' in element ? (element as HTMLInputElement).form?.id ?? '' : '' });
 }
 export function scanPage(doc: Document = document): Registry {
-  const nodes = doc.querySelectorAll<TextControl>('input, textarea');
+  const nodes = doc.querySelectorAll<TextControl>(EDITABLE_SELECTOR);
   if (nodes.length > 1_000) throw new UserError('This page has too many controls to scan safely. Use a simpler form.');
   const fields = new Map<string, RegisteredField>(), exclusions: Record<string, number> = {};
   for (const element of nodes) {
@@ -70,8 +81,8 @@ export function scanPage(doc: Document = document): Registry {
     const id = crypto.randomUUID(), descriptor = describe(element, id);
     fields.set(id, { element, descriptor, signature: fingerprint(element) });
   }
-  const unsupported = doc.querySelectorAll('select, [contenteditable="true"], iframe').length;
-  if (unsupported) exclusions['Selects, rich text, or iframe containers'] = unsupported;
+  const unsupported = doc.querySelectorAll('iframe').length;
+  if (unsupported) exclusions['Iframe containers'] = unsupported;
   return { scan: { scanId: crypto.randomUUID(), url: doc.location.href, fields: [...fields.values()].map(item => item.descriptor), exclusions }, fields };
 }
 export function assertRegistry(registry: Registry, expectedUrl: string, scanId: string) {
@@ -80,7 +91,7 @@ export function assertRegistry(registry: Registry, expectedUrl: string, scanId: 
     if (!field.element.isConnected || exclusion(field.element) || fingerprint(field.element) !== field.signature) throw new UserError('The form changed after scanning. Scan and review again.');
   }
   // Added eligible fields also invalidate the scan, even if old references survived.
-  const current = Array.from(document.querySelectorAll<TextControl>('input, textarea')).filter(element => !exclusion(element));
+  const current = Array.from(document.querySelectorAll<TextControl>(EDITABLE_SELECTOR)).filter(element => !exclusion(element));
   if (current.length !== registry.fields.size || current.some(element => ![...registry.fields.values()].some(field => field.element === element))) {
     throw new UserError('The form structure changed. Scan and review again.');
   }

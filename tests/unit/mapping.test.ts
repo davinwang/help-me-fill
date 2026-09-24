@@ -29,6 +29,31 @@ describe('grounded mapping validation', () => {
     expect(result[0]).toEqual(field);
   });
 });
+describe('bounded control mapping (select, checkbox, date)', () => {
+  const evidence = [{ lineId: 'p1-l1', quote: '陈小明' }];
+  const selectField: FieldDescriptor = { ...field, id: 'sel', type: 'select', options: ['China', 'United States'] };
+  const checkField: FieldDescriptor = { ...field, id: 'chk', type: 'checkbox' };
+  const dateField: FieldDescriptor = { ...field, id: 'dob', type: 'date' };
+  it('coerces a select value to a listed option, case-insensitively', () => {
+    const result = parse({ assignments: [{ fieldId: 'sel', value: 'china', evidence, reason: 'Country' }], unmapped: [] }, [selectField]);
+    expect(result.assignments[0].value).toBe('China');
+  });
+  it('rejects select values outside the option list', () => {
+    expect(() => parse({ assignments: [{ fieldId: 'sel', value: 'Atlantis', evidence, reason: 'Country' }], unmapped: [] }, [selectField])).toThrow('options');
+  });
+  it('forces checkbox assignments to "true" and rejects "false"', () => {
+    expect(parse({ assignments: [{ fieldId: 'chk', value: 'true', evidence, reason: 'Consent' }], unmapped: [] }, [checkField]).assignments[0].value).toBe('true');
+    expect(() => parse({ assignments: [{ fieldId: 'chk', value: 'false', evidence, reason: 'Consent' }], unmapped: [] }, [checkField])).toThrow('true');
+  });
+  it('accepts an ISO-reformatted date whose evidence states the same instant', () => {
+    const dateLines = [{ id: 'p1-l1', page: 1, text: 'Date of birth: 4 March 1990' }];
+    const result = validateMapping(JSON.stringify({ assignments: [{ fieldId: 'dob', value: '1990-03-04', evidence: [{ lineId: 'p1-l1', quote: '4 March 1990' }], reason: 'Birth date' }], unmapped: [] }), dateLines, [dateField]);
+    expect(result.assignments[0].value).toBe('1990-03-04');
+  });
+  it('still requires verbatim grounding for free-text fields', () => {
+    expect(() => parse({ assignments: [{ fieldId: 'f1', value: 'reformatted value', evidence, reason: 'r' }], unmapped: [] }, [field])).toThrow('supported');
+  });
+});
 describe('frozen synthetic benchmark integrity (not live model accuracy)', () => {
   it('contains 12 cases and 120 unique labeled opportunities', () => {
     expect(benchmarkCases).toHaveLength(12);

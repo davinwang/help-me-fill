@@ -8,7 +8,7 @@ const scenario = benchmarkCases.find(item => item.id === params.get('case')) ?? 
 const defaults = Object.fromEntries(scenario.fields.map(field => [field.name, params.has('prefilled') && field.name === 'fullName' ? 'Existing value' : '']));
 const intro = document.createElement('p'); intro.textContent = `${framework} · ${scenario.title}`; document.querySelector('header')!.append(intro);
 const pdf = document.createElement('a'); pdf.href = `/generated/${scenario.id}.pdf`; pdf.download = `${scenario.id}.pdf`; pdf.textContent = 'Download matching synthetic PDF'; document.querySelector('header')!.append(pdf);
-function ExtraControls() { return <div><label>Password<input type="password" /></label><label>Payment card<input autoComplete="cc-number" /></label><input hidden /><input disabled /><input readOnly /><select aria-label="Unsupported select"><option>Example</option></select></div>; }
+function ExtraControls() { return <div><label>Password<input type="password" /></label><label>Payment card<input autoComplete="cc-number" /></label><input hidden /><input disabled /><input readOnly /><select aria-label="Unsupported multi-select" multiple><option>Example</option></select></div>; }
 function ReactForm() {
   const [values, setValues] = useState(defaults), [render, setRender] = useState(0);
   return <form onSubmit={event => event.preventDefault()}>
