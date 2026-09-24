@@ -28,11 +28,10 @@ function originFor(id: ProviderId, endpoint?: string): string {
   if (id === 'custom') return localEndpointOrigin(endpoint ?? '');
   return PROVIDERS[id].origin;
 }
-const KIND_META: Record<ProviderKind, { icon: string; labelKey: string }> = {
-  cloud: { icon: '☁️', labelKey: 'kindCloud' },
-  local: { icon: '🏠', labelKey: 'kindLocal' },
-  builtin: { icon: '📱', labelKey: 'kindBuiltin' },
-};
+// Kind glyph carried by every option. The dropdown is already grouped by kind,
+// but the collapsed select shows only the selected option, so a leading icon
+// keeps the cloud/local/on-device distinction visible without a separate badge.
+const KIND_ICON: Record<ProviderKind, string> = { cloud: '☁️', local: '🏠', builtin: '📱' };
 
 type Props = { disabled: boolean; onChange: (settings?: Settings) => void };
 export function ProviderSettings({ disabled, onChange }: Props) {
@@ -124,27 +123,25 @@ export function ProviderSettings({ disabled, onChange }: Props) {
     } catch { setStatus(t('psKeyRemoveFailed')); }
   }
   const kind = kindOf(provider);
-  const meta = KIND_META[kind];
-  const kindLabel = t(meta.labelKey);
-  // Group the dropdown by kind so options stay clean (just the provider name);
-  // the kind is shown once, on the colored badge outside the select. A key glyph
-  // marks providers that already have a saved key.
+  // Group the dropdown by kind; each option leads with its kind glyph, so the
+  // collapsed select still says where extracted text would be sent. A trailing
+  // key glyph marks providers that already have a saved key.
   const cloudEntries = Object.entries(PROVIDERS).filter(([, info]) => info.kind === 'cloud');
   const localEntries = Object.entries(PROVIDERS).filter(([, info]) => info.kind === 'local');
   const savedMark = (id: string) => savedKeys.has(id as ProviderId) ? '  🔑' : '';
+  const optionLabel = (name: string, icon: ProviderKind, id: string) => `${KIND_ICON[icon]} ${name}${savedMark(id)}`;
   return <details className="card settings" open>
     <summary>{t('psSummary')} <span className="subtle">{t('psKinds')}{builtin ? ` · ${t('psBuiltinDetected')}` : ''}</span></summary>
     <fieldset disabled={disabled || saving}>
       <label>{t('psProvider')}
         <select value={provider} onChange={event => { const id = event.target.value as ProviderId; setProvider(id); setModel(defaultModelFor(id)); setKey(''); dirty(); }}>
-          <optgroup label={t('kindCloud')}>{cloudEntries.map(([id, info]) => <option key={id} value={id}>{`${info.name}${savedMark(id)}`}</option>)}</optgroup>
+          <optgroup label={t('kindCloud')}>{cloudEntries.map(([id, info]) => <option key={id} value={id}>{optionLabel(info.name, info.kind, id)}</option>)}</optgroup>
           <optgroup label={t('kindLocal')}>
-            {localEntries.map(([id, info]) => <option key={id} value={id}>{`${info.name}${savedMark(id)}`}</option>)}
-            <option value="custom">{`${CUSTOM.name}${savedMark('custom')}`}</option>
+            {localEntries.map(([id, info]) => <option key={id} value={id}>{optionLabel(info.name, info.kind, id)}</option>)}
+            <option value="custom">{optionLabel(CUSTOM.name, CUSTOM.kind, 'custom')}</option>
           </optgroup>
-          {builtin && <optgroup label={t('kindBuiltin')}><option value="builtin">{BUILTIN.name}</option></optgroup>}
+          {builtin && <optgroup label={t('kindBuiltin')}><option value="builtin">{optionLabel(BUILTIN.name, BUILTIN.kind, 'builtin')}</option></optgroup>}
         </select>
-        <span className={`badge badge-${kind}`} title={t('psProviderBadge', [kindLabel])}>{meta.icon} {kindLabel}</span>
         {savedKeys.has(provider) && <span className="badge badge-saved" title={t('psKeySavedTitle')}>🔑 {t('psKeySaved')}</span>}
       </label>
       {provider === 'builtin' ? <p className="hint">{builtin === 'available'

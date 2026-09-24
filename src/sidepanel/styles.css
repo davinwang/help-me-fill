@@ -69,11 +69,8 @@ pre, .text-preview { max-height: 230px; overflow: auto; white-space: pre-wrap; o
 .error, .notice, .progress { border-radius: 9px; padding: 12px; font-size: 12px; line-height: 1.6; margin: 14px 0; }
 .error { background: #fff0f1; border: 1px solid #edc8ce; color: #963747; }
 .notice, .overwrite { background: #fff8eb; color: #785522; padding: 10px; border-radius: 6px; }
-/* Provider-kind badge next to the select: cloud, local, and on-device at a glance. */
-.badge.badge-cloud { color: #33507a; background: #e9f0fb; }
-.badge.badge-local { color: #2c7462; background: #edf7f2; }
-.badge.badge-builtin { color: #4a3f8f; background: #eeecfb; }
-.badge.badge-saved { color: #6b4fa1; background: #f1edfc; margin-inline-start: 6px; }
+/* Saved-key chip below the provider select; the kind now rides on each option. */
+.badge.badge-saved { color: #6b4fa1; background: #f1edfc; }
 .settings .badge { margin-top: 8px; }
 /* The cloud data-destination notice is deliberately prominent; local is calm info. */
 .notice-cloud { background: #fff4e0; border: 1px solid #f0c987; color: #7a4d13; }

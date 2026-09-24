@@ -165,10 +165,6 @@
   "psProvider": { "message": "プロバイダー" },
   "psKeySaved": { "message": "キー保存済み" },
   "psKeySavedTitle": { "message": "このプロバイダーには API キーが保存されています" },
-  "psProviderBadge": {
-    "message": "$KIND$プロバイダー",
-    "placeholders": { "kind": { "content": "$1" } }
-  },
   "psBuiltinReady": { "message": "ブラウザーのデバイス上モデルが準備できました。API キー不要、ネットワークリクエストなし。抽出テキストがこのデバイスから出ることはありません。デバイス上の精度は実験的です。" },
   "psBuiltinDownload": { "message": "ブラウザーは初回使用時にデバイス上モデルをダウンロードします。ダウンロードの進行状況は生成中に表示されます。以降、API キーもネットワークリクエストも不要です。" },
   "psEndpointUrl": { "message": "エンドポイント URL" },

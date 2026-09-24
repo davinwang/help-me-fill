@@ -165,10 +165,6 @@
   "psProvider": { "message": "Proveedor" },
   "psKeySaved": { "message": "Clave guardada" },
   "psKeySavedTitle": { "message": "Hay una clave de API guardada para este proveedor" },
-  "psProviderBadge": {
-    "message": "Proveedor $KIND$",
-    "placeholders": { "kind": { "content": "$1" } }
-  },
   "psBuiltinReady": { "message": "El modelo en el dispositivo del navegador está listo. Sin clave de API ni solicitud de red; el texto extraído nunca sale de este dispositivo. La precisión en el dispositivo es experimental." },
   "psBuiltinDownload": { "message": "El navegador descargará su modelo en el dispositivo en el primer uso; el progreso de la descarga aparece durante la generación. Después, sin clave de API ni solicitud de red." },
   "psEndpointUrl": { "message": "URL del punto de conexión" },
