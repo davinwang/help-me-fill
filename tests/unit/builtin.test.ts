@@ -57,6 +57,8 @@ describe('on-device transport', () => {
     const text = await builtinPrompt('SYSTEM', '{"documentLines":[]}', signal());
     expect(text).toBe(planJson);
     expect(api.sessions[0].options.initialPrompts).toEqual([{ role: 'system', content: 'SYSTEM' }]);
+    expect(api.sessions[0].options.expectedOutputs).toEqual([{ type: 'text', languages: ['en'] }]);
+    expect(api.sessions[0].options.expectedInputs).toEqual([{ type: 'text', languages: ['en'] }]);
     expect(api.sessions[0].prompts[0][1].responseConstraint).toBe(MAPPING_SCHEMA);
     expect(api.sessions[0].destroyed).toBe(true);
   });

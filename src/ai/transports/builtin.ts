@@ -1,5 +1,5 @@
 import { UserError, throwIfAborted } from '../../shared/errors';
-import { builtinApi, type BuiltinSession } from '../builtin-support';
+import { builtinApi, BUILTIN_TEXT_IO, type BuiltinSession } from '../builtin-support';
 
 // Same contract as the cloud transports, expressed as a JSON Schema so the
 // on-device model is constrained at generation time; validateMapping still
@@ -43,7 +43,7 @@ const BUILTIN_TIMEOUT = 120_000;
 export async function builtinPrompt(system: string, user: string, signal: AbortSignal, onProgress?: (text: string) => void): Promise<string> {
   const api = builtinApi();
   if (!api) throw new UserError('This browser does not expose an on-device model. Choose a cloud provider.');
-  const state = await api.availability();
+  const state = await api.availability(BUILTIN_TEXT_IO);
   if (state === 'unavailable') throw new UserError('The on-device model is unavailable on this device, browser, or policy. Choose a cloud provider.');
   throwIfAborted(signal);
   let session: BuiltinSession | undefined;
@@ -54,6 +54,8 @@ export async function builtinPrompt(system: string, user: string, signal: AbortS
   const timeout = setTimeout(() => { timedOut = true; controller.abort(); }, BUILTIN_TIMEOUT);
   try {
     session = await api.create({
+      expectedInputs: BUILTIN_TEXT_IO.expectedInputs,
+      expectedOutputs: BUILTIN_TEXT_IO.expectedOutputs,
       initialPrompts: [{ role: 'system', content: system }],
       signal: controller.signal,
       monitor: monitor => monitor.addEventListener('downloadprogress', event => {
