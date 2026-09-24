@@ -157,7 +157,7 @@
   "psBuiltinVerified": { "message": "裝置端服務商已驗證並啟用。文字絕不會離開此裝置；裝置端準確性仍屬實驗性。" },
   "psLocalVerified": { "message": "本機服務商已驗證並啟用。請求將保留在此電腦或網路內；不會傳送到雲端。" },
   "psCloudVerified": { "message": "服務商已驗證並啟用。金鑰有效；不保證模型在填寫方面的相容性。" },
-  "psKeyRemoved": { "message": "已移除儲存的金鑰。也可在下方撤銷主機權限。" },
+  "psKeyRemoved": { "message": "已移除儲存的金鑰，並撤銷了主機權限。" },
   "psKeyRemoveFailed": { "message": "無法移除金鑰。請重試。" },
   "psSummary": { "message": "LLM 服務商" },
   "psKinds": { "message": "雲端 · 本機 · 裝置端" },
@@ -189,9 +189,6 @@
   "psSaveVerify": { "message": "儲存並驗證" },
   "psSaveVerifyKey": { "message": "儲存並驗證金鑰" },
   "psRemoveKey": { "message": "移除金鑰" },
-  "psRevokePermission": { "message": "撤銷主機權限" },
-  "psPermissionRevoked": { "message": "主機權限已撤銷。" },
-  "psPermissionRevokeFailed": { "message": "無法撤銷權限。" },
   "psKeyHint": { "message": "API 金鑰使用 AES-GCM 加密，僅儲存在此裝置上——並非硬體級保險庫，且除你選擇的服務商外絕不會傳送到任何地方。雲端服務商帳戶決定模型可用性與費用。本機與裝置端服務商完全在此電腦上執行。不包含任何後端或訂閱。" },
 
   "errTargetChanged": { "message": "目標分頁或頁面已變更。請重新掃描並審核。" },

@@ -157,7 +157,7 @@
   "psBuiltinVerified": { "message": "端侧服务商已校验并启用。文本绝不会离开此设备；端侧准确性仍属实验性。" },
   "psLocalVerified": { "message": "本地服务商已校验并启用。请求将保留在此计算机或网络内；不会发送到云端。" },
   "psCloudVerified": { "message": "服务商已校验并启用。密钥有效；不保证模型在填写方面的兼容性。" },
-  "psKeyRemoved": { "message": "已移除存储的密钥。也可在下方撤销主机权限。" },
+  "psKeyRemoved": { "message": "已移除存储的密钥，并撤销了主机权限。" },
   "psKeyRemoveFailed": { "message": "无法移除密钥。请重试。" },
   "psSummary": { "message": "LLM 服务商" },
   "psKinds": { "message": "云端 · 本地 · 端侧" },
@@ -189,9 +189,6 @@
   "psSaveVerify": { "message": "保存并校验" },
   "psSaveVerifyKey": { "message": "保存并校验密钥" },
   "psRemoveKey": { "message": "移除密钥" },
-  "psRevokePermission": { "message": "撤销主机权限" },
-  "psPermissionRevoked": { "message": "主机权限已撤销。" },
-  "psPermissionRevokeFailed": { "message": "无法撤销权限。" },
   "psKeyHint": { "message": "API 密钥使用 AES-GCM 加密，仅存储在此设备上——并非硬件级保险库，且除你选择的服务商外绝不会发送到任何地方。云端服务商账户决定模型可用性与费用。本地与端侧服务商完全在此计算机上运行。不包含任何后端或订阅。" },
 
   "errTargetChanged": { "message": "目标标签页或页面已更改。请重新扫描并审核。" },

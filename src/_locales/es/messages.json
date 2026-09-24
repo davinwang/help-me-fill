@@ -157,7 +157,7 @@
   "psBuiltinVerified": { "message": "Proveedor en el dispositivo verificado y activado. El texto nunca sale de este dispositivo; la precisión en el dispositivo es experimental." },
   "psLocalVerified": { "message": "Proveedor local verificado y activado. Las solicitudes permanecen en este equipo o red; no se envía nada a la nube." },
   "psCloudVerified": { "message": "Proveedor verificado y activado. La clave funciona; no se garantiza la compatibilidad del modelo para rellenar." },
-  "psKeyRemoved": { "message": "Clave guardada eliminada. También puedes revocar abajo el permiso de host." },
+  "psKeyRemoved": { "message": "Clave guardada eliminada y permiso de host revocado." },
   "psKeyRemoveFailed": { "message": "No se pudo eliminar la clave. Inténtalo de nuevo." },
   "psSummary": { "message": "Proveedor de LLM" },
   "psKinds": { "message": "Nube · Local · En el dispositivo" },
@@ -189,9 +189,6 @@
   "psSaveVerify": { "message": "Guardar y verificar" },
   "psSaveVerifyKey": { "message": "Guardar y verificar la clave" },
   "psRemoveKey": { "message": "Quitar la clave" },
-  "psRevokePermission": { "message": "Revocar el permiso de host" },
-  "psPermissionRevoked": { "message": "Permiso de host revocado." },
-  "psPermissionRevokeFailed": { "message": "No se pudo revocar el permiso." },
   "psKeyHint": { "message": "Las claves de API se cifran con AES-GCM y se guardan solo en este dispositivo — no es una cámara acorazada respaldada por hardware, y nunca se envían a ningún lugar salvo a tu proveedor elegido. Las cuentas de los proveedores en la nube determinan la disponibilidad del modelo y los cargos. Los proveedores locales y en el dispositivo se ejecutan totalmente en este equipo. No se incluye ningún backend ni suscripción." },
 
   "errTargetChanged": { "message": "La pestaña o página de destino cambió. Vuelve a escanear y revisar." },

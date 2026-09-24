@@ -157,7 +157,7 @@
   "psBuiltinVerified": { "message": "Provedor no dispositivo verificado e ativado. O texto nunca sai deste dispositivo; a precisão no dispositivo é experimental." },
   "psLocalVerified": { "message": "Provedor local verificado e ativado. As solicitações permanecem nesta máquina ou rede; nada é enviado à nuvem." },
   "psCloudVerified": { "message": "Provedor verificado e ativado. A chave funciona; a compatibilidade do modelo para preenchimento não é garantida." },
-  "psKeyRemoved": { "message": "Chave salva removida. A permissão de host também pode ser revogada abaixo." },
+  "psKeyRemoved": { "message": "Chave salva removida e permissão de host revogada." },
   "psKeyRemoveFailed": { "message": "Não foi possível remover a chave. Tente novamente." },
   "psSummary": { "message": "Provedor de LLM" },
   "psKinds": { "message": "Nuvem · Local · No dispositivo" },
@@ -189,9 +189,6 @@
   "psSaveVerify": { "message": "Salvar e verificar" },
   "psSaveVerifyKey": { "message": "Salvar e verificar a chave" },
   "psRemoveKey": { "message": "Remover chave" },
-  "psRevokePermission": { "message": "Revogar permissão de host" },
-  "psPermissionRevoked": { "message": "Permissão de host revogada." },
-  "psPermissionRevokeFailed": { "message": "Não foi possível revogar a permissão." },
   "psKeyHint": { "message": "As chaves de API são criptografadas com AES-GCM e armazenadas apenas neste dispositivo — não é um cofre com proteção de hardware, e nunca são enviadas a nenhum lugar exceto ao provedor escolhido. As contas dos provedores em nuvem determinam a disponibilidade do modelo e as cobranças. Provedores locais e no dispositivo são executados inteiramente neste computador. Nenhum backend ou assinatura está incluído." },
 
   "errTargetChanged": { "message": "A aba ou página de destino mudou. Escaneie e revise novamente." },
