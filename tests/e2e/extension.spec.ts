@@ -28,7 +28,7 @@ test('production sidebar parses a bilingual PDF and scans the real tab', async (
     if (support) {
       await app.panel.evaluate(() => { const select = document.querySelector('select') as HTMLSelectElement; select.value = 'builtin'; select.dispatchEvent(new Event('change', { bubbles: true })); });
       expect(await app.panel.evaluate(() => document.querySelectorAll('input[type=password]').length)).toBe(0);
-      expect(await app.panel.text()).toContain('Enable on-device provider');
+      expect(await app.panel.text()).toContain('Enable on-device model');
       await app.panel.evaluate(() => { const select = document.querySelector('select') as HTMLSelectElement; select.value = 'openai'; select.dispatchEvent(new Event('change', { bubbles: true })); });
     }
     // Flash-class defaults are prefilled but editable, and each provider links to its key page.
@@ -42,8 +42,8 @@ test('production sidebar parses a bilingual PDF and scans the real tab', async (
     await expect.poll(() => app.panel.evaluate(() => document.querySelector<HTMLInputElement>('input[placeholder="Model ID from your provider account"]')?.value)).toBe(PROVIDERS.zhipu.defaultModel);
     await app.panel.evaluate(() => { (document.querySelector('select') as HTMLSelectElement).value = 'openai'; document.querySelector('select')!.dispatchEvent(new Event('change', { bubbles: true })); });
     await enableProvider(app, info.project.name === 'edge' ? 'edge://extensions/' : 'chrome://extensions/');
-    // Once enabled, the settings card hides behind Edit LLM and the workflow shows.
-    expect(await app.panel.text()).not.toContain('Enable provider');
+    // Once verified and enabled, the settings card hides behind Edit LLM and the workflow shows.
+    expect(await app.panel.text()).not.toContain('Save & verify');
     expect(await app.panel.text()).toContain('Edit LLM');
     await app.panel.upload('tests/fixtures/generated/case-02.pdf');
     await expect.poll(() => app.panel.text()).toContain('case-02.pdf');

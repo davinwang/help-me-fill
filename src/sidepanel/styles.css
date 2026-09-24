@@ -20,7 +20,7 @@ p { font-size: 13px; line-height: 1.65; margin: 8px 0; overflow-wrap: anywhere; 
 .intro p { color: var(--muted); margin: 0; }
 .card { background: var(--surface); border: 1px solid var(--border); padding: 16px; border-radius: 13px; margin: 14px 0; box-shadow: 0 2px 4px #1e1e3c03; }
 .settings summary { font-weight: 650; }
-.settings summary .subtle { display: block; margin: 4px 0 0 15px; }
+.settings summary .subtle { display: block; margin: 4px 0 0; margin-inline-start: 15px; }
 summary { cursor: pointer; font-size: 12px; line-height: 1.6; }
 details[open] > summary { margin-bottom: 12px; }
 fieldset { padding: 0; margin: 0; border: 0; min-width: 0; }
@@ -40,12 +40,12 @@ button.icon-button:hover:not(:disabled), button.icon-button:focus-visible { back
 button.icon-button:disabled { opacity: .45; }
 button.icon-button svg { width: 15px; height: 15px; }
 /* Icon-only buttons carry no visible label, so hover reveals the action name. */
-button.icon-button::after { content: attr(data-tooltip); position: absolute; top: calc(100% + 5px); right: 0; z-index: 4; padding: 3px 7px; border-radius: 5px; background: #2b2740; color: #fff; font-size: 10px; font-weight: 600; line-height: 1.4; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity .12s; }
+button.icon-button::after { content: attr(data-tooltip); position: absolute; top: calc(100% + 5px); inset-inline-end: 0; z-index: 4; padding: 3px 7px; border-radius: 5px; background: #2b2740; color: #fff; font-size: 10px; font-weight: 600; line-height: 1.4; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity .12s; }
 button.icon-button:hover:not(:disabled)::after, button.icon-button:focus-visible::after { opacity: 1; }
 button.wide { width: 100%; margin-top: 8px; }
 .doc-card { padding: 12px 16px; }
 .doc-card .section-top { gap: 8px; }
-.doc-card .badge { margin-right: auto; }
+.doc-card .badge { margin-inline-end: auto; }
 .button-row { flex-wrap: wrap; }
 :focus-visible { outline: 3px solid #b7b1fa; outline-offset: 3px; }
 .drop-zone { display: flex; flex-direction: column; align-items: center; text-align: center; border: 1.5px dashed #c9c6ed; border-radius: 14px; padding: 26px 12px; background: #f0effb; transition: background .15s; }
@@ -73,6 +73,7 @@ pre, .text-preview { max-height: 230px; overflow: auto; white-space: pre-wrap; o
 .badge.badge-cloud { color: #33507a; background: #e9f0fb; }
 .badge.badge-local { color: #2c7462; background: #edf7f2; }
 .badge.badge-builtin { color: #4a3f8f; background: #eeecfb; }
+.badge.badge-saved { color: #6b4fa1; background: #f1edfc; margin-inline-start: 6px; }
 .settings .badge { margin-top: 8px; }
 /* The cloud data-destination notice is deliberately prominent; local is calm info. */
 .notice-cloud { background: #fff4e0; border: 1px solid #f0c987; color: #7a4d13; }
@@ -88,8 +89,8 @@ pre, .text-preview { max-height: 230px; overflow: auto; white-space: pre-wrap; o
 .check-label { display: flex; align-items: center; gap: 7px; font-size: 12px; line-height: 1.5; }
 input[type=checkbox] { accent-color: var(--accent); margin: 0; width: 15px; height: 15px; flex-shrink: 0; }
 .preserve { white-space: pre-wrap; overflow-wrap: anywhere; font-weight: 600; }
-blockquote { margin: 8px 0; padding: 10px; border-left: 2px solid #c9c3ee; background: #f7f6fd; font-size: 12px; white-space: pre-wrap; overflow-wrap: anywhere; }
-ul { padding-left: 18px; font-size: 12px; line-height: 1.8; }
+blockquote { margin: 8px 0; padding: 10px; border-inline-start: 2px solid #c9c3ee; background: #f7f6fd; font-size: 12px; white-space: pre-wrap; overflow-wrap: anywhere; }
+ul { padding-inline-start: 18px; font-size: 12px; line-height: 1.8; }
 .results { list-style: none; padding: 0; }
 .results li { border-bottom: 1px solid var(--border); padding: 9px 0; }
 footer { color: var(--muted); font-size: 10px; line-height: 1.7; margin-top: 22px; padding-top: 15px; border-top: 1px solid var(--border); }

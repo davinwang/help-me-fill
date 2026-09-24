@@ -10,18 +10,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - **Ollama preset** (`src/ai/registry.ts`) — local, keyless, OpenAI-compatible
   at `http://localhost:11434`. Default model `llama3.2`.
-- **Custom local server preset** — user-configurable endpoint for LM Studio,
-  llamafile, vLLM, or any local OpenAI-compatible server. Endpoint validated
-  by `localEndpointOrigin()` to loopback only; remote URLs are rejected with
-  a `UserError`. API key optional; `Authorization` header omitted when empty.
+- **LM Studio preset** (`src/ai/registry.ts`) — local, keyless, OpenAI-compatible
+  at `http://localhost:1234`. Default model `local-model`.
+- **Custom local server preset** — user-configurable endpoint for llamafile,
+  vLLM, or any local OpenAI-compatible server. Endpoint validated by
+  `localEndpointOrigin()` to loopback and the RFC1918 private ranges
+  (`192.168.0.0/16`, `10.0.0.0/8`, `172.16.0.0/12`); public/remote URLs are
+  rejected with a `UserError`. API key optional; `Authorization` header omitted
+  when empty.
+- **Save-time provider verification** (`verifyProvider()` in `src/ai/provider.ts`)
+  — a lightweight `GET` of the provider's model list (or the on-device capability
+  gate) confirms the key, endpoint, and connectivity before saving; a failure
+  blocks the save. It sends only the API key, never document text.
+- **AES-GCM encryption of the API key at rest** (`src/shared/secret-box.ts`) — the
+  key is sealed into `chrome.storage.local` (the random data key is stored
+  alongside, so this is obfuscation, not an OS-keychain vault). Non-sensitive
+  provider/model/endpoint preferences stay unencrypted.
 - **`kind` field on every provider** (`cloud` / `local` / `builtin`) driving
   settings-UI badges, cloud data notice beside Enable, local install hints,
   and consent copy that distinguishes the three modes.
 - **`resolveProvider()`** in `src/ai/registry.ts` as the single source of
   truth for a provider's network identity, replacing scattered lookups.
-- `http://localhost/*` and `http://127.0.0.1/*` added to manifest
+- `http://localhost/*`, `http://127.0.0.1/*`, and `http://*/*` added to manifest
   `optional_host_permissions` and to the `scripts/build.mjs` assertion list,
-  preserving the exact-permission-set invariant.
+  preserving the exact-permission-set invariant. The broad `http://*/*` entry
+  exists only so a custom private-LAN origin can be requested at runtime (match
+  patterns cannot express CIDR); `localEndpointOrigin()` still restricts every
+  request to loopback/RFC1918, and no `https://*/*` is declared.
 - **Brand icon set** at 16/32/48/128/512 PNGs under `brand/icons/`, sourced
   from `brand/icon-master.png`. Replaces the previous procedural pixel-loop
   generator in `scripts/build.mjs`.
@@ -64,6 +79,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   table adds a "Local LLM support" row.
 - `scripts/build.mjs` copies icons from `brand/icons/` instead of generating
   them procedurally; the `zlib` import and CRC32/PNG-chunk helpers are gone.
+- **Provider settings UI redesigned** (`src/sidepanel/components/ProviderSettings.tsx`):
+  the dropdown groups options under Cloud / Local / On-device `<optgroup>`s and shows
+  clean provider names (no inline kind suffix); the selected kind appears once on the
+  colored badge, and a "🔑 Key saved" chip plus a per-option key glyph mark providers
+  with a stored key. The primary button is contextual — "Save & verify key" (cloud),
+  "Save & verify" (local), "Enable on-device model" (on-device).
 
 ### Removed
 - **Moonshot (Kimi)** host permission (`https://api.moonshot.cn/*`) dropped

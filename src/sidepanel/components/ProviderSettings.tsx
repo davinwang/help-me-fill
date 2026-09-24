@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { PROVIDERS, BUILTIN, CUSTOM, isProvider, localEndpointOrigin, type ProviderId, type ProviderKind, type ProviderSettings as Settings } from '../../ai/registry';
 import { detectBuiltin, type BuiltinState } from '../../ai/builtin-support';
-import { validateSettings } from '../../ai/provider';
+import { validateSettings, verifyProvider } from '../../ai/provider';
 import { errorMessage, UserError } from '../../shared/errors';
+import { t } from '../../shared/i18n';
 import { openSecret, sealSecret } from '../../shared/secret-box';
+import { Rich } from './Rich';
 
 // The custom preset has no registry entry; these helpers keep the select total.
 function kindOf(id: ProviderId): ProviderKind {
@@ -26,10 +28,10 @@ function originFor(id: ProviderId, endpoint?: string): string {
   if (id === 'custom') return localEndpointOrigin(endpoint ?? '');
   return PROVIDERS[id].origin;
 }
-const KIND_META: Record<ProviderKind, { icon: string; label: string }> = {
-  cloud: { icon: '☁️', label: 'Cloud' },
-  local: { icon: '🏠', label: 'Local' },
-  builtin: { icon: '📱', label: 'On-device' },
+const KIND_META: Record<ProviderKind, { icon: string; labelKey: string }> = {
+  cloud: { icon: '☁️', labelKey: 'kindCloud' },
+  local: { icon: '🏠', labelKey: 'kindLocal' },
+  builtin: { icon: '📱', labelKey: 'kindBuiltin' },
 };
 
 type Props = { disabled: boolean; onChange: (settings?: Settings) => void };
@@ -39,7 +41,8 @@ export function ProviderSettings({ disabled, onChange }: Props) {
   const [apiKey, setKey] = useState('');
   const [endpoint, setEndpoint] = useState('');
   const [builtin, setBuiltin] = useState<BuiltinState | undefined>(undefined);
-  const [status, setStatus] = useState('Configure a provider to generate suggestions.');
+  const [savedKeys, setSavedKeys] = useState<ReadonlySet<ProviderId>>(() => new Set());
+  const [status, setStatus] = useState(() => t('psStatusDefault'));
   const [saving, setSaving] = useState(false);
   useEffect(() => {
     let alive = true;
@@ -48,23 +51,24 @@ export function ProviderSettings({ disabled, onChange }: Props) {
       const support = await detectBuiltin();
       if (!alive) return;
       setBuiltin(support);
-      const stored = await chrome.storage.local.get('preferences');
-      const preferences = stored.preferences as { provider?: unknown; model?: unknown; endpoint?: unknown } | undefined;
-      if (!alive || !preferences || !isProvider(preferences.provider) || typeof preferences.model !== 'string') return;
+      // One read serves both the saved-key markers and the restore below.
+      const all = await chrome.storage.local.get(null);
+      if (!alive) return;
+      setSavedKeys(new Set(Object.keys(all).filter(name => name.startsWith('key:') && typeof all[name] === 'string' && all[name] !== '').map(name => name.slice(4) as ProviderId)));
+      const preferences = all.preferences as { provider?: unknown; model?: unknown; endpoint?: unknown } | undefined;
+      if (!preferences || !isProvider(preferences.provider) || typeof preferences.model !== 'string') return;
       const id = preferences.provider;
       if (id === 'builtin') {
-        if (!support) { setStatus('The saved on-device provider is not available in this browser right now. Choose another provider.'); return; }
+        if (!support) { setStatus(t('psBuiltinUnavailableSaved')); return; }
         setProvider(id); setModel(BUILTIN.defaultModel);
         onChange({ provider: id, model: BUILTIN.defaultModel, apiKey: '' });
-        setStatus('On-device provider restored. Suggestions stay on this device.');
+        setStatus(t('psBuiltinRestored'));
         return;
       }
       const savedEndpoint = id === 'custom' && typeof preferences.endpoint === 'string' ? preferences.endpoint : '';
-      if (id === 'custom' && !savedEndpoint) { setStatus('The saved custom endpoint is missing. Configure it again.'); return; }
+      if (id === 'custom' && !savedEndpoint) { setStatus(t('psCustomEndpointMissing')); return; }
       // The key is stored sealed (AES-GCM) in local storage; open it in memory only.
-      const keyStore = await chrome.storage.local.get(`key:${id}`);
-      if (!alive) return;
-      const sealed = typeof keyStore[`key:${id}`] === 'string' ? keyStore[`key:${id}`] as string : '';
+      const sealed = typeof all[`key:${id}`] === 'string' ? all[`key:${id}`] as string : '';
       const key = sealed ? await openSecret(sealed) : '';
       if (!alive) return;
       setProvider(id); setModel(preferences.model); setKey(key); if (id === 'custom') setEndpoint(savedEndpoint);
@@ -72,12 +76,12 @@ export function ProviderSettings({ disabled, onChange }: Props) {
       if (originFor(id, savedEndpoint) && await chrome.permissions.contains({ origins: [originFor(id, savedEndpoint)] })) {
         if (!alive) return;
         onChange({ provider: id, model: preferences.model, apiKey: key, ...(id === 'custom' ? { endpoint: savedEndpoint } : {}) });
-        setStatus(kindOf(id) === 'local' ? 'Local provider restored. Requests stay on this machine.' : 'Stored key restored. Provider/model live verification is not included.');
+        setStatus(kindOf(id) === 'local' ? t('psLocalRestored') : t('psKeyRestored'));
       }
-    })().catch(() => { if (alive) setStatus('Settings could not be restored. Configure the provider again.'); });
+    })().catch(() => { if (alive) setStatus(t('psRestoreFailed')); });
     return () => { alive = false; };
   }, [onChange]);
-  const dirty = () => { onChange(undefined); setStatus('Unsaved changes. Enable this provider before generating suggestions.'); };
+  const dirty = () => { onChange(undefined); setStatus(t('psUnsaved')); };
   async function save() {
     try {
       const settings: Settings = {
@@ -88,63 +92,80 @@ export function ProviderSettings({ disabled, onChange }: Props) {
       };
       validateSettings(settings);
       setSaving(true);
-      if (provider === 'builtin') {
-        if (!await detectBuiltin()) throw new UserError('The on-device model is not available in this browser right now. Choose another provider.');
-      } else {
+      if (provider !== 'builtin') {
         // This call must remain directly inside the user gesture, before any await.
         const permission = chrome.permissions.request({ origins: [originFor(provider, settings.endpoint)] });
-        if (!await permission) throw new UserError('Host permission was declined. No document was sent.');
+        if (!await permission) throw new UserError(t('psPermissionDeclined'));
+      }
+      // Verify the environment before anything is stored: a live model-list probe
+      // for network providers, the capability gate for on-device. Failure blocks the save.
+      setStatus(provider === 'builtin' ? t('psCheckingBuiltin') : t('psVerifying'));
+      await verifyProvider(settings);
+      if (provider !== 'builtin') {
         // Seal the key with AES-GCM before it ever reaches persistent storage.
         await chrome.storage.local.set({ [`key:${provider}`]: await sealSecret(settings.apiKey) });
       }
       await chrome.storage.local.set({ preferences: { provider, model: settings.model, ...(provider === 'custom' ? { endpoint: settings.endpoint } : {}) } });
+      setSavedKeys(previous => { const next = new Set(previous); if (settings.apiKey) next.add(provider); else next.delete(provider); return next; });
       onChange(settings);
       setStatus(provider === 'builtin'
-        ? 'On-device provider enabled. Text never leaves this device; on-device accuracy is experimental.'
+        ? t('psBuiltinVerified')
         : kindOf(provider) === 'local'
-          ? 'Local provider enabled. Requests stay on this machine; nothing is sent to the cloud. Model compatibility is unverified.'
-          : 'Provider enabled. No API request has been made; model compatibility is unverified.');
+          ? t('psLocalVerified')
+          : t('psCloudVerified'));
     } catch (error) { setStatus(errorMessage(error)); }
     finally { setSaving(false); }
   }
   async function remove() {
     try {
       await chrome.storage.local.remove(`key:${provider}`);
-      setKey(''); onChange(undefined); setStatus('Stored key removed. Host permission can also be revoked below.');
-    } catch { setStatus('Could not remove the key. Try again.'); }
+      setSavedKeys(previous => { const next = new Set(previous); next.delete(provider); return next; });
+      setKey(''); onChange(undefined); setStatus(t('psKeyRemoved'));
+    } catch { setStatus(t('psKeyRemoveFailed')); }
   }
   const kind = kindOf(provider);
   const meta = KIND_META[kind];
+  const kindLabel = t(meta.labelKey);
+  // Group the dropdown by kind so options stay clean (just the provider name);
+  // the kind is shown once, on the colored badge outside the select. A key glyph
+  // marks providers that already have a saved key.
+  const cloudEntries = Object.entries(PROVIDERS).filter(([, info]) => info.kind === 'cloud');
+  const localEntries = Object.entries(PROVIDERS).filter(([, info]) => info.kind === 'local');
+  const savedMark = (id: string) => savedKeys.has(id as ProviderId) ? '  🔑' : '';
   return <details className="card settings" open>
-    <summary>LLM provider <span className="subtle">Cloud · Local · On-device{builtin ? ' · On-device option detected' : ''}</span></summary>
+    <summary>{t('psSummary')} <span className="subtle">{t('psKinds')}{builtin ? ` · ${t('psBuiltinDetected')}` : ''}</span></summary>
     <fieldset disabled={disabled || saving}>
-      <label>Provider
+      <label>{t('psProvider')}
         <select value={provider} onChange={event => { const id = event.target.value as ProviderId; setProvider(id); setModel(defaultModelFor(id)); setKey(''); dirty(); }}>
-          {Object.entries(PROVIDERS).map(([id, info]) => <option key={id} value={id}>{`${info.name} — ${info.kind === 'local' ? '🏠 Local' : '☁️ Cloud'}`}</option>)}
-          <option value="custom">{`${CUSTOM.name} — 🔧 Local`}</option>
-          {builtin && <option value="builtin">{`${BUILTIN.name} — 📱 On-device`}</option>}
+          <optgroup label={t('kindCloud')}>{cloudEntries.map(([id, info]) => <option key={id} value={id}>{`${info.name}${savedMark(id)}`}</option>)}</optgroup>
+          <optgroup label={t('kindLocal')}>
+            {localEntries.map(([id, info]) => <option key={id} value={id}>{`${info.name}${savedMark(id)}`}</option>)}
+            <option value="custom">{`${CUSTOM.name}${savedMark('custom')}`}</option>
+          </optgroup>
+          {builtin && <optgroup label={t('kindBuiltin')}><option value="builtin">{BUILTIN.name}</option></optgroup>}
         </select>
-        <span className={`badge badge-${kind}`} title={`${meta.label} provider`}>{meta.icon} {meta.label}</span>
+        <span className={`badge badge-${kind}`} title={t('psProviderBadge', [kindLabel])}>{meta.icon} {kindLabel}</span>
+        {savedKeys.has(provider) && <span className="badge badge-saved" title={t('psKeySavedTitle')}>🔑 {t('psKeySaved')}</span>}
       </label>
       {provider === 'builtin' ? <p className="hint">{builtin === 'available'
-        ? 'The browser on-device model is ready. No API key, no network request; extracted text never leaves this device. On-device accuracy is experimental.'
-        : 'The browser will download its on-device model on first use; download progress appears during generation. No API key and no network request afterwards.'}</p> : <>
-        {provider === 'custom' && <label>Endpoint URL<input value={endpoint} placeholder="http://localhost:11434/v1/chat/completions" autoComplete="off" spellCheck={false} onChange={event => { setEndpoint(event.target.value); dirty(); }} /></label>}
-        <label>Model ID<input value={model} placeholder={kind === 'local' ? 'Model name loaded on your local server' : 'Model ID from your provider account'} autoComplete="off" spellCheck={false} onChange={event => { setModel(event.target.value); dirty(); }} /></label>
-        <label>{kind === 'local' ? 'API key (optional)' : 'API key'}{kind === 'cloud' && provider !== 'custom' && <a className="link-button" href={PROVIDERS[provider].keyUrl} target="_blank" rel="noreferrer">Get API key</a>}<input type="password" value={apiKey} autoComplete="off" spellCheck={false} placeholder={kind === 'local' ? 'Leave blank if your local server needs no key' : 'Encrypted and saved on this device'} onChange={event => { setKey(event.target.value); dirty(); }} /></label>
+        ? t('psBuiltinReady')
+        : t('psBuiltinDownload')}</p> : <>
+        {provider === 'custom' && <label>{t('psEndpointUrl')}<input value={endpoint} placeholder="http://localhost:11434/v1/chat/completions" autoComplete="off" spellCheck={false} onChange={event => { setEndpoint(event.target.value); dirty(); }} /></label>}
+        <label>{t('psModelId')}<input value={model} placeholder={kind === 'local' ? t('psModelPlaceholderLocal') : t('psModelPlaceholderCloud')} autoComplete="off" spellCheck={false} onChange={event => { setModel(event.target.value); dirty(); }} /></label>
+        <label>{kind === 'local' ? t('psApiKeyOptional') : t('psApiKey')}{kind === 'cloud' && provider !== 'custom' && <a className="link-button" href={PROVIDERS[provider].keyUrl} target="_blank" rel="noreferrer">{t('psGetApiKey')}</a>}<input type="password" value={apiKey} autoComplete="off" spellCheck={false} placeholder={kind === 'local' ? t('psKeyPlaceholderLocal') : t('psKeyPlaceholderCloud')} onChange={event => { setKey(event.target.value); dirty(); }} /></label>
       </>}
-      {kind === 'cloud' && <p className="notice notice-cloud" role="note">☁️ <strong>Data notice:</strong> Help Me Fill stores no data, but generating suggestions <strong>sends your extracted document text and field metadata to {nameOf(provider)}</strong>. Nothing is sent until you review and approve it on the next step.</p>}
-      {provider === 'ollama' && <p className="notice notice-local" role="note">🏠 <strong>Setup required:</strong> install and start <a href={PROVIDERS.ollama.keyUrl} target="_blank" rel="noreferrer">Ollama</a> on this computer, then pull a model (for example <code>ollama pull {PROVIDERS.ollama.defaultModel}</code>). Requests stay on this machine — nothing is sent to the cloud.</p>}
-      {provider === 'custom' && <p className="notice notice-local" role="note">🏠 <strong>Setup required:</strong> start your local OpenAI-compatible server (Ollama, LM Studio, llamafile, vLLM…) and enter its <code>/v1/chat/completions</code> address above. Only <code>http://localhost</code> and <code>http://127.0.0.1</code> are allowed. Requests stay on this machine — nothing is sent to the cloud.</p>}
-      <div className="button-row"><button type="button" onClick={() => void save()}>{provider === 'builtin' ? 'Enable on-device provider' : kind === 'local' ? 'Enable local provider' : 'Enable provider'}</button>{provider !== 'builtin' && <button type="button" className="secondary" onClick={() => void remove()}>Remove key</button>}</div>
+      {kind === 'cloud' && <p className="notice notice-cloud" role="note"><Rich message={t('psNoticeCloud', [nameOf(provider)])} /></p>}
+      {(provider === 'ollama' || provider === 'lmstudio') && <p className="notice notice-local" role="note"><Rich message={t('psNoticeLocal', [PROVIDERS[provider].name, PROVIDERS[provider].keyUrl, PROVIDERS[provider].defaultModel])} /></p>}
+      {provider === 'custom' && <p className="notice notice-local" role="note"><Rich message={t('psNoticeCustom')} /></p>}
+      <div className="button-row"><button type="button" onClick={() => void save()}>{provider === 'builtin' ? t('psEnableBuiltinModel') : kind === 'local' ? t('psSaveVerify') : t('psSaveVerifyKey')}</button>{provider !== 'builtin' && <button type="button" className="secondary" onClick={() => void remove()}>{t('psRemoveKey')}</button>}</div>
       {provider !== 'builtin' && <button type="button" className="link-button" onClick={() => {
         try {
           const origin = originFor(provider, endpoint);
-          void chrome.permissions.remove({ origins: [origin] }).then(() => { onChange(undefined); setStatus('Host permission revoked.'); }, () => setStatus('Permission could not be revoked.'));
+          void chrome.permissions.remove({ origins: [origin] }).then(() => { onChange(undefined); setStatus(t('psPermissionRevoked')); }, () => setStatus(t('psPermissionRevokeFailed')));
         } catch (error) { setStatus(errorMessage(error)); }
-      }}>Revoke host permission</button>}
+      }}>{t('psRevokePermission')}</button>}
     </fieldset>
     <p className="hint" role="status">{status}</p>
-    <p className="hint">API keys are encrypted with AES-GCM and stored only on this device — not a hardware-backed vault, and never sent anywhere except your chosen provider. Cloud provider accounts determine model availability and charges. Local and on-device providers run entirely on this computer. No backend or subscription is included.</p>
+    <p className="hint">{t('psKeyHint')}</p>
   </details>;
 }

@@ -16,7 +16,8 @@
     "https://open.bigmodel.cn/*",
     "https://openrouter.ai/*",
     "http://localhost/*",
-    "http://127.0.0.1/*"
+    "http://127.0.0.1/*",
+    "http://*/*"
   ],
   "background": { "service_worker": "background/service-worker.js", "type": "module" },
   "side_panel": { "default_path": "sidepanel/index.html" },

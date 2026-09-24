@@ -1,13 +1,15 @@
-import { resolveProvider, type ProviderSettings, type TransportRequest } from './registry';
+import { resolveProvider, type ProviderSettings, type ResolvedProvider, type TransportRequest } from './registry';
 import { SYSTEM_PROMPT, makePayload } from './prompts';
 import { MappingError, validateMapping } from './validate-mapping';
 import { openaiRequest, openaiText } from './transports/openai-compatible';
 import { anthropicRequest, anthropicText } from './transports/anthropic';
 import { geminiRequest, geminiText } from './transports/gemini';
 import { builtinPrompt } from './transports/builtin';
+import { detectBuiltin } from './builtin-support';
 import { LIMITS, type FieldDescriptor, type MappingPlan } from '../shared/schemas';
 import type { DocumentLine } from '../parsers/types';
 import { UserError, throwIfAborted } from '../shared/errors';
+import { t } from '../shared/i18n';
 
 export type MappingRequest = { lines: DocumentLine[]; fields: FieldDescriptor[]; signal: AbortSignal; onProgress?: (text: string) => void };
 export type MappingOutcome = { plan: MappingPlan; calls: number; elapsedMs: number; usage?: Record<string, number> };
@@ -16,21 +18,53 @@ export interface AIProvider { map(request: MappingRequest): Promise<MappingOutco
 export function validateSettings(settings: ProviderSettings) {
   // The on-device provider is keyless and model-managed by the browser.
   if (settings.provider === 'builtin') return;
-  if (!/^[a-zA-Z0-9._:/-]{1,120}$/.test(settings.model)) throw new UserError('Enter a valid text-model ID from your provider.');
+  if (!/^[a-zA-Z0-9._:/-]{1,120}$/.test(settings.model)) throw new UserError(t('provBadModel'));
   // Resolving validates a custom endpoint (loopback http only) and yields the kind.
   const resolved = resolveProvider(settings);
-  if (settings.apiKey && (/\s/.test(settings.apiKey) || settings.apiKey.length > 1024)) throw new UserError('Enter a valid API key without spaces.');
+  if (settings.apiKey && (/\s/.test(settings.apiKey) || settings.apiKey.length > 1024)) throw new UserError(t('provBadKey'));
   // Cloud providers authenticate with a key; local servers usually need none.
-  if (resolved.kind === 'cloud' && !settings.apiKey.trim()) throw new UserError('Enter a valid API key without spaces.');
+  if (resolved.kind === 'cloud' && !settings.apiKey.trim()) throw new UserError(t('provBadKey'));
 }
 export function buildRequest(settings: ProviderSettings, system: string, user: string): TransportRequest {
   const transport = resolveProvider(settings).transport;
-  if (transport === 'builtin') throw new UserError('The on-device provider does not use HTTP requests.');
+  if (transport === 'builtin') throw new UserError(t('provBuiltinNoHttp'));
   return transport === 'anthropic' ? anthropicRequest(settings, system, user) : transport === 'gemini' ? geminiRequest(settings, system, user) : openaiRequest(settings, system, user);
+}
+// A cheap authenticated probe for the settings UI: request the provider's model
+// list (GET) to confirm the key, endpoint, and connectivity before saving. It
+// never generates tokens and never carries document text. The on-device provider
+// has no network, so it is checked via its capability gate instead.
+function verifyRequest(settings: ProviderSettings, resolved: ResolvedProvider): { url: string; headers: Record<string, string> } {
+  if (resolved.transport === 'anthropic') return { url: resolved.endpoint.replace(/\/messages$/, '/models'), headers: { 'x-api-key': settings.apiKey, 'anthropic-version': '2023-06-01' } };
+  if (resolved.transport === 'gemini') return { url: resolved.endpoint, headers: { 'x-goog-api-key': settings.apiKey } };
+  return { url: resolved.endpoint.replace(/\/chat\/completions$/, '/models'), headers: settings.apiKey ? { Authorization: `Bearer ${settings.apiKey}` } : {} };
+}
+export async function verifyProvider(settings: ProviderSettings, fetcher: typeof fetch = fetch): Promise<void> {
+  validateSettings(settings);
+  const resolved = resolveProvider(settings);
+  if (resolved.transport === 'builtin') {
+    if (!await detectBuiltin()) throw new UserError(t('verifyBuiltinUnreachable'));
+    return;
+  }
+  const { url, headers } = verifyRequest(settings, resolved);
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 20_000);
+  try {
+    const response = await fetcher(url, { method: 'GET', headers, signal: controller.signal, credentials: 'omit', cache: 'no-store', redirect: 'error', referrerPolicy: 'no-referrer' });
+    await response.body?.cancel();
+    if (!response.ok) throw new UserError(response.status === 401 || response.status === 403 ? t('verify401')
+      : response.status === 400 || response.status === 404 ? t('verify400')
+      : response.status === 429 ? t('verify429')
+      : t('verifyHttpOther', [response.status]));
+  } catch (error) {
+    if (error instanceof UserError) throw error;
+    if (error instanceof DOMException && error.name === 'AbortError') throw new UserError(t('verifyTimeout'));
+    throw new UserError(t('verifyUnreachable'));
+  } finally { clearTimeout(timeout); }
 }
 function extractText(settings: ProviderSettings, value: unknown) {
   const transport = resolveProvider(settings).transport;
-  if (transport === 'builtin') throw new UserError('The on-device provider does not use HTTP responses.');
+  if (transport === 'builtin') throw new UserError(t('provBuiltinNoHttpResponse'));
   return transport === 'anthropic' ? anthropicText(value) : transport === 'gemini' ? geminiText(value) : openaiText(value);
 }
 function usageNumbers(value: unknown): Record<string, number> | undefined {
@@ -41,7 +75,7 @@ function usageNumbers(value: unknown): Record<string, number> | undefined {
   return Object.fromEntries(Object.entries(usage).filter((entry): entry is [string, number] => typeof entry[1] === 'number'));
 }
 async function readBounded(response: Response): Promise<unknown> {
-  if (!response.body) throw new UserError('The provider returned an empty response.');
+  if (!response.body) throw new UserError(t('provEmptyResponse'));
   const reader = response.body.getReader(), chunks: Uint8Array[] = [];
   let size = 0;
   try {
@@ -49,14 +83,14 @@ async function readBounded(response: Response): Promise<unknown> {
       const { done, value } = await reader.read();
       if (done) break;
       size += value.byteLength;
-      if (size > LIMITS.responseBytes) { await reader.cancel(); throw new UserError('The provider response exceeded 256 KiB. Choose a shorter document.'); }
+      if (size > LIMITS.responseBytes) { await reader.cancel(); throw new UserError(t('provTooBig')); }
       chunks.push(value);
     }
   } finally { reader.releaseLock(); }
   const bytes = new Uint8Array(size);
   let offset = 0;
   for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.length; }
-  try { return JSON.parse(new TextDecoder().decode(bytes)); } catch { throw new UserError('The provider returned an invalid API response.'); }
+  try { return JSON.parse(new TextDecoder().decode(bytes)); } catch { throw new UserError(t('provInvalidResponse')); }
 }
 export function createProvider(settings: ProviderSettings, fetcher: typeof fetch = fetch): AIProvider {
   // Snapshot settings: a UI change must not reroute an already consented request.
@@ -65,7 +99,7 @@ export function createProvider(settings: ProviderSettings, fetcher: typeof fetch
     validateSettings(config);
     throwIfAborted(signal);
     if (!fields.length || fields.length > LIMITS.fields || lines.reduce((n, line) => n + Array.from(line.text).length, 0) > LIMITS.characters) {
-      throw new UserError('The mapping input is empty or exceeds the prototype limits.');
+      throw new UserError(t('provInputTooBig'));
     }
     const started = performance.now(), user = JSON.stringify(makePayload(lines, fields));
     if (config.provider === 'builtin') {
@@ -84,7 +118,7 @@ export function createProvider(settings: ProviderSettings, fetcher: typeof fetch
           repair = `\nYour previous response failed validation: ${error.message} Return a complete corrected JSON object.`;
         }
       }
-      throw new UserError('No valid suggestions were returned.');
+      throw new UserError(t('provNoSuggestions'));
     }
     let repair = '';
     for (let attempt = 0; attempt < 2; attempt++) {
@@ -103,10 +137,10 @@ export function createProvider(settings: ProviderSettings, fetcher: typeof fetch
         });
         if (!response.ok) {
           await response.body?.cancel();
-          const message = response.status === 401 || response.status === 403 ? 'Check your API key, account access, and browser-access policy.'
-            : response.status === 429 ? 'Rate limit or quota reached. Wait or check your provider account before retrying.'
-              : response.status === 400 || response.status === 404 ? 'Check the model ID and its support for this provider API and JSON output.' : 'The provider is unavailable. Retry explicitly later.';
-          throw new UserError(`Provider request failed (${response.status}). ${message}`);
+          const message = response.status === 401 || response.status === 403 ? t('provHttp401')
+            : response.status === 429 ? t('provHttp429')
+              : response.status === 400 || response.status === 404 ? t('provHttp400') : t('provHttpOther');
+          throw new UserError(t('provRequestFailed', [response.status, message]));
         }
         const responseData = await readBounded(response);
         throwIfAborted(signal);
@@ -121,13 +155,13 @@ export function createProvider(settings: ProviderSettings, fetcher: typeof fetch
         }
       } catch (error) {
         throwIfAborted(signal);
-        if (timedOut) throw new UserError('The provider took longer than 60 seconds. Retry explicitly; no automatic retry was made.');
+        if (timedOut) throw new UserError(t('provTimeout'));
         if (error instanceof UserError) throw error;
-        throw new UserError('Could not reach the selected provider. Check network access and API host permission.');
+        throw new UserError(t('provUnreachable'));
       } finally {
         clearTimeout(timeout); signal.removeEventListener('abort', abort);
       }
     }
-    throw new UserError('No valid suggestions were returned.');
+    throw new UserError(t('provNoSuggestions'));
   } };
 }

@@ -9,6 +9,10 @@ for (const framework of ['native', 'react', 'vue']) {
     const app = await openExtension(info, framework, scenario.id);
     try {
       let requests = 0, mockError = '';
+      await enableProvider(app, info.project.name === 'edge' ? 'edge://extensions/' : 'chrome://extensions/');
+      expect(requests).toBe(0);
+      // The save-time verification probe is intercepted inside enableProvider; install
+      // the mapping interception afterwards so it only sees the consented generation.
       await app.panel.send('Fetch.enable', { patterns: [{ urlPattern: 'http*', requestStage: 'Request' }] });
       app.panel.onEvent = (method, event) => {
         if (method !== 'Fetch.requestPaused') return;
@@ -29,8 +33,6 @@ for (const framework of ['native', 'react', 'vue']) {
             body: Buffer.from(JSON.stringify({ choices: [{ finish_reason: 'stop', message: { content: JSON.stringify({ assignments, unmapped: [] }) } }] })).toString('base64') });
         })().catch(error => { mockError = String(error); void app.panel.send('Fetch.failRequest', { requestId: event.requestId, errorReason: 'Aborted' }); });
       };
-      await enableProvider(app, info.project.name === 'edge' ? 'edge://extensions/' : 'chrome://extensions/');
-      expect(requests).toBe(0);
       await app.panel.upload(`tests/fixtures/generated/${scenario.id}.pdf`);
       await expect.poll(() => app.panel.text()).toContain(`${scenario.id}.pdf`);
       // One button moves to Step 2; nothing is sent until the consent action.
