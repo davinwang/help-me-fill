@@ -52,9 +52,13 @@ export class Panel {
   dispose() { this.cdp.off('Target.receivedMessageFromTarget', this.listener); }
 }
 export async function openExtension(info: TestInfo, framework = 'react', scenario = 'case-01') {
+  // chrome.i18n follows the browser UI language, and this harness matches English
+  // labels. Playwright's `locale` option only drives navigator.language and
+  // Accept-Language, so the UI language has to be passed as a launch flag too.
+  const { channel, locale } = info.project.use;
   const context = await chromium.launchPersistentContext(info.outputPath('profile'), {
-    channel: info.project.use.channel ?? 'chromium', headless: false,
-    ignoreDefaultArgs: ['--disable-extensions'], args: ['--enable-unsafe-extension-debugging'],
+    channel: channel ?? 'chromium', headless: false, locale,
+    ignoreDefaultArgs: ['--disable-extensions'], args: ['--enable-unsafe-extension-debugging', `--lang=${locale ?? 'en-US'}`],
   });
   const cdp = await context.browser()!.newBrowserCDPSession();
   const { id } = await cdp.send('Extensions.loadUnpacked', { path: resolve('dist') });
