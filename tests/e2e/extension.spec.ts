@@ -58,6 +58,27 @@ test('production sidebar parses a bilingual PDF and scans the real tab', async (
   } finally { await app.close(); }
 });
 
+// Regression: a stored preference must never be re-applied over a fresh choice.
+// The settings card used to be remounted by the unsaved-edit signal, which re-ran
+// its storage restore and snapped the select back to the stored provider.
+test('switching the provider after a saved preference is not reverted', async ({}, info) => {
+  const app = await openExtension(info);
+  try {
+    await enableProvider(app, info.project.name === 'edge' ? 'edge://extensions/' : 'chrome://extensions/');
+    await app.panel.click('Edit LLM');
+    // Wait for the stored provider to be restored before touching the select.
+    await expect.poll(() => app.panel.text()).toContain('Stored key restored');
+    const selected = () => app.panel.evaluate(() => (document.querySelector('select') as HTMLSelectElement).value);
+    expect(await selected()).toBe('openai');
+    await app.panel.evaluate(() => {
+      const element = document.querySelector('select') as HTMLSelectElement;
+      element.value = 'zhipu'; element.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+    await expect.poll(selected).toBe('zhipu');
+    expect(await app.panel.evaluate(() => document.querySelector<HTMLInputElement>('input[placeholder="Model ID from your provider account"]')?.value)).toBe(PROVIDERS.zhipu.defaultModel);
+  } finally { await app.close(); }
+});
+
 test('packaged PDF worker extracts every benchmark and rejects failure fixtures', async ({}, info) => {
   const app = await openExtension(info, 'native');
   try {
