@@ -15,7 +15,12 @@ test('production sidebar parses a bilingual PDF and scans the real tab', async (
     const support = await app.panel.evaluate(async () => {
       const api = (globalThis as any).LanguageModel ?? (globalThis as any).ai?.languageModel;
       if (!api) return '';
-      const state = await api.availability();
+      // Mirror detectBuiltin: declare text I/O languages so Chrome 147+ returns a
+      // real availability string instead of silently resolving to undefined.
+      const state = await api.availability({
+        expectedInputs: [{ type: 'text', languages: ['en'] }],
+        expectedOutputs: [{ type: 'text', languages: ['en'] }],
+      });
       return ['available', 'downloadable', 'downloading'].includes(state) ? state : '';
     });
     await expect.poll(async () => (await app.panel.evaluate(() => [...document.querySelectorAll('select option')].map(option => (option as HTMLOptionElement).value))).includes('builtin')).toBe(!!support);
