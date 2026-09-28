@@ -38,7 +38,7 @@ Help Me Fill takes the opposite bet:
 
 The extension runs entirely in your Chrome/Edge process. When you ask for AI mapping,
 the request goes **directly from your browser to the provider you chose** — Anthropic,
-OpenAI, Google, DeepSeek, Zhipu, Z.ai, OpenRouter, a **local Ollama** or any
+OpenAI, Google, DeepSeek, Zhipu, Z.ai, OpenRouter, MiniMax, a **local Ollama** or any
 OpenAI-compatible server on your own machine (LM Studio, llamafile, vLLM), or the
 **Chrome built-in Gemini Nano running on-device** with zero network calls at all.
 
@@ -140,8 +140,9 @@ sends only your key, never document text.
 | Zhipu (GLM) | Cloud | OpenAI-compat | Required | [open.bigmodel.cn/apikey/platform](https://open.bigmodel.cn/apikey/platform) |
 | Z.ai | Cloud | OpenAI-compat | Required | [z.ai/manage-apikey/apikey-list](https://z.ai/manage-apikey/apikey-list) |
 | OpenRouter | Cloud | OpenAI-compat | Required | [openrouter.ai/settings/keys](https://openrouter.ai/settings/keys) |
+| MiniMax | Cloud | OpenAI-compat | Required | [platform.minimax.io/user-center/basic-information/interface-key](https://platform.minimax.io/user-center/basic-information/interface-key) |
 
-**Ten ways to fill a form, three of which never touch the network.**
+**Eleven ways to fill a form, three of which never touch the network.**
 
 Adding a new provider is a ~50-line change to `src/ai/registry.ts` and
 `src/ai/transports/`. See [CONTRIBUTING.md](./CONTRIBUTING.md).

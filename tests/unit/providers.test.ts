@@ -36,6 +36,7 @@ describe('registry defaults and key pages', () => {
     }
     expect(PROVIDERS.deepseek.defaultModel).toBe('deepseek-flash');
     expect(PROVIDERS.zhipu.defaultModel).toBe('glm-5.3-flash');
+    expect(PROVIDERS.minimax.defaultModel).toBe('MiniMax-M2.7');
   });
   it('uses provider-appropriate token limits on OpenAI-compatible transports', () => {
     expect(JSON.stringify(buildRequest(settings('openai'), 's', 'u'))).toContain('max_completion_tokens');

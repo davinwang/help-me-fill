@@ -34,6 +34,7 @@ assert.deepEqual(manifest.optional_host_permissions, [
   'https://api.openai.com/*', 'https://api.anthropic.com/*',
   'https://generativelanguage.googleapis.com/*', 'https://api.deepseek.com/*',
   'https://open.bigmodel.cn/*', 'https://openrouter.ai/*',
+  'https://api.minimax.io/*',
   'http://localhost/*', 'http://127.0.0.1/*',
   // Declared so the custom provider can request a specific private-LAN origin at
   // runtime (match patterns cannot express CIDR). localEndpointOrigin() restricts

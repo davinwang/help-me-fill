@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **MiniMax preset** (`src/ai/registry.ts`) — cloud, OpenAI-compatible at
+  `https://api.minimax.io/v1/chat/completions`. Default model `MiniMax-M2.7`;
+  optional host permission `https://api.minimax.io/*`.
 - **Ollama preset** (`src/ai/registry.ts`) — local, keyless, OpenAI-compatible
   at `http://localhost:11434`. Default model `llama3.2`.
 - **LM Studio preset** (`src/ai/registry.ts`) — local, keyless, OpenAI-compatible

@@ -34,7 +34,7 @@ Help Me Fill 走了相反的路：
 
 整个插件运行在你的 Chrome / Edge 进程里。当你调用 AI 映射时，请求
 **从你的浏览器直接发往你自己选择的模型提供方** —— Anthropic、OpenAI、Google、
-DeepSeek、智谱 GLM、Z.ai、OpenRouter，也可以是**本地 Ollama** 或你自己机器上
+DeepSeek、智谱 GLM、Z.ai、OpenRouter、MiniMax，也可以是**本地 Ollama** 或你自己机器上
 任意兼容 OpenAI 协议的服务（LM Studio、llamafile、vLLM），甚至可以是
 **Chrome 内置的 Gemini Nano 端侧模型**（零联网调用）。
 
@@ -133,8 +133,9 @@ Key 错误或服务不可达——校验只发送你的 Key，绝不发送文档
 | 智谱 GLM | 云端 | OpenAI 兼容 | 必填 | [open.bigmodel.cn/apikey/platform](https://open.bigmodel.cn/apikey/platform) |
 | Z.ai | 云端 | OpenAI 兼容 | 必填 | [z.ai/manage-apikey/apikey-list](https://z.ai/manage-apikey/apikey-list) |
 | OpenRouter | 云端 | OpenAI 兼容 | 必填 | [openrouter.ai/settings/keys](https://openrouter.ai/settings/keys) |
+| MiniMax | 云端 | OpenAI 兼容 | 必填 | [platform.minimax.io/user-center/basic-information/interface-key](https://platform.minimax.io/user-center/basic-information/interface-key) |
 
-**十种填表方式，其中三种永远不联网。**
+**十一种填表方式，其中三种永远不联网。**
 
 新增提供方只需修改 `src/ai/registry.ts` 和 `src/ai/transports/`，约 50 行代码。
 详见 [CONTRIBUTING.md](./CONTRIBUTING.md)。

@@ -12,6 +12,7 @@ export const PROVIDERS = {
   zhipu: { name: '智谱', origin: 'https://open.bigmodel.cn/*', endpoint: 'https://open.bigmodel.cn/api/paas/v4/chat/completions', transport: 'openai', defaultModel: 'glm-5.3-flash', keyUrl: 'https://open.bigmodel.cn/apikey/platform', kind: 'cloud' },
   zai: { name: 'Z.ai', origin: 'https://open.bigmodel.cn/*', endpoint: 'https://api.z.ai/api/paas/v4/chat/completions', transport: 'openai', defaultModel: 'glm-5.3-flash', keyUrl: 'https://z.ai/manage-apikey/apikey-list', kind: 'cloud' },
   openrouter: { name: 'OpenRouter', origin: 'https://openrouter.ai/*', endpoint: 'https://openrouter.ai/api/v1/chat/completions', transport: 'openai', defaultModel: 'google/gemini-2.5-flash', keyUrl: 'https://openrouter.ai/settings/keys', kind: 'cloud' },
+  minimax: { name: 'MiniMax', origin: 'https://api.minimax.io/*', endpoint: 'https://api.minimax.io/v1/chat/completions', transport: 'openai', defaultModel: 'MiniMax-M2.7', keyUrl: 'https://platform.minimax.io/user-center/basic-information/interface-key', kind: 'cloud' },
   // Local, OpenAI-compatible servers. Loopback origins are the only host
   // permission these presets need; the API key is optional (both ignore it by default).
   ollama: { name: 'Ollama', origin: 'http://localhost/*', endpoint: 'http://localhost:11434/v1/chat/completions', transport: 'openai', defaultModel: 'llama3.2', keyUrl: 'https://ollama.com/download', kind: 'local' },
