@@ -82,9 +82,7 @@ We encourage you to read them:
 - Google (Gemini): https://policies.google.com/privacy
 - DeepSeek: https://www.deepseek.com/privacy
 - Zhipu: https://open.bigmodel.cn/privacy
-- Z.ai: https://z.ai/privacy
 - OpenRouter: https://openrouter.ai/privacy
-- MiniMax: https://platform.minimax.io/protocol/privacy-policy
 
 ### 4. On-device mode (Chrome built-in AI)
 
@@ -113,9 +111,8 @@ that provider**:
 - `https://api.anthropic.com/*` — only if you configure Anthropic
 - `https://generativelanguage.googleapis.com/*` — only if you configure Gemini
 - `https://api.deepseek.com/*` — only if you configure DeepSeek
-- `https://open.bigmodel.cn/*` — only if you configure Zhipu or Z.ai
+- `https://open.bigmodel.cn/*` — only if you configure Zhipu
 - `https://openrouter.ai/*` — only if you configure OpenRouter
-- `https://api.minimax.io/*` — only if you configure MiniMax
 - `http://localhost/*` and `http://127.0.0.1/*` — only if you configure Ollama,
   LM Studio, or a custom local server on loopback. This traffic never leaves
   your machine.

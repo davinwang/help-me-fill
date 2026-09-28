@@ -8,9 +8,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- **MiniMax preset** (`src/ai/registry.ts`) — cloud, OpenAI-compatible at
-  `https://api.minimax.io/v1/chat/completions`. Default model `MiniMax-M2.7`;
-  optional host permission `https://api.minimax.io/*`.
 - **Ollama preset** (`src/ai/registry.ts`) — local, keyless, OpenAI-compatible
   at `http://localhost:11434`. Default model `llama3.2`.
 - **LM Studio preset** (`src/ai/registry.ts`) — local, keyless, OpenAI-compatible
@@ -106,6 +103,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   account — unsuitable for a distributed extension. A user-configurable
   "custom OpenAI-compatible endpoint" provider is on the roadmap and will
   cover Qwen, DashScope, and any other OpenAI-compatible service.
+- **Z.ai preset** (`src/ai/registry.ts`) removed. It shared Zhipu's
+  `https://open.bigmodel.cn/*` origin, so no manifest host permission was
+  dropped and no build assertion changed.
+- **MiniMax preset** (`src/ai/registry.ts`) removed, with its optional host
+  permission `https://api.minimax.io/*` dropped from `src/manifest.json` and
+  the `scripts/build.mjs` assertion list, and its default-model assertion
+  dropped from `tests/unit/providers.test.ts`.
 - Provider comparison in both READMEs updated from "9+" to "7+" to match
   the actual registry after the removals.
 

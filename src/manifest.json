@@ -15,7 +15,6 @@
     "https://api.deepseek.com/*",
     "https://open.bigmodel.cn/*",
     "https://openrouter.ai/*",
-    "https://api.minimax.io/*",
     "http://localhost/*",
     "http://127.0.0.1/*",
     "http://*/*"
