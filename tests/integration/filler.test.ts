@@ -196,3 +196,30 @@ describe('extended controls', () => {
     expect(editable.querySelector('img')).toBeNull();
   });
 });
+describe('stable detection across rescans', () => {
+  it('keeps field ids and the scan id when only values changed', () => {
+    const first = scanPage();
+    input().value = 'typed by hand';
+    const second = scanPage();
+    expect(second.scan.scanId).toBe(first.scan.scanId);
+    expect(second.scan.fields.map(field => field.id)).toEqual(first.scan.fields.map(field => field.id));
+    expect(second.scan.fields[0].currentValue).toBe('typed by hand');
+  });
+  it('keeps surviving ids but mints a new scan id when an element is replaced', () => {
+    const first = scanPage();
+    const email = document.querySelector('input[name="email"]')!;
+    email.replaceWith(email.cloneNode());
+    const second = scanPage();
+    expect(second.scan.scanId).not.toBe(first.scan.scanId);
+    expect(second.scan.fields[0].id).toBe(first.scan.fields[0].id);
+    expect(second.scan.fields[1].id).not.toBe(first.scan.fields[1].id);
+  });
+  it('mints a new scan id when field metadata changes', () => {
+    const first = scanPage();
+    input().setAttribute('aria-label', 'Full legal name');
+    const second = scanPage();
+    expect(second.scan.scanId).not.toBe(first.scan.scanId);
+    expect(second.scan.fields[0].id).toBe(first.scan.fields[0].id);
+    expect(second.scan.fields[0].ariaLabel).toBe('Full legal name');
+  });
+});

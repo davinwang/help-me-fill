@@ -18,22 +18,21 @@
   "stepReview": { "message": "المراجعة" },
   "stepFill": { "message": "التعبئة" },
   "progressParsing": { "message": "جارٍ استخراج نص المستند محليًا…" },
-  "progressScanning": { "message": "جارٍ قراءة حقول الصفحة المدعومة…" },
   "progressMapping": { "message": "في انتظار مزوّدك…" },
   "progressFilling": { "message": "جارٍ تعبئة الحقول المحددة والتحقق منها…" },
   "progressUndoing": { "message": "جارٍ استعادة القيم غير المتغيرة…" },
   "progressCanceling": { "message": "جارٍ إلغاء العمل المتبقي. قد تبقى الحقول التي تمت تعبئتها؛ افحص النتائج." },
   "cancel": { "message": "إلغاء" },
-  "aiHelpMeFill": { "message": "أيها الذكاء الاصطناعي، ساعدني في التعبئة" },
-  "backToDocuments": { "message": "العودة إلى المستندات" },
+  "aiHelpMeFill": {
+    "message": "أيها الذكاء الاصطناعي، ساعدني في التعبئة ($COUNT$)",
+    "placeholders": { "count": { "content": "$1" } }
+  },
   "footerNote": { "message": "يبقى تحليل المستند محليًا. ترسل اقتراحات الذكاء الاصطناعي النص المستخرج والبيانات الوصفية للحقول إلى المزوّد الذي تختاره بعد الموافقة. قد يؤدي إغلاق هذه اللوحة إلى إلغاء العمل؛ ولا تُستأنف الطلبات تلقائيًا أبدًا." },
   "progressReadingPage": {
     "message": "جارٍ قراءة الصفحة $PAGE$ من $TOTAL$ محليًا…",
     "placeholders": { "page": { "content": "$1" }, "total": { "content": "$2" } }
   },
-  "errActiveTabChanged": { "message": "تغيّر علامة التبويب النشطة. انقر على أيقونة شريط الأدوات في الصفحة المقصودة، ثم أعد الفحص والمراجعة." },
   "errDocumentRouteChanged": { "message": "تغيّر المستند أو المسار. أعد الفحص والمراجعة." },
-  "errTargetTabClosed": { "message": "تم إغلاق علامة التبويب المستهدفة." },
   "errInspectPartial": {
     "message": "$MESSAGE$ افحص الصفحة بحثًا عن تغييرات جزئية قبل إعادة الفحص.",
     "placeholders": { "message": { "content": "$1" } }
@@ -102,19 +101,52 @@
   "generateCloudFallback": { "message": "المزوّد" },
   "enableProviderToContinue": { "message": "قم بتمكين مزوّد أعلاه للمتابعة." },
 
+  "fieldsEyebrow": { "message": "تم اكتشافه في هذه الصفحة" },
+  "fieldsTitle": {
+    "message": "تم اكتشاف $COUNT$ حقلًا قابلًا للتعبئة",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "fieldsHint": { "message": "هذه هي القيم الحالية للصفحة. يستمر الاكتشاف عند تبديل الصفحات أو تغيّر النموذج." },
+  "selectDocumentPrompt": { "message": "تم اكتشاف حقول — أضف مستندًا ليتمكن الذكاء الاصطناعي من مطابقتها." },
+  "fieldEmpty": { "message": "(لا توجد قيمة بعد)" },
+  "useMatchedValue": {
+    "message": "استخدام القيمة المطابقة للحقل $NAME$ بدلاً من قيمة الصفحة",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "toggleAllFields": { "message": "استخدام القيم المطابقة لجميع الحقول" },
+  "willBeReplaced": {
+    "message": "سيستبدل قيمة الصفحة: $VALUE$",
+    "placeholders": { "value": { "content": "$1" } }
+  },
+  "retryScan": { "message": "إعادة محاولة الاكتشاف" },
+  "retryMatch": { "message": "إعادة محاولة المطابقة" },
+  "autoSendLabel": { "message": "الإرسال والمطابقة تلقائيًا" },
+  "autoSendAlways": { "message": "إرسال وإرسال تلقائي دائمًا" },
+  "autoSendStatus": {
+    "message": "الإرسال التلقائي مفعّل لـ $PROVIDER$: تتم مطابقة الصفحات الجديدة تلقائيًا.",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "autoSendOff": { "message": "إيقاف الإرسال التلقائي" },
+  "autoSendDialogTitle": {
+    "message": "إرسال نص المستند تلقائيًا إلى $PROVIDER$؟",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "autoSendDialogBody": {
+    "message": "عند تفعيل الإرسال التلقائي، يُرسَل نص المستند المستخرج وبيانات الحقول الوصفية تلقائيًا إلى **$PROVIDER$** كلما اكتُشفت صفحة قابلة للتعبئة — دون سؤال في كل مرة. يمكنك إيقافه في أي وقت.",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "autoSendDialogConfirm": { "message": "تفعيل الإرسال التلقائي" },
+
   "unlabeledField": { "message": "حقل بلا تسمية" },
   "reviewEyebrow": { "message": "أنت صاحب القرار النهائي" },
   "reviewTitle": { "message": "مراجعة الاقتراحات" },
-  "reviewHint": { "message": "توضّح الأدلة مصدر النص، لا أن المطابقة صحيحة. حدد فقط القيم التي تريد تعبئتها." },
-  "selectAll": { "message": "تحديد كل الاقتراحات المدعومة" },
-  "clearSelection": { "message": "مسح التحديد" },
+  "reviewHint": { "message": "توضّح الأدلة مصدر النص، لا أن المطابقة صحيحة. يختار كل مفتاح بين القيمة المطابقة والقيمة الحالية للصفحة؛ ولا تتم كتابة سوى الحقول المفعّلة." },
   "chooseOption": { "message": "(اختر خيارًا)" },
   "checkboxTrue": { "message": "true — ضع علامة في هذا المربع" },
   "checkboxFalse": { "message": "false — اتركه / أزل العلامة" },
   "proposedValue": { "message": "القيمة المقترحة" },
   "manualOverride": { "message": "تعديل يدوي · تحقق بعناية" },
   "currentValue": { "message": "القيمة الحالية:" },
-  "allowOverwrite": { "message": "السماح باستبدال هذه القيمة الموجودة" },
   "sourceEvidence": { "message": "أدلة المصدر" },
   "noAssignments": { "message": "لم تُرجَع أي تعيينات مدعومة ومستندة إلى أدلة. لم يتم تغيير النموذج." },
   "unmappedSummary": {
@@ -122,10 +154,6 @@
     "placeholders": { "count": { "content": "$1" } }
   },
   "fillNotice": { "message": "قد تؤدي التعبئة إلى تشغيل تحقق الموقع أو الحفظ التلقائي أو طلبات الشبكة. لا تنقر هذه الإضافة أبدًا على «إرسال». لا يمكن للتراجع عكس الآثار من جانب الخادم." },
-  "fillSelected": {
-    "message": "تعبئة المحدد ($COUNT$)",
-    "placeholders": { "count": { "content": "$1" } }
-  },
 
   "fillResultsLabel": { "message": "نتائج التعبئة" },
   "operationResults": { "message": "نتائج العملية" },
@@ -177,7 +205,7 @@
   "psKeyPlaceholderLocal": { "message": "اتركه فارغًا إذا لم يكن خادمك المحلي بحاجة إلى مفتاح" },
   "psKeyPlaceholderCloud": { "message": "يُشفَّر ويُحفظ على هذا الجهاز" },
   "psNoticeCloud": {
-    "message": "☁️ **تنبيه البيانات:** لا يخزّن Help Me Fill أي بيانات، لكن إنشاء الاقتراحات **يرسل نص مستندك المستخرج والبيانات الوصفية للحقول إلى $PROVIDER$**. لا يتم إرسال أي شيء حتى تراجعها وتوافق عليها في الخطوة التالية.",
+    "message": "☁️ **تنبيه البيانات:** لا يخزّن Help Me Fill أي بيانات، لكن إنشاء الاقتراحات **يرسل نص مستندك المستخرج والبيانات الوصفية للحقول إلى $PROVIDER$**. تبدأ عمليات الإرسال دائمًا بموافقتك: الإرسال التلقائي يكون معطّلًا في البداية، ويظهر تحذير أولًا عند تفعيله.",
     "placeholders": { "provider": { "content": "$1" } }
   },
   "psNoticeLocal": {

@@ -8,6 +8,9 @@ chrome.action.onClicked.addListener(tab => {
   void chrome.sidePanel.open({ windowId: tab.windowId }).catch(() => {
     void chrome.action.setBadgeText({ text: '!' });
   });
+  // An already-open panel cannot observe the fresh activeTab grant on its own;
+  // tell it a page it may have failed to reach could now be reachable.
+  void chrome.runtime.sendMessage({ type: 'ACTION_GRANTED', windowId: tab.windowId }).catch(() => { /* no panel open: nothing to notify */ });
 });
 chrome.runtime.onInstalled.addListener(() => { void configure(); });
 chrome.runtime.onStartup.addListener(() => { void configure(); });

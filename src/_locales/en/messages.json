@@ -30,22 +30,21 @@
   "stepReview": { "message": "Review" },
   "stepFill": { "message": "Fill" },
   "progressParsing": { "message": "Extracting document text locally…" },
-  "progressScanning": { "message": "Reading supported page fields…" },
   "progressMapping": { "message": "Waiting for your provider…" },
   "progressFilling": { "message": "Filling and verifying selected fields…" },
   "progressUndoing": { "message": "Restoring unchanged values…" },
   "progressCanceling": { "message": "Canceling remaining work. Already filled fields may remain; inspect the results." },
   "cancel": { "message": "Cancel" },
-  "aiHelpMeFill": { "message": "AI help me fill" },
-  "backToDocuments": { "message": "Back to documents" },
+  "aiHelpMeFill": {
+    "message": "AI help me fill ($COUNT$)",
+    "placeholders": { "count": { "content": "$1" } }
+  },
   "footerNote": { "message": "Document parsing stays local. AI suggestions send extracted text and field metadata to your chosen provider after consent. Closing this panel may cancel work; requests are never resumed automatically." },
   "progressReadingPage": {
     "message": "Reading page $PAGE$ of $TOTAL$ locally…",
     "placeholders": { "page": { "content": "$1" }, "total": { "content": "$2" } }
   },
-  "errActiveTabChanged": { "message": "The active tab changed. Click the toolbar icon on the intended page, then scan and review again." },
   "errDocumentRouteChanged": { "message": "The document or route changed. Scan and review again." },
-  "errTargetTabClosed": { "message": "The target tab was closed." },
   "errInspectPartial": {
     "message": "$MESSAGE$ Inspect the page for partial changes before rescanning.",
     "placeholders": { "message": { "content": "$1" } }
@@ -114,19 +113,52 @@
   "generateCloudFallback": { "message": "provider" },
   "enableProviderToContinue": { "message": "Enable a provider above to continue." },
 
+  "fieldsEyebrow": { "message": "Detected on this page" },
+  "fieldsTitle": {
+    "message": "$COUNT$ fillable fields detected",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "fieldsHint": { "message": "These are the page's current values. Detection keeps running as you switch pages or the form changes." },
+  "selectDocumentPrompt": { "message": "Fields detected — add a document so AI can match them." },
+  "fieldEmpty": { "message": "(no value yet)" },
+  "useMatchedValue": {
+    "message": "Use the matched value for $NAME$ instead of the page value",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "toggleAllFields": { "message": "Use matched values for all fields" },
+  "willBeReplaced": {
+    "message": "Will replace the page value: $VALUE$",
+    "placeholders": { "value": { "content": "$1" } }
+  },
+  "retryScan": { "message": "Retry detection" },
+  "retryMatch": { "message": "Try matching again" },
+  "autoSendLabel": { "message": "Send and match automatically" },
+  "autoSendAlways": { "message": "Send & always auto-send" },
+  "autoSendStatus": {
+    "message": "Auto-send is on for $PROVIDER$: new pages are matched automatically.",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "autoSendOff": { "message": "Turn off auto-send" },
+  "autoSendDialogTitle": {
+    "message": "Auto-send document text to $PROVIDER$?",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "autoSendDialogBody": {
+    "message": "With auto-send on, extracted document text and field metadata are sent to **$PROVIDER$** automatically whenever a fillable page is detected — without asking each time. You can turn it off at any time.",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "autoSendDialogConfirm": { "message": "Enable auto-send" },
+
   "unlabeledField": { "message": "Unlabeled field" },
   "reviewEyebrow": { "message": "You make the final call" },
   "reviewTitle": { "message": "Review suggestions" },
-  "reviewHint": { "message": "Evidence shows where text came from, not that the match is correct. Select only the values you want to fill." },
-  "selectAll": { "message": "Select all supported suggestions" },
-  "clearSelection": { "message": "Clear selection" },
+  "reviewHint": { "message": "Evidence shows where text came from, not that the match is correct. Each switch chooses between the matched value and the page's current value; only switched-on fields are written." },
   "chooseOption": { "message": "(choose an option)" },
   "checkboxTrue": { "message": "true — tick this box" },
   "checkboxFalse": { "message": "false — leave / untick" },
   "proposedValue": { "message": "Proposed value" },
   "manualOverride": { "message": "Manual override · Check carefully" },
   "currentValue": { "message": "Current value:" },
-  "allowOverwrite": { "message": "Allow replacing this existing value" },
   "sourceEvidence": { "message": "Source evidence" },
   "noAssignments": { "message": "No supported, evidence-backed assignments were returned. The form has not been changed." },
   "unmappedSummary": {
@@ -134,10 +166,6 @@
     "placeholders": { "count": { "content": "$1" } }
   },
   "fillNotice": { "message": "Filling can trigger the site's validation, autosave, or network requests. This extension never clicks Submit. Undo cannot reverse server-side effects." },
-  "fillSelected": {
-    "message": "Fill selected ($COUNT$)",
-    "placeholders": { "count": { "content": "$1" } }
-  },
 
   "fillResultsLabel": { "message": "Fill results" },
   "operationResults": { "message": "Operation results" },
@@ -189,7 +217,7 @@
   "psKeyPlaceholderLocal": { "message": "Leave blank if your local server needs no key" },
   "psKeyPlaceholderCloud": { "message": "Encrypted and saved on this device" },
   "psNoticeCloud": {
-    "message": "☁️ **Data notice:** Help Me Fill stores no data, but generating suggestions **sends your extracted document text and field metadata to $PROVIDER$**. Nothing is sent until you review and approve it on the next step.",
+    "message": "☁️ **Data notice:** Help Me Fill stores no data, but generating suggestions **sends your extracted document text and field metadata to $PROVIDER$**. Sends always start with your approval: auto-send begins off, and enabling it shows a warning first.",
     "placeholders": { "provider": { "content": "$1" } }
   },
   "psNoticeLocal": {

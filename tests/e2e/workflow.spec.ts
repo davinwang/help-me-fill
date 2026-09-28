@@ -1,70 +1,74 @@
 import { test, expect } from '@playwright/test';
 import { writeFile } from 'node:fs/promises';
-import { openExtension, enableProvider } from './harness';
+import { openExtension, enableProvider, installMappingMock } from './harness';
 import { benchmarkCases } from '../fixtures/cases';
 
 for (const framework of ['native', 'react', 'vue']) {
-  test(`${framework}: consent, grounded proposals, persistent fill, and conditional undo`, async ({}, info) => {
+  test(`${framework}: parallel detection, review switches, and conditional undo`, async ({}, info) => {
     const scenario = benchmarkCases[framework === 'vue' ? 1 : 0];
     const app = await openExtension(info, framework, scenario.id);
     try {
-      let requests = 0, mockError = '';
+      const counts = { requests: 0, error: '' } as { requests: number; error: string; release?: () => void };
       await enableProvider(app, info.project.name === 'edge' ? 'edge://extensions/' : 'chrome://extensions/');
-      expect(requests).toBe(0);
-      // The save-time verification probe is intercepted inside enableProvider; install
-      // the mapping interception afterwards so it only sees the consented generation.
-      await app.panel.send('Fetch.enable', { patterns: [{ urlPattern: 'http*', requestStage: 'Request' }] });
-      app.panel.onEvent = (method, event) => {
-        if (method !== 'Fetch.requestPaused') return;
-        void (async () => {
-          requests++;
-          expect(event.request.url).toBe('https://api.openai.com/v1/chat/completions');
-          const request = JSON.parse(event.request.postData);
-          const payload = JSON.parse(request.messages[1].content);
-          expect(payload.formFields.every((field: any) => !('currentValue' in field))).toBe(true);
-          expect(JSON.stringify(payload)).not.toContain('synthetic-e2e-key');
-          const assignments = payload.formFields.map((field: any) => {
-            const expected = scenario.fields.find(item => item.name === field.name)!.expected!;
-            const line = payload.documentLines.find((line: any) => line.text.includes(expected));
-            if (!line) throw new Error('Fixture evidence was not present in PDF extraction.');
-            return { fieldId: field.id, value: expected, evidence: [{ lineId: line.id, quote: expected }], reason: 'Synthetic oracle; not an LLM accuracy measurement.' };
-          });
-          await app.panel.send('Fetch.fulfillRequest', { requestId: event.requestId, responseCode: 200, responseHeaders: [{ name: 'Content-Type', value: 'application/json' }],
-            body: Buffer.from(JSON.stringify({ choices: [{ finish_reason: 'stop', message: { content: JSON.stringify({ assignments, unmapped: [] }) } }] })).toString('base64') });
-        })().catch(error => { mockError = String(error); void app.panel.send('Fetch.failRequest', { requestId: event.requestId, errorReason: 'Aborted' }); });
-      };
+      expect(counts.requests).toBe(0);
+      // Detection runs in parallel with document selection: fillable fields and
+      // their current page values appear before any document exists.
+      await expect.poll(() => app.panel.text()).toContain('10 fillable fields detected');
+      await expect.poll(() => app.panel.text()).toContain('Fields detected — add a document so AI can match them.');
+      expect(await app.panel.evaluate(() => !!document.querySelector('.attention .drop-zone'))).toBe(true);
+      expect(await app.panel.evaluate(() => [...document.querySelectorAll('.field-list li')].map(item => item.querySelector('.section-top strong')?.textContent)))
+        .toEqual(scenario.fields.map(field => field.label));
+      expect(await app.panel.text()).not.toContain('Review suggestions');
       await app.panel.upload(`tests/fixtures/generated/${scenario.id}.pdf`);
       await expect.poll(() => app.panel.text()).toContain(`${scenario.id}.pdf`);
-      // One button moves to Step 2; nothing is sent until the consent action.
-      await app.panel.click('AI help me fill');
+      // A cloud provider starts manual: the disclosure card appears by itself,
+      // nothing leaves the browser, and the page is untouched.
       await expect.poll(() => app.panel.text()).toContain('Review what you share');
-      expect(requests).toBe(0);
+      expect(counts.requests).toBe(0);
       expect(await app.page.locator('input[name="fullName"]').inputValue()).toBe('');
-      // Step 2 focuses on labels/values: no drop zone or document cards.
-      expect(await app.panel.evaluate(() => document.querySelectorAll('.drop-zone, .doc-card').length)).toBe(0);
+      // The single page keeps document access available while reviewing.
+      expect(await app.panel.evaluate(() => document.querySelectorAll('.drop-zone, .doc-card').length)).toBe(2);
+      await app.panel.send('Fetch.enable', { patterns: [{ urlPattern: 'http*', requestStage: 'Request' }] });
+      installMappingMock(app, scenario, counts);
       await app.panel.click('Send to OpenAI and generate suggestions');
       await expect.poll(() => app.panel.text()).toContain('Review suggestions');
-      expect(mockError).toBe(''); expect(requests).toBe(1);
-      expect(await app.panel.evaluate(() => document.querySelectorAll('.review-row input:checked').length)).toBe(0);
-      await app.panel.click('Select all supported suggestions');
-      const isButtonDisabled = (text: string) => app.panel.evaluate((text: string) =>
-        [...document.querySelectorAll('button')].find(button => button.textContent?.trim() === text)?.disabled,
-      text);
-      await app.panel.click('Fill selected (10)');
+      expect(counts.error).toBe(''); expect(counts.requests).toBe(1);
+      // Empty page fields are armed by default; the page keeps its values.
+      const switches = () => app.panel.evaluate(() => [...document.querySelectorAll('.review-row input.switch')].map(input => (input as HTMLInputElement).checked));
+      expect(await switches()).toEqual(Array(10).fill(true));
+      expect(await app.panel.evaluate(() => (document.querySelector('.check-label.master input') as HTMLInputElement).checked)).toBe(true);
+      const disabled = (text: string) => app.panel.evaluate((text: string) =>
+        [...document.querySelectorAll('button')].find(button => button.textContent?.trim() === text)?.disabled, text);
+      expect(await disabled('AI help me fill (10)')).toBe(false);
+      // One switch off falls back to the page value and drops the count.
+      await app.panel.toggle('.review-row input.switch');
+      expect(await switches()).toEqual([false, ...Array(9).fill(true)]);
+      expect(await disabled('AI help me fill (9)')).toBe(false);
+      await expect.poll(() => app.panel.text()).toContain('Current value:');
+      await app.panel.toggle('.review-row input.switch');
+      expect(await disabled('AI help me fill (10)')).toBe(false);
+      // The tri-state master switch flips every row off, then back on.
+      await app.panel.toggle('.check-label.master input');
+      expect(await switches()).toEqual(Array(10).fill(false));
+      expect(await disabled('AI help me fill (0)')).toBe(true);
+      await app.panel.toggle('.check-label.master input');
+      expect(await switches()).toEqual(Array(10).fill(true));
+      // A hand edit is marked as a manual override and is what gets written.
+      await app.panel.enter('.review-row textarea', 'Hand edited name');
+      await expect.poll(() => app.panel.text()).toContain('Manual override');
+      await app.panel.click('AI help me fill (10)');
       await expect.poll(() => app.panel.text(), { timeout: 25_000 }).toContain('Operation results');
-      await expect.poll(() => isButtonDisabled('Fill selected (10)')).toBe(true);
       expect(await app.panel.evaluate(() => [...document.querySelectorAll('.results .badge')].map(node => node.textContent))).toEqual(Array(10).fill('filled'));
       await app.page.locator('#rerender').click();
-      for (const field of scenario.fields) await expect(app.page.locator(`[name="${field.name}"]`)).toHaveValue(field.expected!);
-      const state = JSON.parse(await app.page.locator('#state').innerText());
-      expect(state.fullName).toBe(scenario.fields[0].expected);
+      await expect(app.page.locator('[name="fullName"]')).toHaveValue('Hand edited name');
+      for (const field of scenario.fields.slice(1)) await expect(app.page.locator(`[name="${field.name}"]`)).toHaveValue(field.expected!);
+      expect(JSON.parse(await app.page.locator('#state').innerText()).fullName).toBe('Hand edited name');
       await app.panel.click('Undo last fill');
       await expect.poll(() => app.panel.evaluate(() => document.querySelectorAll('.results .badge').length ? [...document.querySelectorAll('.results .badge')].filter(node => node.textContent === 'restored').length : 0), { timeout: 25_000 }).toBe(10);
-      await expect.poll(() => isButtonDisabled('Undo last fill')).toBe(true);
-      await expect.poll(() => isButtonDisabled('Fill selected (10)')).toBe(false);
-      await app.panel.click('Fill selected (10)');
+      await expect.poll(() => disabled('Undo last fill')).toBe(true);
+      await app.panel.click('AI help me fill (10)');
       await expect.poll(() => app.panel.evaluate(() => [...document.querySelectorAll('.results .badge')].filter(node => node.textContent === 'filled').length), { timeout: 25_000 }).toBe(10);
-      expect(mockError).toBe('');
+      expect(counts.error).toBe('');
       // A user edit after the repeated fill must survive undo.
       await app.page.locator('[name="fullName"]').fill('Later user edit');
       await app.panel.click('Undo last fill');
@@ -80,3 +84,37 @@ for (const framework of ['native', 'react', 'vue']) {
     } finally { await app.close(); }
   });
 }
+
+test('auto-send asks first and then matches automatically', async ({}, info) => {
+  const scenario = benchmarkCases[0];
+  const app = await openExtension(info, 'react', scenario.id);
+  try {
+    const counts = { requests: 0, error: '' } as { requests: number; error: string; release?: () => void };
+    await enableProvider(app, info.project.name === 'edge' ? 'edge://extensions/' : 'chrome://extensions/');
+    await app.panel.upload(`tests/fixtures/generated/${scenario.id}.pdf`);
+    await expect.poll(() => app.panel.text()).toContain('Review what you share');
+    await app.panel.send('Fetch.enable', { patterns: [{ urlPattern: 'http*', requestStage: 'Request' }] });
+    installMappingMock(app, scenario, counts, true);
+    // Turning auto-send on for a cloud provider warns first; declining keeps
+    // the switch off and sends nothing.
+    await app.panel.toggle('.consent input.switch');
+    await expect.poll(() => app.panel.text()).toContain('Auto-send document text to OpenAI?');
+    await app.panel.click('Cancel');
+    await expect.poll(() => app.panel.text()).not.toContain('Auto-send document text to OpenAI?');
+    expect(counts.requests).toBe(0);
+    expect(await app.panel.evaluate(() => (document.querySelector('.consent input.switch') as HTMLInputElement).checked)).toBe(false);
+    // "Send & always" confirms through the warning and matches on the spot.
+    await app.panel.click('Send & always auto-send');
+    await expect.poll(() => app.panel.text()).toContain('Auto-send document text to OpenAI?');
+    await app.panel.click('Enable auto-send');
+    await expect.poll(() => app.panel.text()).toContain('Auto-send is on for OpenAI');
+    await expect.poll(() => counts.requests).toBe(1);
+    expect(await app.page.locator('input[name="fullName"]').inputValue()).toBe('');
+    counts.release!();
+    await expect.poll(() => app.panel.text()).toContain('Review suggestions');
+    expect(counts.error).toBe('');
+    expect(await app.panel.evaluate(() => document.querySelectorAll('.review-row input.switch:checked').length)).toBe(10);
+    const stored = await app.panel.evaluate(() => chrome.storage.local.get(null));
+    expect((stored as Record<string, { provider?: string; value?: boolean }>).autoSend).toMatchObject({ provider: 'openai', value: true });
+  } finally { await app.close(); }
+});

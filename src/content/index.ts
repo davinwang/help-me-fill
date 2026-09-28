@@ -29,6 +29,14 @@ if (!state.__helpMeFillInstalled) {
       completed.clear(); undo = []; registry = scanPage(); canceled = false;
       return registry.scan;
     }
+    if (message.type === 'SYNC') {
+      if (location.href !== message.expectedUrl) throw new UserError(t('idxPageChanged'));
+      // Quiet re-detection while the panel polls. Unlike SCAN it preserves the
+      // undo stack and the completed-request cache, so polling can never
+      // destroy a restoration that is still available.
+      registry = scanPage();
+      return registry.scan;
+    }
     if (!registry) throw new UserError(t('idxScanFirst'));
     if (!connections.has(message.requestId)) throw new UserError(t('idxPanelDisconnected'));
     const snapshot = registry;

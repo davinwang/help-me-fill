@@ -58,6 +58,26 @@ export function localEndpointOrigin(endpoint: string): string {
   return `${url.protocol}//${url.hostname}/*`;
 }
 
+// Loopback covers localhost and 127.0.0.0/8: an endpoint that cannot leave the
+// local machine, unlike private-LAN (RFC1918) servers.
+export function isLoopbackEndpoint(endpoint: string): boolean {
+  let host: string;
+  try { host = new URL(endpoint.trim()).hostname; } catch { return false; }
+  if (host === 'localhost') return true;
+  const octets = host.split('.').map(Number);
+  return octets.length === 4 && octets.every(octet => Number.isInteger(octet) && octet >= 0 && octet <= 255) && octets[0] === 127;
+}
+
+// Auto-send starts enabled only where extracted text cannot leave the device
+// or the local machine: the on-device model and loopback servers. Cloud
+// providers and private-LAN servers always start manual, so the first send
+// stays an explicit click.
+export function defaultAutoSend(settings: ProviderSettings): boolean {
+  if (settings.provider === 'builtin') return true;
+  const endpoint = settings.provider === 'custom' ? settings.endpoint ?? '' : PROVIDERS[settings.provider].endpoint;
+  return isLoopbackEndpoint(endpoint);
+}
+
 // Single source of truth for a provider's network identity. Cloud/local presets
 // resolve from the registry; the custom preset resolves from the user endpoint.
 export function resolveProvider(settings: ProviderSettings): ResolvedProvider {

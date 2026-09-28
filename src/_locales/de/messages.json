@@ -18,22 +18,21 @@
   "stepReview": { "message": "Prüfen" },
   "stepFill": { "message": "Ausfüllen" },
   "progressParsing": { "message": "Dokumenttext wird lokal extrahiert…" },
-  "progressScanning": { "message": "Unterstützte Seitenfelder werden gelesen…" },
   "progressMapping": { "message": "Warten auf Ihren Anbieter…" },
   "progressFilling": { "message": "Ausgewählte Felder werden ausgefüllt und überprüft…" },
   "progressUndoing": { "message": "Unveränderte Werte werden wiederhergestellt…" },
   "progressCanceling": { "message": "Verbleibende Arbeit wird abgebrochen. Bereits ausgefüllte Felder können bestehen bleiben; prüfen Sie die Ergebnisse." },
   "cancel": { "message": "Abbrechen" },
-  "aiHelpMeFill": { "message": "KI, hilf mir beim Ausfüllen" },
-  "backToDocuments": { "message": "Zurück zu den Dokumenten" },
+  "aiHelpMeFill": {
+    "message": "KI, hilf mir beim Ausfüllen ($COUNT$)",
+    "placeholders": { "count": { "content": "$1" } }
+  },
   "footerNote": { "message": "Die Dokumentenanalyse bleibt lokal. KI-Vorschläge senden extrahierten Text und Feldmetadaten nach Ihrer Zustimmung an den von Ihnen gewählten Anbieter. Das Schließen dieses Bereichs kann die Arbeit abbrechen; Anfragen werden niemals automatisch fortgesetzt." },
   "progressReadingPage": {
     "message": "Seite $PAGE$ von $TOTAL$ wird lokal gelesen…",
     "placeholders": { "page": { "content": "$1" }, "total": { "content": "$2" } }
   },
-  "errActiveTabChanged": { "message": "Der aktive Tab hat sich geändert. Klicken Sie auf der gewünschten Seite auf das Symbolleistensymbol, dann scannen und prüfen Sie erneut." },
   "errDocumentRouteChanged": { "message": "Das Dokument oder die Route hat sich geändert. Scannen und prüfen Sie erneut." },
-  "errTargetTabClosed": { "message": "Der Ziel-Tab wurde geschlossen." },
   "errInspectPartial": {
     "message": "$MESSAGE$ Prüfen Sie die Seite auf teilweise Änderungen, bevor Sie erneut scannen.",
     "placeholders": { "message": { "content": "$1" } }
@@ -102,19 +101,52 @@
   "generateCloudFallback": { "message": "Anbieter" },
   "enableProviderToContinue": { "message": "Aktivieren Sie oben einen Anbieter, um fortzufahren." },
 
+  "fieldsEyebrow": { "message": "Auf dieser Seite erkannt" },
+  "fieldsTitle": {
+    "message": "$COUNT$ ausfüllbare Felder erkannt",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "fieldsHint": { "message": "Dies sind die aktuellen Werte der Seite. Die Erkennung läuft weiter, wenn Sie die Seite wechseln oder sich das Formular ändert." },
+  "selectDocumentPrompt": { "message": "Felder erkannt – fügen Sie ein Dokument hinzu, damit die KI sie zuordnen kann." },
+  "fieldEmpty": { "message": "(noch kein Wert)" },
+  "useMatchedValue": {
+    "message": "Den zugeordneten Wert für $NAME$ statt des Seitenwerts verwenden",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "toggleAllFields": { "message": "Zugeordnete Werte für alle Felder verwenden" },
+  "willBeReplaced": {
+    "message": "Ersetzt den Seitenwert: $VALUE$",
+    "placeholders": { "value": { "content": "$1" } }
+  },
+  "retryScan": { "message": "Erkennung wiederholen" },
+  "retryMatch": { "message": "Zuordnung erneut versuchen" },
+  "autoSendLabel": { "message": "Automatisch senden und zuordnen" },
+  "autoSendAlways": { "message": "Senden & immer automatisch senden" },
+  "autoSendStatus": {
+    "message": "Automatisches Senden ist für $PROVIDER$ aktiviert: Neue Seiten werden automatisch zugeordnet.",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "autoSendOff": { "message": "Automatisches Senden deaktivieren" },
+  "autoSendDialogTitle": {
+    "message": "Dokumenttext automatisch an $PROVIDER$ senden?",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "autoSendDialogBody": {
+    "message": "Bei aktiviertem automatischen Senden werden extrahierter Dokumenttext und Feldmetadaten automatisch an **$PROVIDER$** gesendet, sobald eine ausfüllbare Seite erkannt wird – ohne jedes Mal nachzufragen. Sie können es jederzeit deaktivieren.",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "autoSendDialogConfirm": { "message": "Automatisches Senden aktivieren" },
+
   "unlabeledField": { "message": "Feld ohne Beschriftung" },
   "reviewEyebrow": { "message": "Sie haben das letzte Wort" },
   "reviewTitle": { "message": "Vorschläge prüfen" },
-  "reviewHint": { "message": "Belege zeigen, woher der Text stammt, nicht dass die Zuordnung korrekt ist. Wählen Sie nur die Werte aus, die Sie ausfüllen möchten." },
-  "selectAll": { "message": "Alle unterstützten Vorschläge auswählen" },
-  "clearSelection": { "message": "Auswahl aufheben" },
+  "reviewHint": { "message": "Belege zeigen, woher der Text stammt – nicht, dass die Zuordnung korrekt ist. Jeder Schalter entscheidet zwischen dem zugeordneten Wert und dem aktuellen Seitenwert; nur eingeschaltete Felder werden geschrieben." },
   "chooseOption": { "message": "(Option wählen)" },
   "checkboxTrue": { "message": "true — dieses Kästchen aktivieren" },
   "checkboxFalse": { "message": "false — lassen / deaktivieren" },
   "proposedValue": { "message": "Vorgeschlagener Wert" },
   "manualOverride": { "message": "Manuelle Änderung · Sorgfältig prüfen" },
   "currentValue": { "message": "Aktueller Wert:" },
-  "allowOverwrite": { "message": "Ersetzen dieses vorhandenen Werts zulassen" },
   "sourceEvidence": { "message": "Quellbelege" },
   "noAssignments": { "message": "Es wurden keine unterstützten, beleggestützten Zuordnungen zurückgegeben. Das Formular wurde nicht verändert." },
   "unmappedSummary": {
@@ -122,10 +154,6 @@
     "placeholders": { "count": { "content": "$1" } }
   },
   "fillNotice": { "message": "Das Ausfüllen kann die Validierung, das automatische Speichern oder Netzwerkanfragen der Website auslösen. Diese Erweiterung klickt niemals auf „Senden“. Das Rückgängigmachen kann serverseitige Wirkungen nicht umkehren." },
-  "fillSelected": {
-    "message": "Ausgewählte ausfüllen ($COUNT$)",
-    "placeholders": { "count": { "content": "$1" } }
-  },
 
   "fillResultsLabel": { "message": "Ergebnisse des Ausfüllens" },
   "operationResults": { "message": "Vorgangsergebnisse" },
@@ -177,7 +205,7 @@
   "psKeyPlaceholderLocal": { "message": "Leer lassen, wenn Ihr lokaler Server keinen Schlüssel benötigt" },
   "psKeyPlaceholderCloud": { "message": "Auf diesem Gerät verschlüsselt und gespeichert" },
   "psNoticeCloud": {
-    "message": "☁️ **Datenhinweis:** Help Me Fill speichert keine Daten, aber die Erstellung der Vorschläge **sendet Ihren extrahierten Dokumenttext und die Feldmetadaten an $PROVIDER$**. Es wird nichts gesendet, bis Sie es im nächsten Schritt prüfen und genehmigen.",
+    "message": "☁️ **Datenhinweis:** Help Me Fill speichert keine Daten, aber die Erstellung der Vorschläge **sendet Ihren extrahierten Dokumenttext und die Feldmetadaten an $PROVIDER$**. Sendevorgänge beginnen immer mit Ihrer Genehmigung: Automatisches Senden ist zunächst aus, und beim Aktivieren erscheint zuerst eine Warnung.",
     "placeholders": { "provider": { "content": "$1" } }
   },
   "psNoticeLocal": {

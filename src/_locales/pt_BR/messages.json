@@ -18,22 +18,21 @@
   "stepReview": { "message": "Revisar" },
   "stepFill": { "message": "Preencher" },
   "progressParsing": { "message": "Extraindo o texto do documento localmente…" },
-  "progressScanning": { "message": "Lendo os campos compatíveis da página…" },
   "progressMapping": { "message": "Aguardando seu provedor…" },
   "progressFilling": { "message": "Preenchendo e verificando os campos selecionados…" },
   "progressUndoing": { "message": "Restaurando os valores inalterados…" },
   "progressCanceling": { "message": "Cancelando o trabalho restante. Campos já preenchidos podem permanecer; inspecione os resultados." },
   "cancel": { "message": "Cancelar" },
-  "aiHelpMeFill": { "message": "IA, ajude-me a preencher" },
-  "backToDocuments": { "message": "Voltar aos documentos" },
+  "aiHelpMeFill": {
+    "message": "IA, ajude-me a preencher ($COUNT$)",
+    "placeholders": { "count": { "content": "$1" } }
+  },
   "footerNote": { "message": "A análise do documento permanece local. As sugestões da IA enviam o texto extraído e os metadados dos campos ao provedor escolhido após o consentimento. Fechar este painel pode cancelar o trabalho; as solicitações nunca são retomadas automaticamente." },
   "progressReadingPage": {
     "message": "Lendo localmente a página $PAGE$ de $TOTAL$…",
     "placeholders": { "page": { "content": "$1" }, "total": { "content": "$2" } }
   },
-  "errActiveTabChanged": { "message": "A aba ativa mudou. Clique no ícone da barra de ferramentas na página desejada e depois escaneie e revise novamente." },
   "errDocumentRouteChanged": { "message": "O documento ou a rota mudou. Escaneie e revise novamente." },
-  "errTargetTabClosed": { "message": "A aba de destino foi fechada." },
   "errInspectPartial": {
     "message": "$MESSAGE$ Inspecione a página em busca de alterações parciais antes de escanear novamente.",
     "placeholders": { "message": { "content": "$1" } }
@@ -102,19 +101,52 @@
   "generateCloudFallback": { "message": "provedor" },
   "enableProviderToContinue": { "message": "Ative um provedor acima para continuar." },
 
+  "fieldsEyebrow": { "message": "Detectado nesta página" },
+  "fieldsTitle": {
+    "message": "$COUNT$ campos preenchíveis detectados",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "fieldsHint": { "message": "Estes são os valores atuais da página. A detecção continua ao trocar de página ou quando o formulário muda." },
+  "selectDocumentPrompt": { "message": "Campos detectados — adicione um documento para a IA conseguir associá-los." },
+  "fieldEmpty": { "message": "(ainda sem valor)" },
+  "useMatchedValue": {
+    "message": "Usar o valor associado para $NAME$ em vez do valor da página",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "toggleAllFields": { "message": "Usar os valores associados para todos os campos" },
+  "willBeReplaced": {
+    "message": "Vai substituir o valor da página: $VALUE$",
+    "placeholders": { "value": { "content": "$1" } }
+  },
+  "retryScan": { "message": "Tentar detectar novamente" },
+  "retryMatch": { "message": "Tentar associar novamente" },
+  "autoSendLabel": { "message": "Enviar e associar automaticamente" },
+  "autoSendAlways": { "message": "Enviar e sempre enviar automaticamente" },
+  "autoSendStatus": {
+    "message": "O envio automático está ativado para $PROVIDER$: novas páginas são associadas automaticamente.",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "autoSendOff": { "message": "Desativar o envio automático" },
+  "autoSendDialogTitle": {
+    "message": "Enviar o texto do documento automaticamente para $PROVIDER$?",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "autoSendDialogBody": {
+    "message": "Com o envio automático ativado, o texto extraído do documento e os metadados dos campos são enviados automaticamente para **$PROVIDER$** sempre que uma página preenchível for detectada — sem perguntar a cada vez. Você pode desativá-lo a qualquer momento.",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "autoSendDialogConfirm": { "message": "Ativar o envio automático" },
+
   "unlabeledField": { "message": "Campo sem rótulo" },
   "reviewEyebrow": { "message": "Você tem a palavra final" },
   "reviewTitle": { "message": "Revisar sugestões" },
-  "reviewHint": { "message": "As evidências mostram de onde o texto veio, não que a correspondência esteja correta. Selecione apenas os valores que deseja preencher." },
-  "selectAll": { "message": "Selecionar todas as sugestões compatíveis" },
-  "clearSelection": { "message": "Limpar seleção" },
+  "reviewHint": { "message": "As evidências mostram de onde o texto veio, não que a correspondência esteja correta. Cada chave escolhe entre o valor associado e o valor atual da página; apenas campos ativados são escritos." },
   "chooseOption": { "message": "(escolha uma opção)" },
   "checkboxTrue": { "message": "true — marcar esta caixa" },
   "checkboxFalse": { "message": "false — deixar / desmarcar" },
   "proposedValue": { "message": "Valor proposto" },
   "manualOverride": { "message": "Alteração manual · Verifique com atenção" },
   "currentValue": { "message": "Valor atual:" },
-  "allowOverwrite": { "message": "Permitir substituir este valor existente" },
   "sourceEvidence": { "message": "Evidências da fonte" },
   "noAssignments": { "message": "Nenhuma atribuição compatível e respaldada por evidências foi retornada. O formulário não foi alterado." },
   "unmappedSummary": {
@@ -122,10 +154,6 @@
     "placeholders": { "count": { "content": "$1" } }
   },
   "fillNotice": { "message": "Preencher pode acionar a validação, o salvamento automático ou as solicitações de rede do site. Esta extensão nunca clica em Enviar. Desfazer não pode reverter efeitos do lado do servidor." },
-  "fillSelected": {
-    "message": "Preencher selecionados ($COUNT$)",
-    "placeholders": { "count": { "content": "$1" } }
-  },
 
   "fillResultsLabel": { "message": "Resultados do preenchimento" },
   "operationResults": { "message": "Resultados da operação" },
@@ -177,7 +205,7 @@
   "psKeyPlaceholderLocal": { "message": "Deixe em branco se seu servidor local não precisar de chave" },
   "psKeyPlaceholderCloud": { "message": "Criptografada e salva neste dispositivo" },
   "psNoticeCloud": {
-    "message": "☁️ **Aviso de dados:** o Help Me Fill não armazena dados, mas gerar sugestões **envia o texto extraído do seu documento e os metadados dos campos para $PROVIDER$**. Nada é enviado até que você revise e aprove na próxima etapa.",
+    "message": "☁️ **Aviso de dados:** o Help Me Fill não armazena dados, mas gerar sugestões **envia o texto extraído do seu documento e os metadados dos campos para $PROVIDER$**. Os envios sempre começam com a sua aprovação: o envio automático começa desativado, e ativá-lo mostra um aviso primeiro.",
     "placeholders": { "provider": { "content": "$1" } }
   },
   "psNoticeLocal": {

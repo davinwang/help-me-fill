@@ -18,22 +18,21 @@
   "stepReview": { "message": "審核" },
   "stepFill": { "message": "填寫" },
   "progressParsing": { "message": "正在本機擷取文件文字…" },
-  "progressScanning": { "message": "正在讀取頁面支援的欄位…" },
   "progressMapping": { "message": "正在等待你的服務商…" },
   "progressFilling": { "message": "正在填寫並驗證所選欄位…" },
   "progressUndoing": { "message": "正在還原未變更的值…" },
   "progressCanceling": { "message": "正在取消剩餘工作。已填寫的欄位可能保留，請檢查結果。" },
   "cancel": { "message": "取消" },
-  "aiHelpMeFill": { "message": "AI 幫我填" },
-  "backToDocuments": { "message": "返回文件" },
+  "aiHelpMeFill": {
+    "message": "AI 幫我填（$COUNT$）",
+    "placeholders": { "count": { "content": "$1" } }
+  },
   "footerNote": { "message": "文件解析一律在本機完成。AI 建議會在你同意後，將擷取文字與欄位中繼資料傳送給你選擇的服務商。關閉此面板可能取消工作；請求絕不會自動恢復。" },
   "progressReadingPage": {
     "message": "正在本機讀取第 $PAGE$ 頁，共 $TOTAL$ 頁…",
     "placeholders": { "page": { "content": "$1" }, "total": { "content": "$2" } }
   },
-  "errActiveTabChanged": { "message": "使用中的分頁已變更。請在目標頁面點擊工具列圖示，然後重新掃描並審核。" },
   "errDocumentRouteChanged": { "message": "文件或路由已變更。請重新掃描並審核。" },
-  "errTargetTabClosed": { "message": "目標分頁已關閉。" },
   "errInspectPartial": {
     "message": "$MESSAGE$ 請在重新掃描前檢查頁面是否有部分變更。",
     "placeholders": { "message": { "content": "$1" } }
@@ -102,19 +101,52 @@
   "generateCloudFallback": { "message": "服務商" },
   "enableProviderToContinue": { "message": "請在上方啟用一個服務商以繼續。" },
 
+  "fieldsEyebrow": { "message": "在此頁面偵測到" },
+  "fieldsTitle": {
+    "message": "偵測到 $COUNT$ 個可填欄位",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "fieldsHint": { "message": "這裡顯示頁面目前值。切換頁面或表單變化時會持續偵測。" },
+  "selectDocumentPrompt": { "message": "已偵測到欄位——加入一份文件，讓 AI 幫你配對。" },
+  "fieldEmpty": { "message": "（尚無值）" },
+  "useMatchedValue": {
+    "message": "$NAME$ 使用配對值而非頁面值",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "toggleAllFields": { "message": "所有欄位都使用配對值" },
+  "willBeReplaced": {
+    "message": "將取代頁面值：$VALUE$",
+    "placeholders": { "value": { "content": "$1" } }
+  },
+  "retryScan": { "message": "重試偵測" },
+  "retryMatch": { "message": "重新配對" },
+  "autoSendLabel": { "message": "自動傳送並配對" },
+  "autoSendAlways": { "message": "傳送並一律自動傳送" },
+  "autoSendStatus": {
+    "message": "已對 $PROVIDER$ 開啟自動傳送：新頁面會自動配對。",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "autoSendOff": { "message": "關閉自動傳送" },
+  "autoSendDialogTitle": {
+    "message": "自動將文件文字傳送到 $PROVIDER$？",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "autoSendDialogBody": {
+    "message": "開啟自動傳送後，一旦偵測到可填寫頁面，擷取的文件文字與欄位中繼資料會自動傳送給 **$PROVIDER$**——不必每次都詢問。你可以隨時關閉。",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "autoSendDialogConfirm": { "message": "開啟自動傳送" },
+
   "unlabeledField": { "message": "無標籤欄位" },
   "reviewEyebrow": { "message": "最終由你決定" },
   "reviewTitle": { "message": "審核建議" },
-  "reviewHint": { "message": "證據顯示文字來自何處，並不代表對應一定正確。請只選擇你想填寫的值。" },
-  "selectAll": { "message": "全選支援的建議" },
-  "clearSelection": { "message": "清除選擇" },
+  "reviewHint": { "message": "證據顯示文字來自何處，並不代表對應一定正確。每列的開關在配對值與頁面目前值之間選擇；只有開啟的欄位才會寫入。" },
   "chooseOption": { "message": "（請選擇一個選項）" },
   "checkboxTrue": { "message": "true — 勾選此項" },
   "checkboxFalse": { "message": "false — 保留 / 不勾選" },
   "proposedValue": { "message": "建議值" },
   "manualOverride": { "message": "手動修改 · 請仔細核對" },
   "currentValue": { "message": "目前值：" },
-  "allowOverwrite": { "message": "允許取代此既有值" },
   "sourceEvidence": { "message": "來源證據" },
   "noAssignments": { "message": "未傳回任何有證據支援的指派。表單未作變更。" },
   "unmappedSummary": {
@@ -122,10 +154,6 @@
     "placeholders": { "count": { "content": "$1" } }
   },
   "fillNotice": { "message": "填寫可能觸發網站的驗證、自動儲存或網路請求。此擴充功能絕不會點擊「提交」。復原無法逆轉伺服器端的副作用。" },
-  "fillSelected": {
-    "message": "填寫所選項（$COUNT$）",
-    "placeholders": { "count": { "content": "$1" } }
-  },
 
   "fillResultsLabel": { "message": "填寫結果" },
   "operationResults": { "message": "操作結果" },
@@ -177,7 +205,7 @@
   "psKeyPlaceholderLocal": { "message": "如果你的本機伺服器不需要金鑰，請留空" },
   "psKeyPlaceholderCloud": { "message": "在此裝置上加密儲存" },
   "psNoticeCloud": {
-    "message": "☁️ **資料提示：** 幫我填不儲存任何資料，但產生建議會**將你擷取的文件文字與欄位中繼資料傳送到 $PROVIDER$**。在你於下一步審核並核准之前，不會傳送任何內容。",
+    "message": "☁️ **資料提示：** 幫我填不儲存任何資料，但產生建議會**將你擷取的文件文字與欄位中繼資料傳送到 $PROVIDER$**。傳送一律從你的核准開始：自動傳送預設關閉，開啟時會先顯示警告。",
     "placeholders": { "provider": { "content": "$1" } }
   },
   "psNoticeLocal": {

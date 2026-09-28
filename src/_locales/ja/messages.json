@@ -18,22 +18,21 @@
   "stepReview": { "message": "確認" },
   "stepFill": { "message": "入力" },
   "progressParsing": { "message": "文書テキストをローカルで抽出中…" },
-  "progressScanning": { "message": "ページで対応するフィールドを読み取り中…" },
   "progressMapping": { "message": "プロバイダーの応答を待機中…" },
   "progressFilling": { "message": "選択したフィールドを入力・検証中…" },
   "progressUndoing": { "message": "変更されていない値を復元中…" },
   "progressCanceling": { "message": "残りの処理をキャンセルしています。すでに入力されたフィールドは残る場合があります。結果を確認してください。" },
   "cancel": { "message": "キャンセル" },
-  "aiHelpMeFill": { "message": "AI に入力してもらう" },
-  "backToDocuments": { "message": "文書に戻る" },
+  "aiHelpMeFill": {
+    "message": "AI に入力してもらう（$COUNT$）",
+    "placeholders": { "count": { "content": "$1" } }
+  },
   "footerNote": { "message": "文書の解析は常にローカルで行われます。AI の提案は、同意後に抽出テキストとフィールドのメタデータを選択したプロバイダーへ送信します。このパネルを閉じると処理がキャンセルされる場合があります。リクエストが自動的に再開されることはありません。" },
   "progressReadingPage": {
     "message": "$TOTAL$ ページ中 $PAGE$ ページ目をローカルで読み取り中…",
     "placeholders": { "page": { "content": "$1" }, "total": { "content": "$2" } }
   },
-  "errActiveTabChanged": { "message": "アクティブなタブが変更されました。目的のページでツールバーアイコンをクリックし、再度スキャンして確認してください。" },
   "errDocumentRouteChanged": { "message": "文書またはルートが変更されました。再度スキャンして確認してください。" },
-  "errTargetTabClosed": { "message": "対象のタブが閉じられました。" },
   "errInspectPartial": {
     "message": "$MESSAGE$ 再スキャンの前に、ページに変更が一部残っていないか確認してください。",
     "placeholders": { "message": { "content": "$1" } }
@@ -102,19 +101,52 @@
   "generateCloudFallback": { "message": "プロバイダー" },
   "enableProviderToContinue": { "message": "続行するには上でプロバイダーを有効にしてください。" },
 
+  "fieldsEyebrow": { "message": "このページで検出" },
+  "fieldsTitle": {
+    "message": "$COUNT$ 個の入力可能なフィールドを検出",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "fieldsHint": { "message": "表示しているのはページの現在の値です。ページを切り替えたりフォームが変わると、検出は自動的に続行します。" },
+  "selectDocumentPrompt": { "message": "フィールドを検出しました。文書を追加すると AI が照合できます。" },
+  "fieldEmpty": { "message": "（値なし）" },
+  "useMatchedValue": {
+    "message": "$NAME$ にページの値ではなく照合した値を使用",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "toggleAllFields": { "message": "すべてのフィールドで照合した値を使用" },
+  "willBeReplaced": {
+    "message": "ページの値を置き換えます: $VALUE$",
+    "placeholders": { "value": { "content": "$1" } }
+  },
+  "retryScan": { "message": "検出を再試行" },
+  "retryMatch": { "message": "照合を再試行" },
+  "autoSendLabel": { "message": "自動で送信して照合" },
+  "autoSendAlways": { "message": "送信して常に自動送信" },
+  "autoSendStatus": {
+    "message": "$PROVIDER$ への自動送信が有効です。新しいページは自動的に照合されます。",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "autoSendOff": { "message": "自動送信をオフにする" },
+  "autoSendDialogTitle": {
+    "message": "文書テキストを $PROVIDER$ に自動送信しますか？",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "autoSendDialogBody": {
+    "message": "自動送信を有効にすると、入力可能なページを検出するたびに、抽出した文書テキストとフィールドのメタデータが **$PROVIDER$** に自動で送信されます — 毎回確認を求められることはありません。いつでもオフにできます。",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "autoSendDialogConfirm": { "message": "自動送信を有効にする" },
+
   "unlabeledField": { "message": "ラベルのないフィールド" },
   "reviewEyebrow": { "message": "最終判断はあなたが行います" },
   "reviewTitle": { "message": "提案を確認" },
-  "reviewHint": { "message": "根拠はテキストの出所を示すものであり、一致が正しいことを保証しません。入力したい値だけを選択してください。" },
-  "selectAll": { "message": "対応する提案をすべて選択" },
-  "clearSelection": { "message": "選択を解除" },
+  "reviewHint": { "message": "根拠はテキストの出所を示すものであり、照合が正しいことを保証しません。各スイッチで照合した値とページの現在値のどちらを使うかを選べます。書き込まれるのはオンにしたフィールドだけです。" },
   "chooseOption": { "message": "（オプションを選択）" },
   "checkboxTrue": { "message": "true — このボックスをオンにする" },
   "checkboxFalse": { "message": "false — そのまま / オフにする" },
   "proposedValue": { "message": "提案された値" },
   "manualOverride": { "message": "手動で変更 · よく確認してください" },
   "currentValue": { "message": "現在の値:" },
-  "allowOverwrite": { "message": "この既存の値の置き換えを許可する" },
   "sourceEvidence": { "message": "出典の根拠" },
   "noAssignments": { "message": "根拠に裏付けられた対応付けが返されませんでした。フォームは変更されていません。" },
   "unmappedSummary": {
@@ -122,10 +154,6 @@
     "placeholders": { "count": { "content": "$1" } }
   },
   "fillNotice": { "message": "入力により、サイトの検証・自動保存・ネットワークリクエストが発生する場合があります。この拡張機能は「送信」を絶対にクリックしません。取り消しはサーバー側の影響を元に戻せません。" },
-  "fillSelected": {
-    "message": "選択項目を入力（$COUNT$）",
-    "placeholders": { "count": { "content": "$1" } }
-  },
 
   "fillResultsLabel": { "message": "入力結果" },
   "operationResults": { "message": "操作結果" },
@@ -177,7 +205,7 @@
   "psKeyPlaceholderLocal": { "message": "ローカルサーバーにキーが不要な場合は空のままにしてください" },
   "psKeyPlaceholderCloud": { "message": "このデバイスで暗号化して保存" },
   "psNoticeCloud": {
-    "message": "☁️ **データに関する注意:** Help Me Fill はデータを保存しませんが、提案の生成では**抽出された文書テキストとフィールドのメタデータを $PROVIDER$ に送信します**。次のステップであなたが確認して承認するまで、何も送信されません。",
+    "message": "☁️ **データに関する注意:** Help Me Fill はデータを保存しませんが、提案の生成では**抽出された文書テキストとフィールドのメタデータを $PROVIDER$ に送信します**。送信は常にあなたの承認から始まります。自動送信は最初はオフで、有効にする際には先に警告が表示されます。",
     "placeholders": { "provider": { "content": "$1" } }
   },
   "psNoticeLocal": {

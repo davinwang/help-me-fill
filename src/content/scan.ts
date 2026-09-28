@@ -71,6 +71,19 @@ export function fingerprint(element: TextControl): string {
   const { currentValue: _value, ...descriptor } = describe(element, 'fingerprint');
   return JSON.stringify({ ...descriptor, domId: element.id, autocomplete: 'autocomplete' in element ? (element as HTMLInputElement).autocomplete : '', form: 'form' in element ? (element as HTMLInputElement).form?.id ?? '' : '' });
 }
+// Field ids and the scan id must survive the panel's steady re-detection:
+// element identity (WeakMap) keeps ids stable across rescans of a live
+// document, and the scan id is reused while the field set and its metadata are
+// unchanged, so the panel can tell a value-only refresh from a structural
+// change. The store is guarded-global so duplicate injections share it.
+type ScanStore = { ids: WeakMap<TextControl, string>; key: string; scanId: string };
+const scanned = globalThis as typeof globalThis & { __helpMeFillScanStore?: ScanStore };
+const store: ScanStore = scanned.__helpMeFillScanStore ?? (scanned.__helpMeFillScanStore = { ids: new WeakMap(), key: '', scanId: '' });
+function stableId(element: TextControl): string {
+  let id = store.ids.get(element);
+  if (!id) { id = crypto.randomUUID(); store.ids.set(element, id); }
+  return id;
+}
 export function scanPage(doc: Document = document): Registry {
   const nodes = doc.querySelectorAll<TextControl>(EDITABLE_SELECTOR);
   if (nodes.length > 1_000) throw new UserError(t('scanTooManyControls'));
@@ -79,12 +92,14 @@ export function scanPage(doc: Document = document): Registry {
     const reason = exclusion(element);
     if (reason) { exclusions[reason] = (exclusions[reason] ?? 0) + 1; continue; }
     if (fields.size >= LIMITS.fields) throw new UserError(t('scanTooManyFields'));
-    const id = crypto.randomUUID(), descriptor = describe(element, id);
+    const id = stableId(element), descriptor = describe(element, id);
     fields.set(id, { element, descriptor, signature: fingerprint(element) });
   }
   const unsupported = doc.querySelectorAll('iframe').length;
   if (unsupported) exclusions['Iframe containers'] = unsupported;
-  return { scan: { scanId: crypto.randomUUID(), url: doc.location.href, fields: [...fields.values()].map(item => item.descriptor), exclusions }, fields };
+  const key = `${doc.location.href}\n${[...fields.values()].map(field => `${field.descriptor.id}\n${field.signature}`).join('\n')}`;
+  if (key !== store.key) { store.key = key; store.scanId = crypto.randomUUID(); }
+  return { scan: { scanId: store.scanId, url: doc.location.href, fields: [...fields.values()].map(item => item.descriptor), exclusions }, fields };
 }
 export function assertRegistry(registry: Registry, expectedUrl: string, scanId: string) {
   if (registry.scan.scanId !== scanId || registry.scan.url !== expectedUrl || document.location.href !== expectedUrl) throw new UserError(t('errDocumentRouteChanged'));

@@ -18,22 +18,21 @@
   "stepReview": { "message": "Relecture" },
   "stepFill": { "message": "Remplissage" },
   "progressParsing": { "message": "Extraction locale du texte du document…" },
-  "progressScanning": { "message": "Lecture des champs pris en charge de la page…" },
   "progressMapping": { "message": "En attente de votre fournisseur…" },
   "progressFilling": { "message": "Remplissage et vérification des champs sélectionnés…" },
   "progressUndoing": { "message": "Restauration des valeurs inchangées…" },
   "progressCanceling": { "message": "Annulation du travail restant. Les champs déjà remplis peuvent subsister ; vérifiez les résultats." },
   "cancel": { "message": "Annuler" },
-  "aiHelpMeFill": { "message": "L'IA m'aide à remplir" },
-  "backToDocuments": { "message": "Retour aux documents" },
+  "aiHelpMeFill": {
+    "message": "L'IA m'aide à remplir ($COUNT$)",
+    "placeholders": { "count": { "content": "$1" } }
+  },
   "footerNote": { "message": "L'analyse des documents reste locale. Les suggestions de l'IA envoient le texte extrait et les métadonnées des champs au fournisseur de votre choix après consentement. Fermer ce panneau peut annuler le travail ; les requêtes ne sont jamais reprises automatiquement." },
   "progressReadingPage": {
     "message": "Lecture locale de la page $PAGE$ sur $TOTAL$…",
     "placeholders": { "page": { "content": "$1" }, "total": { "content": "$2" } }
   },
-  "errActiveTabChanged": { "message": "L'onglet actif a changé. Cliquez sur l'icône de la barre d'outils sur la page voulue, puis relancez l'analyse et la relecture." },
   "errDocumentRouteChanged": { "message": "Le document ou la route a changé. Relancez l'analyse et la relecture." },
-  "errTargetTabClosed": { "message": "L'onglet cible a été fermé." },
   "errInspectPartial": {
     "message": "$MESSAGE$ Vérifiez la page pour détecter d'éventuelles modifications partielles avant de relancer l'analyse.",
     "placeholders": { "message": { "content": "$1" } }
@@ -102,19 +101,52 @@
   "generateCloudFallback": { "message": "fournisseur" },
   "enableProviderToContinue": { "message": "Activez un fournisseur ci-dessus pour continuer." },
 
+  "fieldsEyebrow": { "message": "Détecté sur cette page" },
+  "fieldsTitle": {
+    "message": "$COUNT$ champs remplissables détectés",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "fieldsHint": { "message": "Voici les valeurs actuelles de la page. La détection continue lorsque vous changez de page ou que le formulaire change." },
+  "selectDocumentPrompt": { "message": "Champs détectés — ajoutez un document pour que l'IA puisse les associer." },
+  "fieldEmpty": { "message": "(pas encore de valeur)" },
+  "useMatchedValue": {
+    "message": "Utiliser la valeur associée pour $NAME$ au lieu de la valeur de la page",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "toggleAllFields": { "message": "Utiliser les valeurs associées pour tous les champs" },
+  "willBeReplaced": {
+    "message": "Remplacera la valeur de la page : $VALUE$",
+    "placeholders": { "value": { "content": "$1" } }
+  },
+  "retryScan": { "message": "Relancer la détection" },
+  "retryMatch": { "message": "Réessayer l'association" },
+  "autoSendLabel": { "message": "Envoyer et associer automatiquement" },
+  "autoSendAlways": { "message": "Envoyer et toujours envoyer automatiquement" },
+  "autoSendStatus": {
+    "message": "L'envoi automatique est activé pour $PROVIDER$ : les nouvelles pages sont associées automatiquement.",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "autoSendOff": { "message": "Désactiver l'envoi automatique" },
+  "autoSendDialogTitle": {
+    "message": "Envoyer automatiquement le texte du document à $PROVIDER$ ?",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "autoSendDialogBody": {
+    "message": "Avec l'envoi automatique activé, le texte extrait du document et les métadonnées des champs sont envoyés automatiquement à **$PROVIDER$** dès qu'une page remplissable est détectée — sans demander à chaque fois. Vous pouvez le désactiver à tout moment.",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "autoSendDialogConfirm": { "message": "Activer l'envoi automatique" },
+
   "unlabeledField": { "message": "Champ sans intitulé" },
   "reviewEyebrow": { "message": "Vous avez le dernier mot" },
   "reviewTitle": { "message": "Relire les suggestions" },
-  "reviewHint": { "message": "Les preuves indiquent d'où vient le texte, pas que la correspondance est correcte. Ne sélectionnez que les valeurs que vous souhaitez remplir." },
-  "selectAll": { "message": "Sélectionner toutes les suggestions prises en charge" },
-  "clearSelection": { "message": "Effacer la sélection" },
+  "reviewHint": { "message": "Les preuves indiquent d'où vient le texte, pas que la correspondance est correcte. Chaque interrupteur choisit entre la valeur associée et la valeur actuelle de la page ; seuls les champs activés sont écrits." },
   "chooseOption": { "message": "(choisissez une option)" },
   "checkboxTrue": { "message": "true — cocher cette case" },
   "checkboxFalse": { "message": "false — laisser / décocher" },
   "proposedValue": { "message": "Valeur proposée" },
   "manualOverride": { "message": "Modification manuelle · Vérifiez attentivement" },
   "currentValue": { "message": "Valeur actuelle :" },
-  "allowOverwrite": { "message": "Autoriser le remplacement de cette valeur existante" },
   "sourceEvidence": { "message": "Preuves sources" },
   "noAssignments": { "message": "Aucune affectation étayée par des preuves et prise en charge n'a été renvoyée. Le formulaire n'a pas été modifié." },
   "unmappedSummary": {
@@ -122,10 +154,6 @@
     "placeholders": { "count": { "content": "$1" } }
   },
   "fillNotice": { "message": "Le remplissage peut déclencher la validation, l'enregistrement automatique ou des requêtes réseau du site. Cette extension ne clique jamais sur Envoyer. L'annulation ne peut pas inverser les effets côté serveur." },
-  "fillSelected": {
-    "message": "Remplir la sélection ($COUNT$)",
-    "placeholders": { "count": { "content": "$1" } }
-  },
 
   "fillResultsLabel": { "message": "Résultats du remplissage" },
   "operationResults": { "message": "Résultats de l'opération" },
@@ -177,7 +205,7 @@
   "psKeyPlaceholderLocal": { "message": "Laissez vide si votre serveur local ne nécessite aucune clé" },
   "psKeyPlaceholderCloud": { "message": "Chiffrée et enregistrée sur cet appareil" },
   "psNoticeCloud": {
-    "message": "☁️ **Avis sur les données :** Help Me Fill ne stocke aucune donnée, mais la génération des suggestions **envoie le texte extrait de votre document et les métadonnées des champs à $PROVIDER$**. Rien n'est envoyé tant que vous ne l'avez pas relu et approuvé à l'étape suivante.",
+    "message": "☁️ **Avis sur les données :** Help Me Fill ne stocke aucune donnée, mais la génération des suggestions **envoie le texte extrait de votre document et les métadonnées des champs à $PROVIDER$**. Les envois commencent toujours par votre approbation : l'envoi automatique est désactivé au départ, et son activation affiche d'abord un avertissement.",
     "placeholders": { "provider": { "content": "$1" } }
   },
   "psNoticeLocal": {

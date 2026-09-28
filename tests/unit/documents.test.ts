@@ -95,7 +95,7 @@ describe('multi-document sessions', () => {
     let state = sessionReducer(initialSession, { type: 'DOCUMENT', document: doc('a.txt', 'A') });
     state = sessionReducer(state, { type: 'DOCUMENT', document: doc('b.txt', 'B') });
     expect(state.documents.map(document => document.name)).toEqual(['a.txt', 'b.txt']);
-    expect(state.stage).toBe('documents');
+    expect(state.plan).toBeUndefined();
     state = sessionReducer(state, { type: 'REMOVE_DOCUMENT', index: 0 });
     expect(state.documents.map(document => document.name)).toEqual(['b.txt']);
     state = sessionReducer(state, { type: 'DOCUMENT', document: doc('c.txt', 'C') });

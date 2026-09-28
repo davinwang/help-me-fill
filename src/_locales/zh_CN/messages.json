@@ -18,22 +18,21 @@
   "stepReview": { "message": "审核" },
   "stepFill": { "message": "填写" },
   "progressParsing": { "message": "正在本地提取文档文本…" },
-  "progressScanning": { "message": "正在读取页面支持的字段…" },
   "progressMapping": { "message": "正在等待你的服务商…" },
   "progressFilling": { "message": "正在填写并校验所选字段…" },
   "progressUndoing": { "message": "正在还原未更改的值…" },
   "progressCanceling": { "message": "正在取消剩余工作。已填写的字段可能保留，请检查结果。" },
   "cancel": { "message": "取消" },
-  "aiHelpMeFill": { "message": "AI 帮我填" },
-  "backToDocuments": { "message": "返回文档" },
+  "aiHelpMeFill": {
+    "message": "AI 帮我填（$COUNT$）",
+    "placeholders": { "count": { "content": "$1" } }
+  },
   "footerNote": { "message": "文档解析始终在本地完成。AI 建议会在你同意后，将提取文本与字段元数据发送给你选择的服务商。关闭本面板可能取消工作；请求绝不会被自动恢复。" },
   "progressReadingPage": {
     "message": "正在本地读取第 $PAGE$ 页，共 $TOTAL$ 页…",
     "placeholders": { "page": { "content": "$1" }, "total": { "content": "$2" } }
   },
-  "errActiveTabChanged": { "message": "活动标签页已更改。请在目标页面点击工具栏图标，然后重新扫描并审核。" },
   "errDocumentRouteChanged": { "message": "文档或路由已更改。请重新扫描并审核。" },
-  "errTargetTabClosed": { "message": "目标标签页已关闭。" },
   "errInspectPartial": {
     "message": "$MESSAGE$ 请在重新扫描前检查页面是否有部分更改。",
     "placeholders": { "message": { "content": "$1" } }
@@ -102,19 +101,52 @@
   "generateCloudFallback": { "message": "服务商" },
   "enableProviderToContinue": { "message": "请在上方启用一个服务商以继续。" },
 
+  "fieldsEyebrow": { "message": "在此页面检测到" },
+  "fieldsTitle": {
+    "message": "检测到 $COUNT$ 个可填字段",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "fieldsHint": { "message": "这里显示页面当前值。切换页面或表单变化时会持续检测。" },
+  "selectDocumentPrompt": { "message": "已检测到字段——添加一个文档，让 AI 帮你匹配。" },
+  "fieldEmpty": { "message": "（暂无值）" },
+  "useMatchedValue": {
+    "message": "$NAME$ 使用匹配值而非页面值",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "toggleAllFields": { "message": "所有字段都使用匹配值" },
+  "willBeReplaced": {
+    "message": "将替换页面值：$VALUE$",
+    "placeholders": { "value": { "content": "$1" } }
+  },
+  "retryScan": { "message": "重试检测" },
+  "retryMatch": { "message": "重新匹配" },
+  "autoSendLabel": { "message": "自动发送并匹配" },
+  "autoSendAlways": { "message": "发送并始终自动发送" },
+  "autoSendStatus": {
+    "message": "已对 $PROVIDER$ 开启自动发送：新页面会自动匹配。",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "autoSendOff": { "message": "关闭自动发送" },
+  "autoSendDialogTitle": {
+    "message": "自动将文档文本发送到 $PROVIDER$？",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "autoSendDialogBody": {
+    "message": "开启自动发送后，一旦检测到可填写页面，提取的文档文本和字段元数据会自动发送给 **$PROVIDER$**——无需每次都询问。你可以随时关闭。",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "autoSendDialogConfirm": { "message": "开启自动发送" },
+
   "unlabeledField": { "message": "无标签字段" },
   "reviewEyebrow": { "message": "最终由你决定" },
   "reviewTitle": { "message": "审核建议" },
-  "reviewHint": { "message": "证据显示文本来自何处，并不代表匹配一定正确。请只选择你想填写的值。" },
-  "selectAll": { "message": "全选受支持的建议" },
-  "clearSelection": { "message": "清除选择" },
+  "reviewHint": { "message": "证据显示文本来自何处，并不代表匹配一定正确。每行的开关在匹配值与页面当前值之间选择；只有开启的字段才会写入。" },
   "chooseOption": { "message": "（请选择一个选项）" },
   "checkboxTrue": { "message": "true — 勾选此项" },
   "checkboxFalse": { "message": "false — 保留 / 不勾选" },
   "proposedValue": { "message": "建议值" },
   "manualOverride": { "message": "手动修改 · 请仔细核对" },
   "currentValue": { "message": "当前值：" },
-  "allowOverwrite": { "message": "允许替换此已有值" },
   "sourceEvidence": { "message": "来源证据" },
   "noAssignments": { "message": "未返回任何有证据支持的赋值。表单未作更改。" },
   "unmappedSummary": {
@@ -122,10 +154,6 @@
     "placeholders": { "count": { "content": "$1" } }
   },
   "fillNotice": { "message": "填写可能触发网站的校验、自动保存或网络请求。本扩展绝不会点击“提交”。撤销无法逆转服务器端的副作用。" },
-  "fillSelected": {
-    "message": "填写所选项（$COUNT$）",
-    "placeholders": { "count": { "content": "$1" } }
-  },
 
   "fillResultsLabel": { "message": "填写结果" },
   "operationResults": { "message": "操作结果" },
@@ -177,7 +205,7 @@
   "psKeyPlaceholderLocal": { "message": "如果你的本地服务器不需要密钥，请留空" },
   "psKeyPlaceholderCloud": { "message": "在此设备上加密保存" },
   "psNoticeCloud": {
-    "message": "☁️ **数据提示：** 帮我填不存储任何数据，但生成建议会**将你提取的文档文本与字段元数据发送到 $PROVIDER$**。在你于下一步审核并批准之前，不会发送任何内容。",
+    "message": "☁️ **数据提示：** 帮我填不存储任何数据，但生成建议会**将你提取的文档文本与字段元数据发送到 $PROVIDER$**。发送始终从你的批准开始：自动发送默认关闭，开启时会先显示警告。",
     "placeholders": { "provider": { "content": "$1" } }
   },
   "psNoticeLocal": {

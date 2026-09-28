@@ -18,22 +18,21 @@
   "stepReview": { "message": "Revisar" },
   "stepFill": { "message": "Rellenar" },
   "progressParsing": { "message": "Extrayendo el texto del documento localmente…" },
-  "progressScanning": { "message": "Leyendo los campos admitidos de la página…" },
   "progressMapping": { "message": "Esperando a tu proveedor…" },
   "progressFilling": { "message": "Rellenando y verificando los campos seleccionados…" },
   "progressUndoing": { "message": "Restaurando los valores sin cambios…" },
   "progressCanceling": { "message": "Cancelando el trabajo restante. Los campos ya rellenados pueden permanecer; inspecciona los resultados." },
   "cancel": { "message": "Cancelar" },
-  "aiHelpMeFill": { "message": "IA, ayúdame a rellenar" },
-  "backToDocuments": { "message": "Volver a los documentos" },
+  "aiHelpMeFill": {
+    "message": "IA, ayúdame a rellenar ($COUNT$)",
+    "placeholders": { "count": { "content": "$1" } }
+  },
   "footerNote": { "message": "El análisis del documento permanece local. Las sugerencias de la IA envían el texto extraído y los metadatos de los campos al proveedor que elijas tras tu consentimiento. Cerrar este panel puede cancelar el trabajo; las solicitudes nunca se reanudan automáticamente." },
   "progressReadingPage": {
     "message": "Leyendo localmente la página $PAGE$ de $TOTAL$…",
     "placeholders": { "page": { "content": "$1" }, "total": { "content": "$2" } }
   },
-  "errActiveTabChanged": { "message": "La pestaña activa cambió. Haz clic en el icono de la barra de herramientas en la página deseada y luego vuelve a escanear y revisar." },
   "errDocumentRouteChanged": { "message": "El documento o la ruta cambió. Vuelve a escanear y revisar." },
-  "errTargetTabClosed": { "message": "La pestaña de destino se cerró." },
   "errInspectPartial": {
     "message": "$MESSAGE$ Inspecciona la página en busca de cambios parciales antes de volver a escanear.",
     "placeholders": { "message": { "content": "$1" } }
@@ -102,19 +101,52 @@
   "generateCloudFallback": { "message": "proveedor" },
   "enableProviderToContinue": { "message": "Activa arriba un proveedor para continuar." },
 
+  "fieldsEyebrow": { "message": "Detectado en esta página" },
+  "fieldsTitle": {
+    "message": "$COUNT$ campos rellenables detectados",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "fieldsHint": { "message": "Estos son los valores actuales de la página. La detección sigue activa al cambiar de página o cuando cambia el formulario." },
+  "selectDocumentPrompt": { "message": "Campos detectados: añade un documento para que la IA los empareje." },
+  "fieldEmpty": { "message": "(aún sin valor)" },
+  "useMatchedValue": {
+    "message": "Usar el valor coincidente para $NAME$ en lugar del valor de la página",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "toggleAllFields": { "message": "Usar los valores coincidentes para todos los campos" },
+  "willBeReplaced": {
+    "message": "Reemplazará el valor de la página: $VALUE$",
+    "placeholders": { "value": { "content": "$1" } }
+  },
+  "retryScan": { "message": "Reintentar la detección" },
+  "retryMatch": { "message": "Volver a intentar el emparejamiento" },
+  "autoSendLabel": { "message": "Enviar y emparejar automáticamente" },
+  "autoSendAlways": { "message": "Enviar y enviar siempre automáticamente" },
+  "autoSendStatus": {
+    "message": "El envío automático está activado para $PROVIDER$: las páginas nuevas se emparejan automáticamente.",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "autoSendOff": { "message": "Desactivar el envío automático" },
+  "autoSendDialogTitle": {
+    "message": "¿Enviar el texto del documento automáticamente a $PROVIDER$?",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "autoSendDialogBody": {
+    "message": "Con el envío automático activado, el texto extraído del documento y los metadatos de los campos se envían automáticamente a **$PROVIDER$** cada vez que se detecta una página rellenable — sin preguntar cada vez. Puedes desactivarlo en cualquier momento.",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
+  "autoSendDialogConfirm": { "message": "Activar el envío automático" },
+
   "unlabeledField": { "message": "Campo sin etiqueta" },
   "reviewEyebrow": { "message": "Tú tienes la última palabra" },
   "reviewTitle": { "message": "Revisar sugerencias" },
-  "reviewHint": { "message": "Las evidencias muestran de dónde procede el texto, no que la coincidencia sea correcta. Selecciona solo los valores que quieras rellenar." },
-  "selectAll": { "message": "Seleccionar todas las sugerencias admitidas" },
-  "clearSelection": { "message": "Borrar la selección" },
+  "reviewHint": { "message": "Las evidencias muestran de dónde procede el texto, no que la coincidencia sea correcta. Cada interruptor elige entre el valor coincidente y el valor actual de la página; solo se escriben los campos activados." },
   "chooseOption": { "message": "(elige una opción)" },
   "checkboxTrue": { "message": "true — marcar esta casilla" },
   "checkboxFalse": { "message": "false — dejar / desmarcar" },
   "proposedValue": { "message": "Valor propuesto" },
   "manualOverride": { "message": "Modificación manual · Compruébalo con atención" },
   "currentValue": { "message": "Valor actual:" },
-  "allowOverwrite": { "message": "Permitir reemplazar este valor existente" },
   "sourceEvidence": { "message": "Evidencias de la fuente" },
   "noAssignments": { "message": "No se devolvió ninguna asignación admitida y respaldada por evidencias. El formulario no se ha modificado." },
   "unmappedSummary": {
@@ -122,10 +154,6 @@
     "placeholders": { "count": { "content": "$1" } }
   },
   "fillNotice": { "message": "Rellenar puede activar la validación, el guardado automático o las solicitudes de red del sitio. Esta extensión nunca hace clic en Enviar. Deshacer no puede revertir los efectos del lado del servidor." },
-  "fillSelected": {
-    "message": "Rellenar seleccionados ($COUNT$)",
-    "placeholders": { "count": { "content": "$1" } }
-  },
 
   "fillResultsLabel": { "message": "Resultados del rellenado" },
   "operationResults": { "message": "Resultados de la operación" },
@@ -177,7 +205,7 @@
   "psKeyPlaceholderLocal": { "message": "Déjalo en blanco si tu servidor local no necesita clave" },
   "psKeyPlaceholderCloud": { "message": "Cifrada y guardada en este dispositivo" },
   "psNoticeCloud": {
-    "message": "☁️ **Aviso de datos:** Help Me Fill no almacena datos, pero generar sugerencias **envía el texto extraído de tu documento y los metadatos de los campos a $PROVIDER$**. No se envía nada hasta que lo revises y apruebes en el siguiente paso.",
+    "message": "☁️ **Aviso de datos:** Help Me Fill no almacena datos, pero generar sugerencias **envía el texto extraído de tu documento y los metadatos de los campos a $PROVIDER$**. Los envíos siempre comienzan con tu aprobación: el envío automático empieza desactivado, y al activarlo aparece primero una advertencia.",
     "placeholders": { "provider": { "content": "$1" } }
   },
   "psNoticeLocal": {

@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { writeFile } from 'node:fs/promises';
-import { openExtension, attachPanel, enableProvider } from './harness';
+import { openExtension, attachPanel, enableProvider, installMappingMock } from './harness';
 import { benchmarkCases } from '../fixtures/cases';
 import { PROVIDERS } from '../../src/ai/registry';
 import type { BoundScan } from '../../src/shared/schemas';
@@ -45,10 +45,15 @@ test('production sidebar parses a bilingual PDF and scans the real tab', async (
     // Once verified and enabled, the settings card hides behind Edit LLM and the workflow shows.
     expect(await app.panel.text()).not.toContain('Save & verify');
     expect(await app.panel.text()).toContain('Edit LLM');
+    // Detection runs in parallel with document selection: fields and their
+    // current values appear before any document exists.
+    await expect.poll(() => app.panel.text()).toContain('10 fillable fields detected');
+    await expect.poll(() => app.panel.text()).toContain('Fields detected — add a document so AI can match them.');
+    expect(await app.panel.text()).not.toContain('Review what you share');
     await app.panel.upload('tests/fixtures/generated/case-02.pdf');
     await expect.poll(() => app.panel.text()).toContain('case-02.pdf');
     expect(await app.panel.evaluate(() => document.querySelector('.text-preview')?.textContent)).toContain('陈小明');
-    await app.panel.click('AI help me fill');
+    // A cloud provider starts manual: the disclosure card appears by itself.
     await expect.poll(() => app.panel.text()).toContain('Review what you share');
     expect(await app.page.locator('input[name="fullName"]').inputValue()).toBe('');
     const image = await app.panel.send('Page.captureScreenshot', { format: 'png' });
@@ -142,33 +147,57 @@ test('word, excel, markdown, and text documents extract with provenance', async 
   } finally { await app.close(); }
 });
 
-test('reload and tab switches invalidate scans without retargeting', async ({}, info) => {
+test('reload and tab switches keep the review on an identical form', async ({}, info) => {
+  const scenario = benchmarkCases[0];
   const app = await openExtension(info, 'native');
   try {
+    const counts = { requests: 0, error: '' } as { requests: number; error: string; release?: () => void };
     await enableProvider(app, info.project.name === 'edge' ? 'edge://extensions/' : 'chrome://extensions/');
-    await app.panel.upload('tests/fixtures/generated/case-01.pdf');
-    await expect.poll(() => app.panel.text()).toContain('case-01.pdf');
-    await app.panel.click('AI help me fill');
+    await app.panel.upload(`tests/fixtures/generated/${scenario.id}.pdf`);
     await expect.poll(() => app.panel.text()).toContain('Review what you share');
+    await app.panel.send('Fetch.enable', { patterns: [{ urlPattern: 'http*', requestStage: 'Request' }] });
+    installMappingMock(app, scenario, counts);
+    await app.panel.click('Send to OpenAI and generate suggestions');
+    await expect.poll(() => app.panel.text()).toContain('Review suggestions');
+    expect(counts.error).toBe(''); expect(counts.requests).toBe(1);
+    // A reload is re-detected quietly: the identical form keeps the review, and
+    // the replaced DOM nodes are re-keyed instead of reset.
     await app.page.reload();
-    await expect.poll(() => app.panel.text()).toContain('document or route changed');
-    // Invalidation returns to Step 1; the parsed document survives.
-    expect(await app.panel.text()).not.toContain('Review what you share');
-    expect(await app.panel.text()).toContain('case-01.pdf');
-    await app.trigger();
-    await app.panel.click('AI help me fill');
-    await expect.poll(() => app.panel.text()).toContain('Review what you share');
+    await app.page.locator('input[name="fullName"]').waitFor();
+    await expect.poll(() => app.panel.text()).toContain('Review suggestions');
+    expect(await app.panel.text()).not.toContain('document or route changed');
+    expect(await app.panel.text()).not.toContain('active tab changed');
+    // The panel reads the live page: a value typed into this tab becomes a
+    // pending replacement in the review.
+    await app.page.locator('[name="fullName"]').fill('Tab A value');
+    await expect.poll(() => app.panel.text()).toContain('Will replace the page value: Tab A value');
+    // A second tab with the same form is not readable until the toolbar icon
+    // grants access for it. The failure is quiet: the review from the first
+    // tab stays, with a retry affordance instead of a reset.
     const other = await app.context.newPage();
     await other.goto(app.page.url());
-    await expect.poll(() => app.panel.text()).toContain('active tab changed');
-    await app.panel.click('AI help me fill');
-    await expect.poll(() => app.panel.text()).toContain('toolbar icon');
-    expect(await app.panel.text()).not.toContain('Review what you share');
+    await other.locator('[name="fullName"]').waitFor();
+    // A distinct document title lets the harness address this exact tab for
+    // the toolbar grant; both tabs share the same URL on purpose.
+    await other.evaluate(() => { document.title = 'mirror tab'; });
     await expect(other.locator('[name="fullName"]')).toHaveValue('');
-    await other.close(); await app.trigger();
-    await app.panel.click('AI help me fill');
-    await expect.poll(() => app.panel.text()).toContain('Review what you share');
-    await expect(app.page.locator('[name="fullName"]')).toHaveValue('');
+    await expect.poll(() => app.panel.text()).toContain('Retry detection');
+    await expect.poll(() => app.panel.text()).toContain('Review suggestions');
+    // Granting access on the second tab re-targets detection: the identical
+    // form keeps the review, and the pending replacement now follows the new
+    // tab's empty value instead of the first tab's hand-typed one.
+    await app.trigger(other);
+    await expect.poll(() => app.panel.text()).not.toContain('Will replace the page value: Tab A value');
+    await expect.poll(() => app.panel.text()).not.toContain('Retry detection');
+    await app.panel.click('AI help me fill (10)');
+    await expect.poll(() => app.panel.text(), { timeout: 25_000 }).toContain('Operation results');
+    await expect(other.locator('[name="fullName"]')).toHaveValue(scenario.fields[0].expected!);
+    await expect(app.page.locator('[name="fullName"]')).toHaveValue('Tab A value');
+    await app.panel.click('Undo last fill');
+    await expect.poll(() => app.panel.evaluate(() => [...document.querySelectorAll('.results .badge')].filter(node => node.textContent === 'restored').length), { timeout: 25_000 }).toBe(10);
+    await expect(other.locator('[name="fullName"]')).toHaveValue('');
+    await expect(app.page.locator('[name="fullName"]')).toHaveValue('Tab A value');
+    await other.close();
   } finally { await app.close(); }
 });
 
@@ -179,7 +208,7 @@ async function captureScan(app: Awaited<ReturnType<typeof openExtension>>): Prom
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     const injection = await chrome.scripting.executeScript({ target: { tabId: tab.id!, frameIds: [0] }, files: ['content/index.js'] });
     const target = { tabId: tab.id!, windowId: tab.windowId, url: tab.url!, documentId: injection[0].documentId! };
-    const reply = await chrome.tabs.sendMessage(target.tabId, { type: 'SCAN', requestId: crypto.randomUUID(), expectedUrl: target.url }, { documentId: target.documentId });
+    const reply = await chrome.tabs.sendMessage(target.tabId, { type: 'SYNC', requestId: crypto.randomUUID(), expectedUrl: target.url }, { documentId: target.documentId });
     if (!reply.ok) throw new Error(reply.error);
     return { ...reply.data, target };
   });
@@ -223,7 +252,11 @@ test('production executor refuses unconfirmed, invalid, stale, and overwritten t
     await expect(app.page.locator('[autocomplete="cc-number"]')).toHaveValue('');
     const staleDocument = await captureScan(app);
     await app.page.reload();
-    await expect(tryFill(app, staleDocument, false)).rejects.toThrow();
+    await app.page.locator('input[name="fullName"]').waitFor();
+    // After a reload the panel re-injects quietly: either the old document id is
+    // gone (rejection) or the reported scan id no longer matches (ok: false).
+    const stale = await tryFill(app, staleDocument, false).then(reply => reply.ok, () => false);
+    expect(stale).toBe(false);
     await expect(app.page.locator('[name="fullName"]')).toHaveValue('');
   } finally { await app.close(); }
 });
@@ -264,7 +297,7 @@ for (const interruption of ['cancel', 'tab switch', 'panel close']) {
         await app.trigger();
         const reopened = await attachPanel(app.cdp, app.id);
         expect(await reopened.text()).not.toContain('Review suggestions');
-        expect(await reopened.text()).not.toContain('supported fields found');
+        expect(await reopened.text()).not.toContain('Operation results');
         reopened.dispose();
       }
       await expect(app.page.locator('[name="email"]')).toHaveValue('');

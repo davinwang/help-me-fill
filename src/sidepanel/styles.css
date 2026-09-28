@@ -33,7 +33,6 @@ button:disabled { opacity: .45; cursor: not-allowed; }
 button.secondary { background: var(--surface); color: var(--accent); border-color: var(--border); }
 button.link-button { background: transparent; color: var(--accent); border: 0; padding: 7px 0; font-size: 11px; }
 button.link-button.danger { color: #963747; }
-button.link-button.back { margin: 2px 0 0; padding: 7px 0; }
 button.icon-button { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; padding: 0; background: transparent; border: 0; border-radius: 7px; flex-shrink: 0; }
 button.icon-button.danger { color: #963747; }
 button.icon-button:hover:not(:disabled), button.icon-button:focus-visible { background: #f6e7ea; }
@@ -67,8 +66,10 @@ pre, .text-preview { max-height: 230px; overflow: auto; white-space: pre-wrap; o
 .line-tag { display: block; font: 10px ui-monospace, monospace; color: var(--muted); margin-bottom: 4px; }
 .origin { font-size: 12px; color: var(--accent); font-weight: 600; }
 .error, .notice, .progress { border-radius: 9px; padding: 12px; font-size: 12px; line-height: 1.6; margin: 14px 0; }
-.error { background: #fff0f1; border: 1px solid #edc8ce; color: #963747; }
-.notice, .overwrite { background: #fff8eb; color: #785522; padding: 10px; border-radius: 6px; }
+.error { background: #fff0f1; border: 1px solid #edc8ce; color: #963747; display: flex; align-items: center; gap: 10px; }
+.error .link-button { color: inherit; margin-inline-start: auto; flex-shrink: 0; }
+.scan-notice { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.notice { background: #fff8eb; color: #785522; padding: 10px; border-radius: 6px; }
 /* Saved-key chip below the provider select; the kind now rides on each option. */
 .badge.badge-saved { color: #6b4fa1; background: #f1edfc; }
 .settings .badge { margin-top: 8px; }
@@ -85,6 +86,28 @@ pre, .text-preview { max-height: 230px; overflow: auto; white-space: pre-wrap; o
 .review-row.selected { border-color: #aba4ea; background: #fcfbff; }
 .check-label { display: flex; align-items: center; gap: 7px; font-size: 12px; line-height: 1.5; }
 input[type=checkbox] { accent-color: var(--accent); margin: 0; width: 15px; height: 15px; flex-shrink: 0; }
+/* The switch is the checkbox itself, so it stays a real, clickable input.
+   The knob is a background image; the mixed (master) state shows a dash. */
+input[type=checkbox].switch { appearance: none; -webkit-appearance: none; width: 36px; height: 20px; border-radius: 999px; background-color: #cdcfe0; background-image: radial-gradient(circle, #fff 0 6.5px, transparent 7px); background-repeat: no-repeat; background-position: 2px center; background-size: 16px 16px; transition: background-color .15s, background-position .15s; cursor: pointer; }
+input[type=checkbox].switch:checked { background-color: var(--accent); background-position: 18px center; }
+input[type=checkbox].switch.mixed { background-color: #9d99dd; background-image: linear-gradient(#fff, #fff); background-size: 13px 2.5px; background-position: center; }
+input[type=checkbox].switch:disabled { opacity: .45; cursor: not-allowed; }
+.check-label.master { flex-direction: row-reverse; justify-content: space-between; gap: 10px; margin: 2px 0 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border); font-weight: 650; }
+.field-name { min-width: 0; overflow-wrap: anywhere; }
+.replace-hint { display: block; margin-top: 6px; font-size: 11px; color: #855b1e; }
+/* Fields were detected but no document is chosen yet: make the drop zone the
+   loudest element on the page. */
+.attention .drop-zone { border-color: var(--accent); border-style: solid; background: #eceafb; animation: attention 1.8s ease-in-out infinite; }
+@keyframes attention { 0%, 100% { box-shadow: 0 0 0 0 #5149cb00; } 50% { box-shadow: 0 0 0 5px #5149cb2e; } }
+.prompt { font-weight: 650; color: var(--accent); text-align: center; margin: 10px 0 0; }
+.field-list { list-style: none; padding: 0; margin: 0; }
+.field-list li { border-top: 1px solid var(--border); padding: 9px 0; }
+.field-list li:first-child { border-top: 0; }
+.field-list p { margin: 3px 0 0; white-space: pre-wrap; }
+.auto-send { margin-top: 12px; justify-content: space-between; }
+.auto-send-status { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.modal-backdrop { position: fixed; inset: 0; z-index: 10; display: grid; place-items: center; padding: 18px; background: #24243b5c; }
+.modal { margin: 0; max-width: 420px; box-shadow: 0 12px 40px #1e1e3c2e; }
 .preserve { white-space: pre-wrap; overflow-wrap: anywhere; font-weight: 600; }
 blockquote { margin: 8px 0; padding: 10px; border-inline-start: 2px solid #c9c3ee; background: #f7f6fd; font-size: 12px; white-space: pre-wrap; overflow-wrap: anywhere; }
 ul { padding-inline-start: 18px; font-size: 12px; line-height: 1.8; }

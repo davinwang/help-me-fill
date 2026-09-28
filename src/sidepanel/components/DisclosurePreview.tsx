@@ -5,7 +5,7 @@ import { resolveProvider } from '../../ai/registry';
 import { makePayload, SYSTEM_PROMPT } from '../../ai/prompts';
 import { t } from '../../shared/i18n';
 import { Rich } from './Rich';
-export function DisclosurePreview({ document, scan, settings, disabled, onGenerate }: { document: ParsedDocument; scan: BoundScan; settings?: ProviderSettings; disabled: boolean; onGenerate: () => void }) {
+export function DisclosurePreview({ document, scan, settings, autoSend, disabled, onGenerate, onAutoSend }: { document: ParsedDocument; scan: BoundScan; settings?: ProviderSettings; autoSend: boolean; disabled: boolean; onGenerate: () => void; onAutoSend: (value: boolean, immediate?: boolean) => void }) {
   const resolved = settings ? resolveProvider(settings) : undefined;
   const kind = resolved?.kind;
   const destination = resolved && resolved.endpoint ? new URL(resolved.endpoint).origin : undefined;
@@ -21,6 +21,10 @@ export function DisclosurePreview({ document, scan, settings, disabled, onGenera
     <details><summary>{t('viewMappingInstructions')}</summary><pre>{SYSTEM_PROMPT}</pre></details>
     <p className="hint">{kind === 'builtin' ? t('consentAccuracyBuiltin') : kind === 'local' ? t('consentAccuracyLocal') : t('consentAccuracyCloud')} {t('consentRequestsNote')}</p>
     <button className="wide" type="button" disabled={disabled || !settings || !scan.fields.length} onClick={onGenerate}>{kind === 'builtin' ? t('generateBuiltin') : kind === 'local' ? t('generateLocal') : t('generateCloud', [resolved?.name ?? t('generateCloudFallback')])}</button>
+    <div className="section-top auto-send">
+      <label className="check-label"><input type="checkbox" className="switch" checked={autoSend} disabled={disabled} aria-label={t('autoSendLabel')} onChange={event => onAutoSend(event.target.checked)} /><span>{t('autoSendLabel')}</span></label>
+      {!autoSend && <button type="button" className="link-button" disabled={disabled} onClick={() => onAutoSend(true, true)}>{t('autoSendAlways')}</button>}
+    </div>
     {!settings && <p className="hint">{t('enableProviderToContinue')}</p>}
   </section>;
 }

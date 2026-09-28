@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { validateMapping } from '../../src/ai/validate-mapping';
 import { compactFields } from '../../src/ai/prompts';
 import { sessionReducer, initialSession } from '../../src/sidepanel/session';
-import type { FieldDescriptor, MappingPlan } from '../../src/shared/schemas';
+import type { BoundScan, FieldDescriptor, LocalField, MappingPlan } from '../../src/shared/schemas';
 import { benchmarkCases } from '../fixtures/cases';
 
 export const field: FieldDescriptor = { id: 'f1', type: 'text', label: '姓名 / Name', ariaLabel: '', placeholder: '', name: 'name', context: 'Applicant', required: true, maxLength: 100, pattern: '' };
@@ -76,13 +76,28 @@ describe('frozen synthetic benchmark integrity (not live model accuracy)', () =>
   });
 });
 describe('review defaults', () => {
-  it('starts all model suggestions unchecked', () => {
-    const state = sessionReducer(initialSession, { type: 'PLAN', plan, metrics: 'mock' });
-    expect(state.rows[0].selected).toBe(false);
-    expect(state.rows[0].allowOverwrite).toBe(false);
+  const target = { tabId: 1, windowId: 1, documentId: 'doc-1', url: 'https://example.com/form' };
+  const local = (currentValue: string): LocalField => ({ ...field, currentValue });
+  const bound = (scanId: string, currentValue: string): BoundScan => ({ scanId, url: target.url, fields: [local(currentValue)], exclusions: {}, target });
+  it('arms empty page fields and lets the switch flip either way', () => {
+    let state = sessionReducer(initialSession, { type: 'DETECT', scan: bound('s1', '') });
+    state = sessionReducer(state, { type: 'PLAN', scanId: 's1', plan, metrics: 'mock' });
+    expect(state.rows[0].useAi).toBe(true);
+    state = sessionReducer(state, { type: 'SELECT_ALL', useAi: false });
+    expect(state.rows[0].useAi).toBe(false);
+    state = sessionReducer(state, { type: 'SELECT_ALL', useAi: true });
+    expect(state.rows[0].useAi).toBe(true);
   });
-  it('drops plans on target invalidation', () => {
-    const state = sessionReducer(sessionReducer(initialSession, { type: 'PLAN', plan, metrics: '' }), { type: 'INVALIDATE', error: 'tab switched' });
-    expect(state.rows).toEqual([]); expect(state.plan).toBeUndefined(); expect(state.scan).toBeUndefined();
+  it('leaves occupied fields off by default and keeps the page value visible', () => {
+    let state = sessionReducer(initialSession, { type: 'DETECT', scan: bound('s1', 'Kept') });
+    state = sessionReducer(state, { type: 'PLAN', scanId: 's1', plan, metrics: 'mock' });
+    expect(state.rows[0].useAi).toBe(false);
+    expect(state.scan?.fields[0].currentValue).toBe('Kept');
+  });
+  it('drops plans on target invalidation but keeps the live scan', () => {
+    let state = sessionReducer(initialSession, { type: 'DETECT', scan: bound('s1', '') });
+    state = sessionReducer(state, { type: 'PLAN', scanId: 's1', plan, metrics: '' });
+    state = sessionReducer(state, { type: 'INVALIDATE', error: 'tab switched' });
+    expect(state.rows).toEqual([]); expect(state.plan).toBeUndefined(); expect(state.scan).toBeDefined();
   });
 });

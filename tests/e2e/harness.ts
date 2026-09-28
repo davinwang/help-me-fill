@@ -1,5 +1,6 @@
 import { chromium, expect, type BrowserContext, type CDPSession, type Page, type TestInfo } from '@playwright/test';
 import { resolve } from 'node:path';
+import type { BenchmarkCase } from '../fixtures/cases';
 
 // Side panels are real extension targets, but are not Playwright tab Pages.
 // Attach a separate CDP session without changing the shipped manifest or code.
@@ -39,10 +40,18 @@ export class Panel {
   }
   async enter(selector: string, value: string) {
     await this.evaluate((selector: string, value: string) => {
-      const element = document.querySelector<HTMLInputElement>(selector)!;
-      Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')!.set!.call(element, value);
+      const element = document.querySelector<HTMLInputElement | HTMLTextAreaElement>(selector)!;
+      const prototype = element.tagName === 'TEXTAREA' ? HTMLTextAreaElement.prototype : HTMLInputElement.prototype;
+      Object.getOwnPropertyDescriptor(prototype, 'value')!.set!.call(element, value);
       element.dispatchEvent(new Event('input', { bubbles: true }));
     }, selector, value);
+  }
+  async toggle(selector: string) {
+    await this.evaluate((selector: string) => {
+      const input = document.querySelector<HTMLInputElement>(selector);
+      if (!input) throw new Error(`Toggle unavailable: ${selector}`);
+      input.click();
+    }, selector);
   }
   async upload(file: string) {
     const { root } = await this.send('DOM.getDocument');
@@ -67,12 +76,23 @@ export async function openExtension(info: TestInfo, framework = 'react', scenari
   const page = await context.newPage();
   await page.goto(`http://127.0.0.1:4173/?framework=${framework}&case=${scenario}`);
   await page.locator('input[name="fullName"]').waitFor();
-  async function trigger() {
-    await page.bringToFront();
-    const { targetInfos } = await cdp.send('Target.getTargets', { filter: [{ type: 'tab', exclude: false }] });
-    const tab = targetInfos.find(target => target.url === page.url());
-    if (!tab) throw new Error('Fixture tab target was not found.');
-    void cdp.send('Extensions.triggerAction', { id, targetId: tab.targetId }).catch(() => {});
+  // Toolbar-icon click: grants activeTab for that tab and opens the panel.
+  // The panel only learns about a grant through the ACTION_GRANTED broadcast,
+  // so tests must always go through this path. Defaults to the fixture tab.
+  // Tabs sharing a URL (grant-on-second-tab tests) are told apart by document
+  // title, which the tab target list exposes; give the extra tab a marker.
+  async function trigger(target: Page = page) {
+    await target.bringToFront();
+    const title = await target.title();
+    let targetId = '';
+    await expect.poll(async () => {
+      const { targetInfos } = await cdp.send('Target.getTargets', { filter: [{ type: 'tab', exclude: false }] });
+      const matches = targetInfos.filter(info => info.url === target.url());
+      const tab = matches.find(info => info.title === title) ?? (matches.length === 1 ? matches[0] : undefined);
+      targetId = tab?.targetId ?? '';
+      return !!targetId;
+    }).toBe(true);
+    void cdp.send('Extensions.triggerAction', { id, targetId }).catch(() => {});
   }
   await trigger();
   const panel = await attachPanel(cdp, id);
@@ -103,7 +123,9 @@ export async function enableProvider(app: { context: BrowserContext; id: string;
   await expect.poll(() => app.panel.text()).toContain('1 Document');
   await app.panel.send('Fetch.disable');
   app.panel.onEvent = undefined;
-  await expect.poll(() => app.panel.text()).toContain('AI help me fill');
+  // The workflow page is now always available (single-page flow); the drop
+  // zone heading is its stable marker once the provider is enabled.
+  await expect.poll(() => app.panel.text()).toContain('Start with your documents');
 }
 export async function attachPanel(cdp: CDPSession, id: string): Promise<Panel> {
   let targetId = '';
@@ -117,4 +139,31 @@ export async function attachPanel(cdp: CDPSession, id: string): Promise<Panel> {
   await panel.send('Runtime.enable'); await panel.send('DOM.enable');
   await expect.poll(() => panel.text()).toContain('Your document. The right fields.');
   return panel;
+}
+// Synthetic oracle: answer the panel's mapping request from the fixture's
+// expected values instead of contacting a provider. `hold` leaves the request
+// paused and exposes `counts.release` so a test can assert the in-flight UI.
+export function installMappingMock(app: { panel: Panel }, scenario: BenchmarkCase, counts: { requests: number; error: string; release?: () => void }, hold = false) {
+  app.panel.onEvent = (method: string, event: any) => {
+    if (method !== 'Fetch.requestPaused') return;
+    void (async () => {
+      counts.requests++;
+      expect(event.request.url).toBe('https://api.openai.com/v1/chat/completions');
+      const request = JSON.parse(event.request.postData);
+      const payload = JSON.parse(request.messages[1].content);
+      expect(payload.formFields.every((field: any) => !('currentValue' in field))).toBe(true);
+      expect(JSON.stringify(payload)).not.toContain('synthetic-e2e-key');
+      const assignments = payload.formFields.map((field: any) => {
+        const expected = scenario.fields.find(item => item.name === field.name)!.expected!;
+        const line = payload.documentLines.find((line: any) => line.text.includes(expected));
+        if (!line) throw new Error('Fixture evidence was not present in PDF extraction.');
+        return { fieldId: field.id, value: expected, evidence: [{ lineId: line.id, quote: expected }], reason: 'Synthetic oracle; not an LLM accuracy measurement.' };
+      });
+      counts.release = () => void app.panel.send('Fetch.fulfillRequest', {
+        requestId: event.requestId, responseCode: 200, responseHeaders: [{ name: 'Content-Type', value: 'application/json' }],
+        body: Buffer.from(JSON.stringify({ choices: [{ finish_reason: 'stop', message: { content: JSON.stringify({ assignments, unmapped: [] }) } }] })).toString('base64'),
+      });
+      if (!hold) counts.release();
+    })().catch(error => { counts.error = String(error); void app.panel.send('Fetch.failRequest', { requestId: event.requestId, errorReason: 'Aborted' }); });
+  };
 }
