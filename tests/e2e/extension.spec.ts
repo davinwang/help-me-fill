@@ -172,8 +172,9 @@ test('reload and tab switches keep the review on an identical form', async ({}, 
     await app.page.locator('[name="fullName"]').fill('Tab A value');
     await expect.poll(() => app.panel.text()).toContain('Will replace the page value: Tab A value');
     // A second tab with the same form is not readable until the toolbar icon
-    // grants access for it. The failure is quiet: the review from the first
-    // tab stays, with a retry affordance instead of a reset.
+    // grants access for it. While it is unreadable the panel hides the first
+    // tab's fields, review, and results — they describe a page it can no longer
+    // read — and asks for access instead of presenting them as current.
     const other = await app.context.newPage();
     await other.goto(app.page.url());
     await other.locator('[name="fullName"]').waitFor();
@@ -182,13 +183,14 @@ test('reload and tab switches keep the review on an identical form', async ({}, 
     await other.evaluate(() => { document.title = 'mirror tab'; });
     await expect(other.locator('[name="fullName"]')).toHaveValue('');
     await expect.poll(() => app.panel.text()).toContain('Retry detection');
-    await expect.poll(() => app.panel.text()).toContain('Review suggestions');
+    await expect.poll(() => app.panel.text()).not.toContain('Review suggestions');
     // Granting access on the second tab re-targets detection: the identical
-    // form keeps the review, and the pending replacement now follows the new
-    // tab's empty value instead of the first tab's hand-typed one.
+    // form restores the hidden review, and the pending replacement now follows
+    // the new tab's empty value instead of the first tab's hand-typed one.
     await app.trigger(other);
     await expect.poll(() => app.panel.text()).not.toContain('Will replace the page value: Tab A value');
     await expect.poll(() => app.panel.text()).not.toContain('Retry detection');
+    await expect.poll(() => app.panel.text()).toContain('Review suggestions');
     await app.panel.click('AI help me fill (10)');
     await expect.poll(() => app.panel.text(), { timeout: 25_000 }).toContain('Operation results');
     await expect(other.locator('[name="fullName"]')).toHaveValue(scenario.fields[0].expected!);

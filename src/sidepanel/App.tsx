@@ -205,10 +205,15 @@ export function App() {
   }
 
   const scan = state.scan;
-  const detected = !!scan?.fields.length;
-  const review = !!state.plan;
+  // A detection failure means the active page is not readable right now (no
+  // grant, a restricted scheme, a lost connection, an over-large form). The
+  // fields, review, and results still in state describe a page the panel can no
+  // longer read, so they are hidden instead of shown as if they were current.
+  const blocked = !!state.scanError;
+  const detected = !blocked && !!scan?.fields.length;
+  const review = !blocked && !!state.plan;
   const showSettings = !settings || editing;
-  const locked = busy || !!state.scanError;
+  const locked = busy || blocked;
   const needsDocument = detected && !state.documents.length;
   const showConsent = !!settings && autoSend === false && detected && state.documents.length > 0 && !review;
   const step2 = review ? (state.result ? 'done' : 'active') : (settings && detected && state.documents.length ? 'active' : '');
@@ -231,8 +236,8 @@ export function App() {
       {detected && !!state.documents.length && !review && autoSend === true && <p className="hint auto-send-status" role="status">{t('autoSendStatus', [resolveProvider(settings).name])} <button type="button" className="link-button" onClick={() => changeAutoSend(false)}>{t('autoSendOff')}</button></p>}
       {showConsent && <DisclosurePreview document={mergeDocuments(state.documents)} scan={scan!} settings={settings} autoSend={false} disabled={busy} onGenerate={generate} onAutoSend={changeAutoSend} />}
       {review && <ReviewTable state={state} dispatch={dispatch} disabled={locked} onFill={fill} />}
-      {state.result && scan && <FillResults result={state.result} scan={scan} disabled={locked} onUndo={undo} />}
-      {!detected && !!scan && <p className="hint">{t('errNoFields')}</p>}
+      {!blocked && state.result && scan && <FillResults result={state.result} scan={scan} disabled={locked} onUndo={undo} />}
+      {!blocked && !detected && !!scan && <p className="hint">{t('errNoFields')}</p>}
     </>}
     {dialog && settings && <AutoSendDialog settings={settings} onConfirm={confirmAutoSend} onCancel={() => setDialog(undefined)} />}
     <footer>{t('footerNote')}</footer>

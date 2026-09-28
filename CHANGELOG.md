@@ -113,6 +113,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Provider comparison in both READMEs updated from "9+" to "7+" to match
   the actual registry after the removals.
 
+### Fixed
+- An unreadable page (no toolbar-icon grant, a restricted scheme, or a blocked
+  injection) now reports "No form detected. Click the help-me-fill toolbar icon
+  to grant access." (`errNoFormAccess`), replacing the conflated
+  `errOpenFormPage`/`errAccessDenied` pair in `src/sidepanel/session.ts`. This
+  separates "the page cannot be read" from "the page was read and holds no
+  fillable fields," which keeps its own "No supported fields were found" hint.
+- While the active page is unreadable, the panel hides the previous page's
+  field list, review, and fill results instead of presenting them as if they
+  described the current page (`src/sidepanel/App.tsx`); they reappear when
+  access is restored to the same form.
+
 ## [0.1.0] — 2026-09-23
 
 ### Added

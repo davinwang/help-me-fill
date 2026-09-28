@@ -146,15 +146,18 @@ export async function sendPage<T>(target: Target, message: ContentMessage): Prom
   if (!reply || !reply.ok) throw new UserError(reply && !reply.ok ? reply.error : t('errInvalidResponse'));
   return reply.data;
 }
-// Inject the content script into the active tab and bind a target to it.
+// Inject the content script into the active tab and bind a target to it. A page
+// the extension cannot read (no activeTab grant, a restricted scheme, or a
+// blocked injection) reports "no form detected" with the toolbar-icon hint —
+// distinct from a readable page that simply holds no fillable fields.
 async function injectActive(): Promise<Target> {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  if (!tab?.id || !tab.url || !/^https?:\/\//.test(tab.url)) throw new UserError(t('errOpenFormPage'));
+  if (!tab?.id || !tab.url || !/^https?:\/\//.test(tab.url)) throw new UserError(t('errNoFormAccess'));
   const url = new URL(tab.url);
   if (['chromewebstore.google.com', 'chrome.google.com', 'microsoftedge.microsoft.com'].includes(url.hostname)) throw new UserError(t('errStorePage'));
   let injection: chrome.scripting.InjectionResult[];
   try { injection = await chrome.scripting.executeScript({ target: { tabId: tab.id, frameIds: [0] }, files: ['content/index.js'] }); }
-  catch { throw new UserError(t('errAccessDenied')); }
+  catch { throw new UserError(t('errNoFormAccess')); }
   const documentId = injection.find(result => result.frameId === 0)?.documentId;
   if (!documentId) throw new UserError(t('errNoDocumentId'));
   const target: Target = { tabId: tab.id, windowId: tab.windowId, documentId, url: tab.url };
