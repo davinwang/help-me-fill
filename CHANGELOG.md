@@ -67,6 +67,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   current field values and page URL are never sent to the AI provider.
 
 ### Changed
+- **The LLM provider dialog collapses after a successful save**
+  (`src/sidepanel/components/ProviderSettings.tsx`): once a provider is verified
+  and stored, the settings card folds back to its summary so the workflow
+  underneath is not left covered; re-open it from the summary or the Edit LLM
+  button.
 - Manifest `name` localized via `__MSG_appName__` — defaults to
   "Help Me Fill" in English and "帮我填" in Simplified Chinese.
 - Manifest `description` rewritten for Chrome Web Store search clarity.

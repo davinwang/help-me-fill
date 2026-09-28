@@ -1,6 +1,6 @@
 {
   "name": "help-me-fill",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "private": true,
   "description": "Privacy-first AI form filler browser extension. Turn any PDF, DOCX, XLSX, Markdown, or text document into a filled web form with human review. BYO API key, on-device option, no servers, no telemetry.",
   "license": "MIT",

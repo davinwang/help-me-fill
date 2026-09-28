@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { PROVIDERS, BUILTIN, CUSTOM, isProvider, localEndpointOrigin, type ProviderId, type ProviderKind, type ProviderSettings as Settings } from '../../ai/registry';
 import { detectBuiltin, type BuiltinState } from '../../ai/builtin-support';
 import { validateSettings, verifyProvider } from '../../ai/provider';
@@ -43,6 +43,9 @@ export function ProviderSettings({ disabled, onChange }: Props) {
   const [savedKeys, setSavedKeys] = useState<ReadonlySet<ProviderId>>(() => new Set());
   const [status, setStatus] = useState(() => t('psStatusDefault'));
   const [saving, setSaving] = useState(false);
+  // The card doubles as the LLM provider dialog: after a successful save it
+  // folds back to its summary so the workflow underneath is not left covered.
+  const card = useRef<HTMLDetailsElement>(null);
   useEffect(() => {
     let alive = true;
     void (async () => {
@@ -112,6 +115,8 @@ export function ProviderSettings({ disabled, onChange }: Props) {
         : kindOf(provider) === 'local'
           ? t('psLocalVerified')
           : t('psCloudVerified'));
+      // Verification passed and the settings are stored: collapse the dialog.
+      if (card.current) card.current.open = false;
     } catch (error) { setStatus(errorMessage(error)); }
     finally { setSaving(false); }
   }
@@ -135,7 +140,7 @@ export function ProviderSettings({ disabled, onChange }: Props) {
   const localEntries = Object.entries(PROVIDERS).filter(([, info]) => info.kind === 'local');
   const savedMark = (id: string) => savedKeys.has(id as ProviderId) ? '  🔑' : '';
   const optionLabel = (name: string, icon: ProviderKind, id: string) => `${KIND_ICON[icon]} ${name}${savedMark(id)}`;
-  return <details className="card settings" open>
+  return <details className="card settings" open ref={card}>
     <summary>{t('psSummary')} <span className="subtle">{t('psKinds')}{builtin ? ` · ${t('psBuiltinDetected')}` : ''}</span></summary>
     <fieldset disabled={disabled || saving}>
       <label>{t('psProvider')}
