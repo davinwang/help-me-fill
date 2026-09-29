@@ -4,7 +4,6 @@ import { DropZone } from './components/DropZone';
 import { DocumentPreview } from './components/DocumentPreview';
 import { DisclosurePreview } from './components/DisclosurePreview';
 import { PageFields } from './components/PageFields';
-import { ReviewTable } from './components/ReviewTable';
 import { FillResults } from './components/FillResults';
 import { AutoSendDialog } from './components/AutoSendDialog';
 import { parseDocument, mergeDocuments } from '../parsers';
@@ -232,10 +231,9 @@ export function App() {
       </div>
       {needsDocument && <p className="prompt" role="status">{t('selectDocumentPrompt', [scan!.fields.length])}</p>}
       {state.documents.map((document, index) => <DocumentPreview key={`${document.name}-${index}`} document={document} disabled={busy} onRemove={() => { abortRun(); dispatch({ type: 'REMOVE_DOCUMENT', index }); }} />)}
-      {detected && !review && <PageFields scan={scan!} />}
+      {detected && <PageFields state={state} dispatch={dispatch} disabled={locked} onFill={fill} />}
       {detected && !!state.documents.length && !review && autoSend === true && <p className="hint auto-send-status" role="status">{t('autoSendStatus', [resolveProvider(settings).name])} <button type="button" className="link-button" onClick={() => changeAutoSend(false)}>{t('autoSendOff')}</button></p>}
       {showConsent && <DisclosurePreview document={mergeDocuments(state.documents)} scan={scan!} settings={settings} autoSend={false} disabled={busy} onGenerate={generate} onAutoSend={changeAutoSend} />}
-      {review && <ReviewTable state={state} dispatch={dispatch} disabled={locked} onFill={fill} />}
       {!blocked && state.result && scan && <FillResults result={state.result} scan={scan} disabled={locked} onUndo={undo} />}
       {!blocked && !detected && !!scan && <p className="hint">{t('errNoFields')}</p>}
     </>}

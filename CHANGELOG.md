@@ -67,6 +67,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   current field values and page URL are never sent to the AI provider.
 
 ### Changed
+- **Matched suggestions now update the detected-fields list in place**
+  (`src/sidepanel/components/PageFields.tsx`): the compact "N fillable fields
+  detected" card is the single review surface — after the provider responds,
+  matched rows grow a use/don't-use switch, the proposed value (editable), and
+  their source evidence inside the same list instead of being replaced by a
+  separate "Review suggestions" table (`src/sidepanel/components/ReviewTable.tsx`
+  removed). Fields the model left unmapped show its reason inline under their
+  current value; the master switch, fill notice, and fill button live at the
+  bottom of the same card.
 - **The LLM provider dialog collapses after a successful save**
   (`src/sidepanel/components/ProviderSettings.tsx`): once a provider is verified
   and stored, the settings card folds back to its summary so the workflow

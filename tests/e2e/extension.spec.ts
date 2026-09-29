@@ -158,13 +158,13 @@ test('reload and tab switches keep the review on an identical form', async ({}, 
     await app.panel.send('Fetch.enable', { patterns: [{ urlPattern: 'http*', requestStage: 'Request' }] });
     installMappingMock(app, scenario, counts);
     await app.panel.click('Send to OpenAI and generate suggestions');
-    await expect.poll(() => app.panel.text()).toContain('Review suggestions');
+    await expect.poll(() => app.panel.text()).toContain('Evidence shows where text came from');
     expect(counts.error).toBe(''); expect(counts.requests).toBe(1);
     // A reload is re-detected quietly: the identical form keeps the review, and
     // the replaced DOM nodes are re-keyed instead of reset.
     await app.page.reload();
     await app.page.locator('input[name="fullName"]').waitFor();
-    await expect.poll(() => app.panel.text()).toContain('Review suggestions');
+    await expect.poll(() => app.panel.text()).toContain('Evidence shows where text came from');
     expect(await app.panel.text()).not.toContain('document or route changed');
     expect(await app.panel.text()).not.toContain('active tab changed');
     // The panel reads the live page: a value typed into this tab becomes a
@@ -183,14 +183,14 @@ test('reload and tab switches keep the review on an identical form', async ({}, 
     await other.evaluate(() => { document.title = 'mirror tab'; });
     await expect(other.locator('[name="fullName"]')).toHaveValue('');
     await expect.poll(() => app.panel.text()).toContain('Retry detection');
-    await expect.poll(() => app.panel.text()).not.toContain('Review suggestions');
+    await expect.poll(() => app.panel.text()).not.toContain('Evidence shows where text came from');
     // Granting access on the second tab re-targets detection: the identical
     // form restores the hidden review, and the pending replacement now follows
     // the new tab's empty value instead of the first tab's hand-typed one.
     await app.trigger(other);
     await expect.poll(() => app.panel.text()).not.toContain('Will replace the page value: Tab A value');
     await expect.poll(() => app.panel.text()).not.toContain('Retry detection');
-    await expect.poll(() => app.panel.text()).toContain('Review suggestions');
+    await expect.poll(() => app.panel.text()).toContain('Evidence shows where text came from');
     await app.panel.click('AI help me fill (10)');
     await expect.poll(() => app.panel.text(), { timeout: 25_000 }).toContain('Operation results');
     await expect(other.locator('[name="fullName"]')).toHaveValue(scenario.fields[0].expected!);
@@ -298,7 +298,7 @@ for (const interruption of ['cancel', 'tab switch', 'panel close']) {
         await app.page.waitForTimeout(1_500);
         await app.trigger();
         const reopened = await attachPanel(app.cdp, app.id);
-        expect(await reopened.text()).not.toContain('Review suggestions');
+        expect(await reopened.text()).not.toContain('Evidence shows where text came from');
         expect(await reopened.text()).not.toContain('Operation results');
         reopened.dispose();
       }

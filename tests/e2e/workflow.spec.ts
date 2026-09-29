@@ -18,7 +18,7 @@ for (const framework of ['native', 'react', 'vue']) {
       expect(await app.panel.evaluate(() => !!document.querySelector('.attention .drop-zone'))).toBe(true);
       expect(await app.panel.evaluate(() => [...document.querySelectorAll('.field-list li')].map(item => item.querySelector('.section-top strong')?.textContent)))
         .toEqual(scenario.fields.map(field => field.label));
-      expect(await app.panel.text()).not.toContain('Review suggestions');
+      expect(await app.panel.text()).not.toContain('Evidence shows where text came from');
       await app.panel.upload(`tests/fixtures/generated/${scenario.id}.pdf`);
       await expect.poll(() => app.panel.text()).toContain(`${scenario.id}.pdf`);
       // A cloud provider starts manual: the disclosure card appears by itself,
@@ -31,21 +31,23 @@ for (const framework of ['native', 'react', 'vue']) {
       await app.panel.send('Fetch.enable', { patterns: [{ urlPattern: 'http*', requestStage: 'Request' }] });
       installMappingMock(app, scenario, counts);
       await app.panel.click('Send to OpenAI and generate suggestions');
-      await expect.poll(() => app.panel.text()).toContain('Review suggestions');
+      await expect.poll(() => app.panel.text()).toContain('Evidence shows where text came from');
       expect(counts.error).toBe(''); expect(counts.requests).toBe(1);
       // Empty page fields are armed by default; the page keeps its values.
-      const switches = () => app.panel.evaluate(() => [...document.querySelectorAll('.review-row input.switch')].map(input => (input as HTMLInputElement).checked));
+      const switches = () => app.panel.evaluate(() => [...document.querySelectorAll('.field-list input.switch')].map(input => (input as HTMLInputElement).checked));
       expect(await switches()).toEqual(Array(10).fill(true));
       expect(await app.panel.evaluate(() => (document.querySelector('.check-label.master input') as HTMLInputElement).checked)).toBe(true);
       const disabled = (text: string) => app.panel.evaluate((text: string) =>
         [...document.querySelectorAll('button')].find(button => button.textContent?.trim() === text)?.disabled, text);
       expect(await disabled('AI help me fill (10)')).toBe(false);
       // One switch off falls back to the page value and drops the count.
-      await app.panel.toggle('.review-row input.switch');
+      await app.panel.toggle('.field-list input.switch');
       expect(await switches()).toEqual([false, ...Array(9).fill(true)]);
       expect(await disabled('AI help me fill (9)')).toBe(false);
-      await expect.poll(() => app.panel.text()).toContain('Current value:');
-      await app.panel.toggle('.review-row input.switch');
+      // A row switched off falls back to the page value, exactly like an
+      // unmatched field: the same plain value line, here empty.
+      await expect.poll(() => app.panel.text()).toContain('(no value yet)');
+      await app.panel.toggle('.field-list input.switch');
       expect(await disabled('AI help me fill (10)')).toBe(false);
       // The tri-state master switch flips every row off, then back on.
       await app.panel.toggle('.check-label.master input');
@@ -54,7 +56,7 @@ for (const framework of ['native', 'react', 'vue']) {
       await app.panel.toggle('.check-label.master input');
       expect(await switches()).toEqual(Array(10).fill(true));
       // A hand edit is marked as a manual override and is what gets written.
-      await app.panel.enter('.review-row textarea', 'Hand edited name');
+      await app.panel.enter('.field-list textarea', 'Hand edited name');
       await expect.poll(() => app.panel.text()).toContain('Manual override');
       await app.panel.click('AI help me fill (10)');
       await expect.poll(() => app.panel.text(), { timeout: 25_000 }).toContain('Operation results');
@@ -111,9 +113,9 @@ test('auto-send asks first and then matches automatically', async ({}, info) => 
     await expect.poll(() => counts.requests).toBe(1);
     expect(await app.page.locator('input[name="fullName"]').inputValue()).toBe('');
     counts.release!();
-    await expect.poll(() => app.panel.text()).toContain('Review suggestions');
+    await expect.poll(() => app.panel.text()).toContain('Evidence shows where text came from');
     expect(counts.error).toBe('');
-    expect(await app.panel.evaluate(() => document.querySelectorAll('.review-row input.switch:checked').length)).toBe(10);
+    expect(await app.panel.evaluate(() => document.querySelectorAll('.field-list input.switch:checked').length)).toBe(10);
     const stored = await app.panel.evaluate(() => chrome.storage.local.get(null));
     expect((stored as Record<string, { provider?: string; value?: boolean }>).autoSend).toMatchObject({ provider: 'openai', value: true });
   } finally { await app.close(); }
