@@ -92,6 +92,9 @@ export function ProviderSettings({ disabled, onChange }: Props) {
       const preferences = all.preferences as { provider?: unknown; model?: unknown; endpoint?: unknown } | undefined;
       if (!preferences || !isProvider(preferences.provider) || typeof preferences.model !== 'string') return;
       const id = preferences.provider;
+      // A preset this build no longer bundles has no option to render; fall back to
+      // setup rather than restoring a provider the dropdown cannot represent.
+      if (id === 'preset' && !bundled) { setStatus(t('psRestoreFailed')); return; }
       if (id === 'builtin') {
         if (!support) { setStatus(t('psBuiltinUnavailableSaved')); return; }
         setProvider(id); setModel(BUILTIN.defaultModel);
