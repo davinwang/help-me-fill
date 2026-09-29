@@ -66,28 +66,10 @@
     "placeholders": { "kind": { "content": "$1" }, "pages": { "content": "$2" }, "units": { "content": "$3" }, "chars": { "content": "$4" } }
   },
 
-  "consentEyebrow": { "message": "データがブラウザーから送信される前に" },
-  "consentTitle": { "message": "共有する内容を確認" },
-  "consentBuiltin": { "message": "提案の生成はブラウザーの**デバイス上モデル**が処理します。抽出された文書テキストと選択したフォームのメタデータがこのデバイスから出ることはありません。元のファイルや既存のフィールド値は使用されません。" },
-  "consentLocal": {
-    "message": "提案の生成では、抽出された文書テキストと選択したフォームのメタデータを、このコンピューター上の **$PROVIDER$** に送信します。クラウドには何も送信されません。元のファイルや既存のフィールド値は使用されません。",
-    "placeholders": { "provider": { "content": "$1" } }
-  },
-  "consentCloud": {
-    "message": "提案の生成では、抽出された文書テキストと選択したフォームのメタデータを、クラウドプロバイダーの **$PROVIDER$** に送信します。元のファイルや既存のフィールド値は送信されません。",
-    "placeholders": { "provider": { "content": "$1" } }
-  },
-  "consentProviderFallback": { "message": "選択したプロバイダー" },
-  "consentDestinationBuiltin": { "message": "デバイス上モデル（ネットワークリクエストなし）" },
   "providerLabel": { "message": "プロバイダー:" },
-  "destinationLabel": { "message": "送信先:" },
   "modelLabel": { "message": "モデル:" },
   "previewOutgoing": { "message": "送信データをプレビュー" },
   "viewMappingInstructions": { "message": "マッピング指示を表示" },
-  "consentAccuracyBuiltin": { "message": "デバイス上の精度は実験的です。すべての提案には依然としてあなたの確認が必要です。" },
-  "consentAccuracyLocal": { "message": "ローカルモデルの精度はさまざまです。すべての提案には依然としてあなたの確認が必要です。" },
-  "consentAccuracyCloud": { "message": "プロバイダーの保持ポリシーと API 料金が適用されます。" },
-  "consentRequestsNote": { "message": "リクエストは最大 1 回、加えて検証修復リクエストを最大 1 回行うことがあります。プロバイダーの自動フォールバックはありません。" },
   "generateBuiltin": { "message": "デバイス上で提案を生成" },
   "generateLocal": { "message": "ローカルで提案を生成" },
   "generateCloud": {
@@ -95,7 +77,6 @@
     "placeholders": { "provider": { "content": "$1" } }
   },
   "generateCloudFallback": { "message": "プロバイダー" },
-  "enableProviderToContinue": { "message": "続行するには上でプロバイダーを有効にしてください。" },
 
   "fieldsTitle": {
     "message": "$COUNT$ 個の入力可能なフィールドを検出",
@@ -115,8 +96,8 @@
   },
   "retryScan": { "message": "検出を再試行" },
   "retryMatch": { "message": "照合を再試行" },
-  "autoSendLabel": { "message": "自動で送信して照合" },
-  "autoSendAlways": { "message": "送信して常に自動送信" },
+  "autoSendAlways": { "message": "送信して今後は確認しない" },
+  "sendOptions": { "message": "その他の送信オプション" },
   "autoSendStatus": {
     "message": "$PROVIDER$ への自動送信が有効です。新しいページは自動的に照合されます。",
     "placeholders": { "provider": { "content": "$1" } }
@@ -145,7 +126,6 @@
     "message": "未マッピング: $REASON$",
     "placeholders": { "reason": { "content": "$1" } }
   },
-  "fillNotice": { "message": "入力により、サイトの検証・自動保存・ネットワークリクエストが発生する場合があります。この拡張機能は「送信」を絶対にクリックしません。取り消しはサーバー側の影響を元に戻せません。" },
 
   "statusFilled": { "message": "入力済み" },
   "statusRestored": { "message": "復元済み" },

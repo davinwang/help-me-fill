@@ -66,28 +66,10 @@
     "placeholders": { "kind": { "content": "$1" }, "pages": { "content": "$2" }, "units": { "content": "$3" }, "chars": { "content": "$4" } }
   },
 
-  "consentEyebrow": { "message": "Avant que quoi que ce soit ne quitte votre navigateur" },
-  "consentTitle": { "message": "Relisez ce que vous partagez" },
-  "consentBuiltin": { "message": "La génération des suggestions est assurée par le **modèle sur l'appareil** de votre navigateur. Le texte extrait du document et les métadonnées des champs sélectionnés ne quittent jamais cet appareil. Les fichiers d'origine et les valeurs existantes des champs ne sont pas utilisés." },
-  "consentLocal": {
-    "message": "La génération des suggestions envoie le texte extrait du document et les métadonnées des champs sélectionnés à **$PROVIDER$** sur cet ordinateur. Rien n'est envoyé vers le cloud. Les fichiers d'origine et les valeurs existantes des champs ne sont pas utilisés.",
-    "placeholders": { "provider": { "content": "$1" } }
-  },
-  "consentCloud": {
-    "message": "La génération des suggestions envoie le texte extrait du document et les métadonnées des champs sélectionnés à **$PROVIDER$**, un fournisseur cloud. Les fichiers d'origine et les valeurs existantes des champs ne sont pas envoyés.",
-    "placeholders": { "provider": { "content": "$1" } }
-  },
-  "consentProviderFallback": { "message": "votre fournisseur sélectionné" },
-  "consentDestinationBuiltin": { "message": "Modèle sur l'appareil (aucune requête réseau)" },
   "providerLabel": { "message": "Fournisseur :" },
-  "destinationLabel": { "message": "Destination :" },
   "modelLabel": { "message": "Modèle :" },
   "previewOutgoing": { "message": "Aperçu des données sortantes" },
   "viewMappingInstructions": { "message": "Voir les instructions de mappage" },
-  "consentAccuracyBuiltin": { "message": "La précision sur l'appareil est expérimentale ; chaque suggestion nécessite toujours votre relecture." },
-  "consentAccuracyLocal": { "message": "La précision des modèles locaux varie ; chaque suggestion nécessite toujours votre relecture." },
-  "consentAccuracyCloud": { "message": "La politique de conservation et les frais d'API de votre fournisseur s'appliquent." },
-  "consentRequestsNote": { "message": "Une requête, plus au plus une requête de réparation de validation, peut être effectuée. Aucun repli automatique vers un autre fournisseur." },
   "generateBuiltin": { "message": "Générer les suggestions sur l'appareil" },
   "generateLocal": { "message": "Générer les suggestions localement" },
   "generateCloud": {
@@ -95,7 +77,6 @@
     "placeholders": { "provider": { "content": "$1" } }
   },
   "generateCloudFallback": { "message": "fournisseur" },
-  "enableProviderToContinue": { "message": "Activez un fournisseur ci-dessus pour continuer." },
 
   "fieldsTitle": {
     "message": "$COUNT$ champs remplissables détectés",
@@ -115,8 +96,8 @@
   },
   "retryScan": { "message": "Relancer la détection" },
   "retryMatch": { "message": "Réessayer l'association" },
-  "autoSendLabel": { "message": "Envoyer et associer automatiquement" },
-  "autoSendAlways": { "message": "Envoyer et toujours envoyer automatiquement" },
+  "autoSendAlways": { "message": "Envoyer et ne plus demander" },
+  "sendOptions": { "message": "Autres options d'envoi" },
   "autoSendStatus": {
     "message": "L'envoi automatique est activé pour $PROVIDER$ : les nouvelles pages sont associées automatiquement.",
     "placeholders": { "provider": { "content": "$1" } }
@@ -145,7 +126,6 @@
     "message": "Non mappé : $REASON$",
     "placeholders": { "reason": { "content": "$1" } }
   },
-  "fillNotice": { "message": "Le remplissage peut déclencher la validation, l'enregistrement automatique ou des requêtes réseau du site. Cette extension ne clique jamais sur Envoyer. L'annulation ne peut pas inverser les effets côté serveur." },
 
   "statusFilled": { "message": "rempli" },
   "statusRestored": { "message": "restauré" },

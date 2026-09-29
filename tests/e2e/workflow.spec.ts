@@ -21,9 +21,9 @@ for (const framework of ['native', 'react', 'vue']) {
       expect(await app.panel.text()).not.toContain('Matches are suggestions');
       await app.panel.upload(`tests/fixtures/generated/${scenario.id}.pdf`);
       await expect.poll(() => app.panel.text()).toContain(`${scenario.id}.pdf`);
-      // A cloud provider starts manual: the disclosure card appears by itself,
+      // A cloud provider starts manual: the send control appears by itself,
       // nothing leaves the browser, and the page is untouched.
-      await expect.poll(() => app.panel.text()).toContain('Review what you share');
+      await expect.poll(() => app.panel.text()).toContain('Send to OpenAI and generate suggestions');
       expect(counts.requests).toBe(0);
       expect(await app.page.locator('input[name="fullName"]').inputValue()).toBe('');
       // The single page keeps document access available while reviewing.
@@ -96,19 +96,20 @@ test('auto-send asks first and then matches automatically', async ({}, info) => 
     const counts = { requests: 0, error: '' } as { requests: number; error: string; release?: () => void };
     await enableProvider(app, info.project.name === 'edge' ? 'edge://extensions/' : 'chrome://extensions/');
     await app.panel.upload(`tests/fixtures/generated/${scenario.id}.pdf`);
-    await expect.poll(() => app.panel.text()).toContain('Review what you share');
+    await expect.poll(() => app.panel.text()).toContain('Send to OpenAI and generate suggestions');
     await app.panel.send('Fetch.enable', { patterns: [{ urlPattern: 'http*', requestStage: 'Request' }] });
     installMappingMock(app, scenario, counts, true);
-    // Turning auto-send on for a cloud provider warns first; declining keeps
-    // the switch off and sends nothing.
-    await app.panel.toggle('.consent input.switch');
+    // The split menu's auto-send row warns first for a cloud provider;
+    // declining stores nothing and sends nothing.
+    await app.panel.click('More send options');
+    await app.panel.click("Send and don't ask again");
     await expect.poll(() => app.panel.text()).toContain('Auto-send document text to OpenAI?');
     await app.panel.click('Cancel');
     await expect.poll(() => app.panel.text()).not.toContain('Auto-send document text to OpenAI?');
     expect(counts.requests).toBe(0);
-    expect(await app.panel.evaluate(() => (document.querySelector('.consent input.switch') as HTMLInputElement).checked)).toBe(false);
-    // "Send & always" confirms through the warning and matches on the spot.
-    await app.panel.click('Send & always auto-send');
+    // Confirming through the warning turns auto-send on and matches on the spot.
+    await app.panel.click('More send options');
+    await app.panel.click("Send and don't ask again");
     await expect.poll(() => app.panel.text()).toContain('Auto-send document text to OpenAI?');
     await app.panel.click('Enable auto-send');
     await expect.poll(() => app.panel.text()).toContain('Auto-send is on for OpenAI');

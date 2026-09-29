@@ -66,28 +66,10 @@
     "placeholders": { "kind": { "content": "$1" }, "pages": { "content": "$2" }, "units": { "content": "$3" }, "chars": { "content": "$4" } }
   },
 
-  "consentEyebrow": { "message": "Bevor etwas Ihren Browser verlässt" },
-  "consentTitle": { "message": "Prüfen Sie, was Sie teilen" },
-  "consentBuiltin": { "message": "Die Erstellung der Vorschläge übernimmt das **Gerätemodell** Ihres Browsers. Extrahierter Dokumenttext und ausgewählte Formularmetadaten verlassen dieses Gerät nie. Originaldateien und vorhandene Feldwerte werden nicht verwendet." },
-  "consentLocal": {
-    "message": "Die Erstellung der Vorschläge sendet extrahierten Dokumenttext und ausgewählte Formularmetadaten an **$PROVIDER$** auf diesem Computer. Es wird nichts an die Cloud gesendet. Originaldateien und vorhandene Feldwerte werden nicht verwendet.",
-    "placeholders": { "provider": { "content": "$1" } }
-  },
-  "consentCloud": {
-    "message": "Die Erstellung der Vorschläge sendet extrahierten Dokumenttext und ausgewählte Formularmetadaten an **$PROVIDER$**, einen Cloud-Anbieter. Originaldateien und vorhandene Feldwerte werden nicht gesendet.",
-    "placeholders": { "provider": { "content": "$1" } }
-  },
-  "consentProviderFallback": { "message": "Ihr gewählter Anbieter" },
-  "consentDestinationBuiltin": { "message": "Gerätemodell (keine Netzwerkanfrage)" },
   "providerLabel": { "message": "Anbieter:" },
-  "destinationLabel": { "message": "Ziel:" },
   "modelLabel": { "message": "Modell:" },
   "previewOutgoing": { "message": "Ausgehende Daten anzeigen" },
   "viewMappingInstructions": { "message": "Zuordnungsanweisungen anzeigen" },
-  "consentAccuracyBuiltin": { "message": "Die Genauigkeit auf dem Gerät ist experimentell; jeder Vorschlag erfordert weiterhin Ihre Prüfung." },
-  "consentAccuracyLocal": { "message": "Die Genauigkeit lokaler Modelle variiert; jeder Vorschlag erfordert weiterhin Ihre Prüfung." },
-  "consentAccuracyCloud": { "message": "Die Aufbewahrungsrichtlinie und die API-Gebühren Ihres Anbieters gelten." },
-  "consentRequestsNote": { "message": "Es kann eine Anfrage plus höchstens eine Anfrage zur Validierungsreparatur gestellt werden. Kein automatischer Anbieter-Fallback." },
   "generateBuiltin": { "message": "Vorschläge auf dem Gerät erstellen" },
   "generateLocal": { "message": "Vorschläge lokal erstellen" },
   "generateCloud": {
@@ -95,7 +77,6 @@
     "placeholders": { "provider": { "content": "$1" } }
   },
   "generateCloudFallback": { "message": "Anbieter" },
-  "enableProviderToContinue": { "message": "Aktivieren Sie oben einen Anbieter, um fortzufahren." },
 
   "fieldsTitle": {
     "message": "$COUNT$ ausfüllbare Felder erkannt",
@@ -115,8 +96,8 @@
   },
   "retryScan": { "message": "Erkennung wiederholen" },
   "retryMatch": { "message": "Zuordnung erneut versuchen" },
-  "autoSendLabel": { "message": "Automatisch senden und zuordnen" },
-  "autoSendAlways": { "message": "Senden & immer automatisch senden" },
+  "autoSendAlways": { "message": "Senden und nicht mehr fragen" },
+  "sendOptions": { "message": "Weitere Sendeoptionen" },
   "autoSendStatus": {
     "message": "Automatisches Senden ist für $PROVIDER$ aktiviert: Neue Seiten werden automatisch zugeordnet.",
     "placeholders": { "provider": { "content": "$1" } }
@@ -145,7 +126,6 @@
     "message": "Nicht zugeordnet: $REASON$",
     "placeholders": { "reason": { "content": "$1" } }
   },
-  "fillNotice": { "message": "Das Ausfüllen kann die Validierung, das automatische Speichern oder Netzwerkanfragen der Website auslösen. Diese Erweiterung klickt niemals auf „Senden“. Das Rückgängigmachen kann serverseitige Wirkungen nicht umkehren." },
 
   "statusFilled": { "message": "ausgefüllt" },
   "statusRestored": { "message": "wiederhergestellt" },

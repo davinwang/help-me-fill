@@ -66,28 +66,10 @@
     "placeholders": { "kind": { "content": "$1" }, "pages": { "content": "$2" }, "units": { "content": "$3" }, "chars": { "content": "$4" } }
   },
 
-  "consentEyebrow": { "message": "在任何資料離開瀏覽器之前" },
-  "consentTitle": { "message": "審核你將分享的內容" },
-  "consentBuiltin": { "message": "產生建議由你瀏覽器的**裝置端模型**處理。擷取的文件文字與所選表單中繼資料絕不會離開此裝置。不會使用原始檔案與既有的欄位值。" },
-  "consentLocal": {
-    "message": "產生建議會將擷取的文件文字與所選表單中繼資料傳送到本電腦上的 **$PROVIDER$**。不會有任何資料傳送到雲端。不會使用原始檔案與既有的欄位值。",
-    "placeholders": { "provider": { "content": "$1" } }
-  },
-  "consentCloud": {
-    "message": "產生建議會將擷取的文件文字與所選表單中繼資料傳送到雲端服務商 **$PROVIDER$**。不會傳送原始檔案與既有的欄位值。",
-    "placeholders": { "provider": { "content": "$1" } }
-  },
-  "consentProviderFallback": { "message": "你選擇的服務商" },
-  "consentDestinationBuiltin": { "message": "裝置端模型（無網路請求）" },
   "providerLabel": { "message": "服務商：" },
-  "destinationLabel": { "message": "目標：" },
   "modelLabel": { "message": "模型：" },
   "previewOutgoing": { "message": "預覽將傳送的資料" },
   "viewMappingInstructions": { "message": "檢視對應指令" },
-  "consentAccuracyBuiltin": { "message": "裝置端準確性仍屬實驗性；每筆建議仍需你審核。" },
-  "consentAccuracyLocal": { "message": "本機模型準確性各有差異；每筆建議仍需你審核。" },
-  "consentAccuracyCloud": { "message": "適用你服務商的資料保留政策與 API 費用。" },
-  "consentRequestsNote": { "message": "最多發起一次請求，外加至多一次驗證修復請求。不會自動切換服務商。" },
   "generateBuiltin": { "message": "在裝置端產生建議" },
   "generateLocal": { "message": "在本機產生建議" },
   "generateCloud": {
@@ -95,7 +77,6 @@
     "placeholders": { "provider": { "content": "$1" } }
   },
   "generateCloudFallback": { "message": "服務商" },
-  "enableProviderToContinue": { "message": "請在上方啟用一個服務商以繼續。" },
 
   "fieldsTitle": {
     "message": "偵測到 $COUNT$ 個可填欄位",
@@ -115,8 +96,8 @@
   },
   "retryScan": { "message": "重試偵測" },
   "retryMatch": { "message": "重新配對" },
-  "autoSendLabel": { "message": "自動傳送並配對" },
-  "autoSendAlways": { "message": "傳送並一律自動傳送" },
+  "autoSendAlways": { "message": "傳送並且之後不再詢問" },
+  "sendOptions": { "message": "更多傳送選項" },
   "autoSendStatus": {
     "message": "已對 $PROVIDER$ 開啟自動傳送：新頁面會自動配對。",
     "placeholders": { "provider": { "content": "$1" } }
@@ -145,7 +126,6 @@
     "message": "未配對：$REASON$",
     "placeholders": { "reason": { "content": "$1" } }
   },
-  "fillNotice": { "message": "填寫可能觸發網站的驗證、自動儲存或網路請求。此擴充功能絕不會點擊「提交」。復原無法逆轉伺服器端的副作用。" },
 
   "statusFilled": { "message": "已填寫" },
   "statusRestored": { "message": "已還原" },

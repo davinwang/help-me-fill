@@ -72,7 +72,7 @@ DeepSeek、智谱 GLM、OpenRouter，也可以是**本地 Ollama** 或你自己�
 
 | 承诺 | 验证位置 |
 |---|---|
-| **发送前你能看到完整外发内容** | `src/sidepanel/components/DisclosurePreview.tsx` —— 侧边栏展示目标 origin、完整 JSON payload、系统提示词。预览与实际请求走同一个 `makePayload`。 |
+| **发送前你能看到完整外发内容** | `src/sidepanel/components/SendActions.tsx` —— 侧边栏用两个折叠披露展示完整 JSON payload 与系统提示词。披露与实际请求走同一个 `makePayload`。 |
 | **表单字段的当前值永远不离开浏览器** | `src/ai/prompts.ts:18` 的 `compactFields` —— 显式白名单投影：`id`、`type`、`label`、`ariaLabel`、`placeholder`、`name`、`context`、`required`、`maxLength`、`pattern`。不含 `value`、URL、cookie、DOM。 |
 | **页面 URL 永远不发给模型提供方** | 同上白名单。全局搜索 `location.href`，每一处都是内容脚本本地使用，没有一处进入 payload。 |
 | **模型被强制要求"不确定就弃权"** | `src/ai/prompts.ts:4` 的 `SYSTEM_PROMPT` —— 每个字段必须附带精确原文引用和 `lineId`；模糊字段必须归入 `unmapped` 并给出理由；缺失信息不得凭空生成。 |

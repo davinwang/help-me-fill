@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { ProviderSettings } from './components/ProviderSettings';
 import { DropZone } from './components/DropZone';
-import { DisclosurePreview } from './components/DisclosurePreview';
+import { SendActions } from './components/SendActions';
 import { PageFields } from './components/PageFields';
 import { AutoSendDialog } from './components/AutoSendDialog';
 import { parseDocument, mergeDocuments } from '../parsers';
@@ -17,13 +17,13 @@ export function App() {
   const [state, dispatch] = useReducer(sessionReducer, initialSession);
   const [settings, setSettings] = useState<Settings>();
   const [editing, setEditing] = useState(false);
-  // undefined means "not loaded yet or being edited": the consent card only
+  // undefined means "not loaded yet or being edited": the send control only
   // appears on an explicit false, so a restore in flight never flashes it for
   // providers whose derived default is auto (on-device, loopback).
   const [autoSend, setAutoSend] = useState<boolean>();
-  // 'enable' comes from the consent-card switch, 'send' from "send & always":
-  // both are pending explicit warnings before auto-send is turned on.
-  const [dialog, setDialog] = useState<'enable' | 'send'>();
+  // The split button's menu item turns auto-send on; anything that is not
+  // clearly local warns first before that preference is stored.
+  const [dialog, setDialog] = useState(false);
   const latest = useRef(state); latest.current = state;
   const controller = useRef<AbortController | undefined>(undefined);
   const epoch = useRef(0), running = useRef(false), syncing = useRef(false);
@@ -178,13 +178,13 @@ export function App() {
   }
   const providerChanged = useCallback((value?: Settings) => {
     abortRun();
-    setSettings(value); setDialog(undefined); dispatch({ type: 'PROVIDER_CHANGED' });
+    setSettings(value); setDialog(false); dispatch({ type: 'PROVIDER_CHANGED' });
   }, [abortRun]);
   function changeAutoSend(value: boolean, immediate = false) {
     if (!settings) return;
     // Turning auto-send on for anything that is not clearly local needs the
-    // explicit warning first; "send & always" combines it with one send.
-    if (value && !defaultAutoSend(settings)) { setDialog(immediate ? 'send' : 'enable'); return; }
+    // explicit warning first; the menu item combines it with one immediate send.
+    if (value && !defaultAutoSend(settings)) { setDialog(true); return; }
     applyAutoSend(value, immediate);
   }
   function applyAutoSend(value: boolean, immediate = false) {
@@ -194,8 +194,8 @@ export function App() {
     if (value && immediate) generate();
   }
   function confirmAutoSend() {
-    const action = dialog; setDialog(undefined);
-    applyAutoSend(true, action === 'send');
+    setDialog(false);
+    applyAutoSend(true, true);
   }
 
   const scan = state.scan;
@@ -209,7 +209,7 @@ export function App() {
   const showSettings = !settings || editing;
   const locked = busy || blocked;
   const needsDocument = detected && !state.documents.length;
-  const showConsent = !!settings && autoSend === false && detected && state.documents.length > 0 && !review;
+  const showSend = !!settings && autoSend === false && detected && state.documents.length > 0 && !review;
   const step2 = review ? (state.result ? 'done' : 'active') : (settings && detected && state.documents.length ? 'active' : '');
   // The footer names the active provider and carries the privacy line matching
   // its kind: on-device, cloud, or local/intranet (presets resolve like local).
@@ -230,12 +230,11 @@ export function App() {
           onRemove={index => { abortRun(); dispatch({ type: 'REMOVE_DOCUMENT', index }); }} />
       </div>
       {needsDocument && <p className="prompt" role="status">{t('selectDocumentPrompt', [scan!.fields.length])}</p>}
-      {detected && <PageFields state={state} dispatch={dispatch} disabled={locked} onFill={fill} onUndo={undo} />}
+      {detected && <PageFields state={state} dispatch={dispatch} disabled={locked} onFill={fill} onUndo={undo} send={showSend ? <SendActions parsed={mergeDocuments(state.documents)} scan={scan!} settings={settings} disabled={busy} onGenerate={generate} onAutoSend={changeAutoSend} /> : undefined} />}
       {detected && !!state.documents.length && !review && autoSend === true && <p className="hint auto-send-status" role="status">{t('autoSendStatus', [resolveProvider(settings).name])} <button type="button" className="link-button" onClick={() => changeAutoSend(false)}>{t('autoSendOff')}</button></p>}
-      {showConsent && <DisclosurePreview document={mergeDocuments(state.documents)} scan={scan!} settings={settings} autoSend={false} disabled={busy} onGenerate={generate} onAutoSend={changeAutoSend} />}
       {!blocked && !detected && !!scan && <p className="hint">{t('errNoFields')}</p>}
     </>}
-    {dialog && settings && <AutoSendDialog settings={settings} onConfirm={confirmAutoSend} onCancel={() => setDialog(undefined)} />}
+    {dialog && settings && <AutoSendDialog settings={settings} onConfirm={confirmAutoSend} onCancel={() => setDialog(false)} />}
     {settings && providerInfo && <footer className={providerInfo.kind === 'cloud' ? 'footer-cloud' : ''}>
       <p>{t('providerLabel')} {providerInfo.name}{settings.model ? ` · ${t('modelLabel')} ${settings.model}` : ''}</p>
       <p>{t(providerInfo.kind === 'builtin' ? 'footerPrivacyBuiltin' : providerInfo.kind === 'cloud' ? 'footerPrivacyCloud' : 'footerPrivacyLocal')}</p>

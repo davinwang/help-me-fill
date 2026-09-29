@@ -66,28 +66,10 @@
     "placeholders": { "kind": { "content": "$1" }, "pages": { "content": "$2" }, "units": { "content": "$3" }, "chars": { "content": "$4" } }
   },
 
-  "consentEyebrow": { "message": "Antes de qualquer coisa sair do seu navegador" },
-  "consentTitle": { "message": "Revise o que você compartilha" },
-  "consentBuiltin": { "message": "A geração de sugestões é feita pelo **modelo no dispositivo** do seu navegador. O texto extraído do documento e os metadados do formulário selecionado nunca saem deste dispositivo. Arquivos originais e valores existentes dos campos não são usados." },
-  "consentLocal": {
-    "message": "A geração de sugestões envia o texto extraído do documento e os metadados do formulário selecionado para **$PROVIDER$** neste computador. Nada é enviado à nuvem. Arquivos originais e valores existentes dos campos não são usados.",
-    "placeholders": { "provider": { "content": "$1" } }
-  },
-  "consentCloud": {
-    "message": "A geração de sugestões envia o texto extraído do documento e os metadados do formulário selecionado para **$PROVIDER$**, um provedor em nuvem. Arquivos originais e valores existentes dos campos não são enviados.",
-    "placeholders": { "provider": { "content": "$1" } }
-  },
-  "consentProviderFallback": { "message": "seu provedor selecionado" },
-  "consentDestinationBuiltin": { "message": "Modelo no dispositivo (sem solicitação de rede)" },
   "providerLabel": { "message": "Provedor:" },
-  "destinationLabel": { "message": "Destino:" },
   "modelLabel": { "message": "Modelo:" },
   "previewOutgoing": { "message": "Pré-visualizar os dados de saída" },
   "viewMappingInstructions": { "message": "Ver as instruções de mapeamento" },
-  "consentAccuracyBuiltin": { "message": "A precisão no dispositivo é experimental; cada sugestão ainda precisa da sua revisão." },
-  "consentAccuracyLocal": { "message": "A precisão do modelo local varia; cada sugestão ainda precisa da sua revisão." },
-  "consentAccuracyCloud": { "message": "Aplicam-se a política de retenção e as cobranças de API do seu provedor." },
-  "consentRequestsNote": { "message": "Pode ser feita uma solicitação mais, no máximo, uma solicitação de reparo de validação. Sem fallback automático de provedor." },
   "generateBuiltin": { "message": "Gerar sugestões no dispositivo" },
   "generateLocal": { "message": "Gerar sugestões localmente" },
   "generateCloud": {
@@ -95,7 +77,6 @@
     "placeholders": { "provider": { "content": "$1" } }
   },
   "generateCloudFallback": { "message": "provedor" },
-  "enableProviderToContinue": { "message": "Ative um provedor acima para continuar." },
 
   "fieldsTitle": {
     "message": "$COUNT$ campos preenchíveis detectados",
@@ -115,8 +96,8 @@
   },
   "retryScan": { "message": "Tentar detectar novamente" },
   "retryMatch": { "message": "Tentar associar novamente" },
-  "autoSendLabel": { "message": "Enviar e associar automaticamente" },
-  "autoSendAlways": { "message": "Enviar e sempre enviar automaticamente" },
+  "autoSendAlways": { "message": "Enviar e não perguntar novamente" },
+  "sendOptions": { "message": "Mais opções de envio" },
   "autoSendStatus": {
     "message": "O envio automático está ativado para $PROVIDER$: novas páginas são associadas automaticamente.",
     "placeholders": { "provider": { "content": "$1" } }
@@ -145,7 +126,6 @@
     "message": "Sem mapeamento: $REASON$",
     "placeholders": { "reason": { "content": "$1" } }
   },
-  "fillNotice": { "message": "Preencher pode acionar a validação, o salvamento automático ou as solicitações de rede do site. Esta extensão nunca clica em Enviar. Desfazer não pode reverter efeitos do lado do servidor." },
 
   "statusFilled": { "message": "preenchido" },
   "statusRestored": { "message": "restaurado" },

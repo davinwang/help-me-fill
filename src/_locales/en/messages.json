@@ -78,28 +78,10 @@
     "placeholders": { "kind": { "content": "$1" }, "pages": { "content": "$2" }, "units": { "content": "$3" }, "chars": { "content": "$4" } }
   },
 
-  "consentEyebrow": { "message": "Before anything leaves your browser" },
-  "consentTitle": { "message": "Review what you share" },
-  "consentBuiltin": { "message": "Generating suggestions is handled by your browser's **on-device model**. Extracted document text and selected form metadata never leave this device. Original files and existing field values are not used." },
-  "consentLocal": {
-    "message": "Generating suggestions sends extracted document text and selected form metadata to **$PROVIDER$** on this computer. Nothing is sent to the cloud. Original files and existing field values are not used.",
-    "placeholders": { "provider": { "content": "$1" } }
-  },
-  "consentCloud": {
-    "message": "Generating suggestions sends extracted document text and selected form metadata to **$PROVIDER$**, a cloud provider. Original files and existing field values are not sent.",
-    "placeholders": { "provider": { "content": "$1" } }
-  },
-  "consentProviderFallback": { "message": "your selected provider" },
-  "consentDestinationBuiltin": { "message": "On-device model (no network request)" },
   "providerLabel": { "message": "Provider:" },
-  "destinationLabel": { "message": "Destination:" },
   "modelLabel": { "message": "Model:" },
   "previewOutgoing": { "message": "Preview outgoing data" },
   "viewMappingInstructions": { "message": "View mapping instructions" },
-  "consentAccuracyBuiltin": { "message": "On-device accuracy is experimental; every suggestion still needs your review." },
-  "consentAccuracyLocal": { "message": "Local model accuracy varies; every suggestion still needs your review." },
-  "consentAccuracyCloud": { "message": "Your provider's retention policy and API charges apply." },
-  "consentRequestsNote": { "message": "One request plus at most one validation-repair request may be made. No automatic provider fallback." },
   "generateBuiltin": { "message": "Generate suggestions on-device" },
   "generateLocal": { "message": "Generate suggestions locally" },
   "generateCloud": {
@@ -107,7 +89,6 @@
     "placeholders": { "provider": { "content": "$1" } }
   },
   "generateCloudFallback": { "message": "provider" },
-  "enableProviderToContinue": { "message": "Enable a provider above to continue." },
 
   "fieldsTitle": {
     "message": "$COUNT$ fillable fields detected",
@@ -127,8 +108,8 @@
   },
   "retryScan": { "message": "Retry detection" },
   "retryMatch": { "message": "Try matching again" },
-  "autoSendLabel": { "message": "Send and match automatically" },
-  "autoSendAlways": { "message": "Send & always auto-send" },
+  "autoSendAlways": { "message": "Send and don't ask again" },
+  "sendOptions": { "message": "More send options" },
   "autoSendStatus": {
     "message": "Auto-send is on for $PROVIDER$: new pages are matched automatically.",
     "placeholders": { "provider": { "content": "$1" } }
@@ -157,7 +138,6 @@
     "message": "Not matched: $REASON$",
     "placeholders": { "reason": { "content": "$1" } }
   },
-  "fillNotice": { "message": "Filling can trigger the site's validation, autosave, or network requests. This extension never clicks Submit. Undo cannot reverse server-side effects." },
 
   "statusFilled": { "message": "filled" },
   "statusRestored": { "message": "restored" },

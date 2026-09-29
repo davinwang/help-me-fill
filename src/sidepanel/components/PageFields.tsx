@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type Dispatch } from 'react';
+import { useEffect, useRef, useState, type Dispatch, type ReactNode } from 'react';
 import type { Action, ReviewRow, Session } from '../session';
 import { fillableRows } from '../session';
 import { t } from '../../shared/i18n';
@@ -8,12 +8,12 @@ const STATUS_KEYS: Record<string, string> = {
   filled: 'statusFilled', restored: 'statusRestored', skipped: 'statusSkipped',
   failed: 'statusFailed', 'changed/reverted': 'statusChangedReverted',
 };
-// One compact list for the whole workflow. Before matching it shows the page's
-// current values with every switch disabled; once a plan arrives, matched rows
-// arm their switch, the proposed value, and their evidence in place — the same
-// list updates instead of being replaced by a separate review card. Unmatched
-// rows keep the disabled switch and carry their reason on the field-name line.
-export function PageFields({ state, dispatch, disabled, onFill, onUndo }: { state: Session; dispatch: Dispatch<Action>; disabled: boolean; onFill: () => void; onUndo: () => void }) {
+// One compact card for the whole workflow. Before matching it shows the page's
+// current values with every switch disabled, plus the send control; once a plan
+// arrives, matched rows arm their switch, the proposed value, and their evidence
+// in place, and the fill action appears at the bottom of the same card.
+// Unmatched rows keep the disabled switch and carry their reason on the name line.
+export function PageFields({ state, dispatch, disabled, onFill, onUndo, send }: { state: Session; dispatch: Dispatch<Action>; disabled: boolean; onFill: () => void; onUndo: () => void; send?: ReactNode }) {
   const scan = state.scan!;
   const plan = state.plan;
   // Defensive filter: re-keying keeps rows aligned with the scan, so a row
@@ -36,10 +36,11 @@ export function PageFields({ state, dispatch, disabled, onFill, onUndo }: { stat
     if (next.has(fieldId)) next.delete(fieldId); else next.add(fieldId);
     return next;
   });
-  // Before matching this list is paired with the consent card below it; after
-  // matching the pairing stays two cards: the review list here, and the fill
-  // action (its warning and button) in its own card beneath.
-  return <>
+  // One card for the whole workflow. Before matching the field list carries the
+  // send control (its disclosures and the split button); once a plan arrives the
+  // same rows arm their switches and the bottom of this card carries the fill
+  // action instead of a separate consent or action card.
+  return (
     <section className="card fields" aria-label={t('fieldsTitle', [String(scan.fields.length)])}>
       <h2>{t('fieldsTitle', [String(scan.fields.length)])}</h2>
       <p className="hint">{plan ? t('reviewHint') : t('fieldsHint')}</p>
@@ -95,16 +96,15 @@ export function PageFields({ state, dispatch, disabled, onFill, onUndo }: { stat
         </ul>
         {plan && !rows.length && <p>{t('noAssignments')}</p>}
       </fieldset>
+      {plan
+        ? <fieldset disabled={disabled}>
+          <button type="button" className="wide" disabled={disabled || !fillable.length} onClick={onFill}>{t('aiHelpMeFill', [String(fillable.length)])}</button>
+          {state.result && <>
+            <button type="button" className="secondary wide" disabled={disabled || !state.result.canUndo} onClick={onUndo}>{t('undoLastFill')}</button>
+            <p className="hint">{t('undoHint')}</p>
+          </>}
+        </fieldset>
+        : send}
     </section>
-    {plan && <section className="card actions">
-      <fieldset disabled={disabled}>
-        <p className="notice">{t('fillNotice')}</p>
-        <button type="button" className="wide" disabled={disabled || !fillable.length} onClick={onFill}>{t('aiHelpMeFill', [String(fillable.length)])}</button>
-        {state.result && <>
-          <button type="button" className="secondary wide" disabled={disabled || !state.result.canUndo} onClick={onUndo}>{t('undoLastFill')}</button>
-          <p className="hint">{t('undoHint')}</p>
-        </>}
-      </fieldset>
-    </section>}
-  </>;
+  );
 }

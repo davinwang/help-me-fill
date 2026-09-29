@@ -59,7 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   OS metadata, and editor artifacts.
 - MIT `LICENSE`.
 - README "Verifiable privacy" section with code-linked audit table
-  (`DisclosurePreview.tsx`, `compactFields` allowlist, `SYSTEM_PROMPT`
+  (`SendActions.tsx`, `compactFields` allowlist, `SYSTEM_PROMPT`
   abstention rule, prompt-injection defense, never-auto-submit, undo
   snapshot, zero-telemetry grep, build-time permission assertions,
   non-obfuscated release builds).
@@ -67,6 +67,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   current field values and page URL are never sent to the AI provider.
 
 ### Changed
+- **Side panel consolidated into one card with a split send button**
+  (`src/sidepanel/components/SendActions.tsx` added, `DisclosurePreview.tsx`
+  removed): the "N fillable fields detected" list and the pre-match send controls
+  now live in a single card. The verbose consent copy (title, destination/model
+  rows, accuracy notes, request-count note) is gone, leaving only two collapsible
+  disclosures — the exact outgoing payload and the system prompt. The primary
+  "Send to `<provider>` and generate suggestions" button is a split button: its
+  menu item "Send and don't ask again" turns auto-send on for future pages (still
+  gated by the cloud warning dialog). The standalone auto-send checkbox and
+  "send & always" link are removed, as is the post-match fill notice; the nine
+  locale catalogs drop their orphaned keys (`consent*`, `destinationLabel`,
+  `enableProviderToContinue`, `autoSendLabel`, `fillNotice`) and add `sendOptions`.
 - **Matched suggestions now update the detected-fields list in place**
   (`src/sidepanel/components/PageFields.tsx`): the compact "N fillable fields
   detected" card is the single review surface — after the provider responds,
@@ -74,8 +86,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   their source evidence inside the same list instead of being replaced by a
   separate "Review suggestions" table (`src/sidepanel/components/ReviewTable.tsx`
   removed). Fields the model left unmapped show its reason inline under their
-  current value; the master switch, fill notice, and fill button live at the
-  bottom of the same card.
+  current value; the master switch and fill button live at the bottom of the
+  same card.
 - **The LLM provider dialog collapses after a successful save**
   (`src/sidepanel/components/ProviderSettings.tsx`): once a provider is verified
   and stored, the settings card folds back to its summary so the workflow

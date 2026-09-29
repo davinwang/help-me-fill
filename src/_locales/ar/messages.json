@@ -66,28 +66,10 @@
     "placeholders": { "kind": { "content": "$1" }, "pages": { "content": "$2" }, "units": { "content": "$3" }, "chars": { "content": "$4" } }
   },
 
-  "consentEyebrow": { "message": "قبل أن يغادر أي شيء متصفحك" },
-  "consentTitle": { "message": "راجع ما تشاركه" },
-  "consentBuiltin": { "message": "تتم معالجة إنشاء الاقتراحات بواسطة **النموذج على الجهاز** في متصفحك. لا يغادر نص المستند المستخرج والبيانات الوصفية للنموذج المحددة هذا الجهاز أبدًا. لا يتم استخدام الملفات الأصلية ولا قيم الحقول الموجودة." },
-  "consentLocal": {
-    "message": "يرسل إنشاء الاقتراحات نص المستند المستخرج والبيانات الوصفية للنموذج المحددة إلى **$PROVIDER$** على هذا الحاسوب. لا يتم إرسال أي شيء إلى السحابة. لا يتم استخدام الملفات الأصلية ولا قيم الحقول الموجودة.",
-    "placeholders": { "provider": { "content": "$1" } }
-  },
-  "consentCloud": {
-    "message": "يرسل إنشاء الاقتراحات نص المستند المستخرج والبيانات الوصفية للنموذج المحددة إلى **$PROVIDER$**، وهو مزوّد سحابي. لا يتم إرسال الملفات الأصلية ولا قيم الحقول الموجودة.",
-    "placeholders": { "provider": { "content": "$1" } }
-  },
-  "consentProviderFallback": { "message": "المزوّد الذي اخترته" },
-  "consentDestinationBuiltin": { "message": "النموذج على الجهاز (بلا طلب شبكة)" },
   "providerLabel": { "message": "المزوّد:" },
-  "destinationLabel": { "message": "الوجهة:" },
   "modelLabel": { "message": "النموذج:" },
   "previewOutgoing": { "message": "معاينة البيانات الصادرة" },
   "viewMappingInstructions": { "message": "عرض تعليمات الربط" },
-  "consentAccuracyBuiltin": { "message": "دقة النموذج على الجهاز تجريبية؛ ولا يزال كل اقتراح بحاجة إلى مراجعتك." },
-  "consentAccuracyLocal": { "message": "تختلف دقة النموذج المحلي؛ ولا يزال كل اقتراح بحاجة إلى مراجعتك." },
-  "consentAccuracyCloud": { "message": "تنطبق سياسة الاحتفاظ الخاصة بمزوّدك ورسوم واجهة برمجة التطبيقات." },
-  "consentRequestsNote": { "message": "قد يتم إجراء طلب واحد بالإضافة إلى طلب إصلاح تحقق واحد على الأكثر. لا يوجد تراجع تلقائي إلى مزوّد آخر." },
   "generateBuiltin": { "message": "إنشاء الاقتراحات على الجهاز" },
   "generateLocal": { "message": "إنشاء الاقتراحات محليًا" },
   "generateCloud": {
@@ -95,7 +77,6 @@
     "placeholders": { "provider": { "content": "$1" } }
   },
   "generateCloudFallback": { "message": "المزوّد" },
-  "enableProviderToContinue": { "message": "قم بتمكين مزوّد أعلاه للمتابعة." },
 
   "fieldsTitle": {
     "message": "تم اكتشاف $COUNT$ حقلًا قابلًا للتعبئة",
@@ -115,8 +96,8 @@
   },
   "retryScan": { "message": "إعادة محاولة الاكتشاف" },
   "retryMatch": { "message": "إعادة محاولة المطابقة" },
-  "autoSendLabel": { "message": "الإرسال والمطابقة تلقائيًا" },
-  "autoSendAlways": { "message": "إرسال وإرسال تلقائي دائمًا" },
+  "autoSendAlways": { "message": "إرسال وعدم السؤال مرة أخرى" },
+  "sendOptions": { "message": "خيارات إرسال أخرى" },
   "autoSendStatus": {
     "message": "الإرسال التلقائي مفعّل لـ $PROVIDER$: تتم مطابقة الصفحات الجديدة تلقائيًا.",
     "placeholders": { "provider": { "content": "$1" } }
@@ -145,7 +126,6 @@
     "message": "غير مربوط: $REASON$",
     "placeholders": { "reason": { "content": "$1" } }
   },
-  "fillNotice": { "message": "قد تؤدي التعبئة إلى تشغيل تحقق الموقع أو الحفظ التلقائي أو طلبات الشبكة. لا تنقر هذه الإضافة أبدًا على «إرسال». لا يمكن للتراجع عكس الآثار من جانب الخادم." },
 
   "statusFilled": { "message": "تمت التعبئة" },
   "statusRestored": { "message": "تمت الاستعادة" },

@@ -30,16 +30,14 @@ update will be announced before the release ships.
 
 ### 2.a Verifiable before you send
 
-The side panel includes a **Disclosure Preview** (`src/sidepanel/components/DisclosurePreview.tsx`)
-that shows you, before any request is made:
+The side panel includes **transparency disclosures** (`src/sidepanel/components/SendActions.tsx`)
+that show you, before any request is made:
 
-- The exact destination origin (or "On-device model — no network request" for
-  Chrome built-in AI).
 - The full JSON payload that will be sent, produced by the same `makePayload`
   function the request uses.
 - The complete system prompt that will be sent.
 
-Nothing is hidden. If the preview doesn't show it, it isn't sent.
+Nothing is hidden. If the disclosures don't show it, it isn't sent.
 
 ### 2. What data the extension sends to the extension author
 

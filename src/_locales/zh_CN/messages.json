@@ -66,28 +66,10 @@
     "placeholders": { "kind": { "content": "$1" }, "pages": { "content": "$2" }, "units": { "content": "$3" }, "chars": { "content": "$4" } }
   },
 
-  "consentEyebrow": { "message": "在任何数据离开浏览器之前" },
-  "consentTitle": { "message": "审核你将共享的内容" },
-  "consentBuiltin": { "message": "生成建议由你浏览器的**端侧模型**处理。提取的文档文本与所选表单元数据绝不会离开此设备。不会使用原始文件与已有的字段值。" },
-  "consentLocal": {
-    "message": "生成建议会将提取的文档文本与所选表单元数据发送到本计算机上的 **$PROVIDER$**。不会有任何数据发送到云端。不会使用原始文件与已有的字段值。",
-    "placeholders": { "provider": { "content": "$1" } }
-  },
-  "consentCloud": {
-    "message": "生成建议会将提取的文档文本与所选表单元数据发送到云端服务商 **$PROVIDER$**。不会发送原始文件与已有的字段值。",
-    "placeholders": { "provider": { "content": "$1" } }
-  },
-  "consentProviderFallback": { "message": "你选择的服务商" },
-  "consentDestinationBuiltin": { "message": "端侧模型（无网络请求）" },
   "providerLabel": { "message": "服务商：" },
-  "destinationLabel": { "message": "目标：" },
   "modelLabel": { "message": "模型：" },
   "previewOutgoing": { "message": "预览将发送的数据" },
   "viewMappingInstructions": { "message": "查看映射指令" },
-  "consentAccuracyBuiltin": { "message": "端侧准确性仍属实验性；每条建议仍需你审核。" },
-  "consentAccuracyLocal": { "message": "本地模型准确性各有差异；每条建议仍需你审核。" },
-  "consentAccuracyCloud": { "message": "适用你服务商的数据保留政策与 API 费用。" },
-  "consentRequestsNote": { "message": "最多发起一次请求，外加至多一次校验修复请求。不会自动切换服务商。" },
   "generateBuiltin": { "message": "在端侧生成建议" },
   "generateLocal": { "message": "在本地生成建议" },
   "generateCloud": {
@@ -95,7 +77,6 @@
     "placeholders": { "provider": { "content": "$1" } }
   },
   "generateCloudFallback": { "message": "服务商" },
-  "enableProviderToContinue": { "message": "请在上方启用一个服务商以继续。" },
 
   "fieldsTitle": {
     "message": "检测到 $COUNT$ 个可填字段",
@@ -115,8 +96,8 @@
   },
   "retryScan": { "message": "重试检测" },
   "retryMatch": { "message": "重新匹配" },
-  "autoSendLabel": { "message": "自动发送并匹配" },
-  "autoSendAlways": { "message": "发送并始终自动发送" },
+  "autoSendAlways": { "message": "发送并且以后不再询问" },
+  "sendOptions": { "message": "更多发送选项" },
   "autoSendStatus": {
     "message": "已对 $PROVIDER$ 开启自动发送：新页面会自动匹配。",
     "placeholders": { "provider": { "content": "$1" } }
@@ -145,7 +126,6 @@
     "message": "未匹配：$REASON$",
     "placeholders": { "reason": { "content": "$1" } }
   },
-  "fillNotice": { "message": "填写可能触发网站的校验、自动保存或网络请求。本扩展绝不会点击“提交”。撤销无法逆转服务器端的副作用。" },
 
   "statusFilled": { "message": "已填写" },
   "statusRestored": { "message": "已还原" },

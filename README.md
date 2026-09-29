@@ -78,7 +78,7 @@ yourself in under five minutes:
 
 | Claim | Where to verify |
 |---|---|
-| **You see the exact outgoing payload before it's sent** | `src/sidepanel/components/DisclosurePreview.tsx` — the side panel shows the destination origin, the full JSON payload, and the system prompt. Same `makePayload` function used by the real request. |
+| **You see the exact outgoing payload before it's sent** | `src/sidepanel/components/SendActions.tsx` — the side panel shows the full JSON payload and the system prompt in two collapsible disclosures. Same `makePayload` function used by the real request. |
 | **Current field values never leave your browser** | `compactFields` in `src/ai/prompts.ts:18` — explicit allowlist projection: `id`, `type`, `label`, `ariaLabel`, `placeholder`, `name`, `context`, `required`, `maxLength`, `pattern`. No `value`, no URL, no cookies, no DOM. |
 | **The page URL is never sent to the AI provider** | Same allowlist. Grep `src/` for `location.href` — every hit is content-script local, none is in a payload. |
 | **The model is instructed to abstain rather than guess** | `SYSTEM_PROMPT` in `src/ai/prompts.ts:4` — mandates per-field evidence with exact source quote and `lineId`; ambiguous fields must go into an `unmapped` bucket with a reason; missing data must not be invented. |
