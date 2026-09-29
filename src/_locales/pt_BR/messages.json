@@ -138,20 +138,17 @@
   "autoSendDialogConfirm": { "message": "Ativar o envio automático" },
 
   "unlabeledField": { "message": "Campo sem rótulo" },
-  "reviewEyebrow": { "message": "Você tem a palavra final" },
-  "reviewTitle": { "message": "Revisar sugestões" },
   "reviewHint": { "message": "As evidências mostram de onde o texto veio, não que a correspondência esteja correta. Cada chave escolhe entre o valor associado e o valor atual da página; apenas campos ativados são escritos." },
   "chooseOption": { "message": "(escolha uma opção)" },
   "checkboxTrue": { "message": "true — marcar esta caixa" },
   "checkboxFalse": { "message": "false — deixar / desmarcar" },
   "proposedValue": { "message": "Valor proposto" },
   "manualOverride": { "message": "Alteração manual · Verifique com atenção" },
-  "currentValue": { "message": "Valor atual:" },
   "sourceEvidence": { "message": "Evidências da fonte" },
   "noAssignments": { "message": "Nenhuma atribuição compatível e respaldada por evidências foi retornada. O formulário não foi alterado." },
-  "unmappedSummary": {
-    "message": "$COUNT$ campos sem mapeamento",
-    "placeholders": { "count": { "content": "$1" } }
+  "unmatchedReason": {
+    "message": "Sem mapeamento: $REASON$",
+    "placeholders": { "reason": { "content": "$1" } }
   },
   "fillNotice": { "message": "Preencher pode acionar a validação, o salvamento automático ou as solicitações de rede do site. Esta extensão nunca clica em Enviar. Desfazer não pode reverter efeitos do lado do servidor." },
 
@@ -171,8 +168,10 @@
   "kindCloud": { "message": "Nuvem" },
   "kindLocal": { "message": "Local" },
   "kindBuiltin": { "message": "No dispositivo" },
+  "kindPreset": { "message": "Predefinição" },
   "psBuiltinUnavailableSaved": { "message": "O provedor no dispositivo salvo não está disponível neste navegador no momento. Escolha outro provedor." },
   "psBuiltinRestored": { "message": "Provedor no dispositivo restaurado. As sugestões permanecem neste dispositivo." },
+  "psPresetApplied": { "message": "Predefinição incluída aplicada. O endpoint, o modelo e a chave são fixos e estão prontos para uso." },
   "psCustomEndpointMissing": { "message": "O endpoint personalizado salvo está ausente. Configure-o novamente." },
   "psLocalRestored": { "message": "Provedor local restaurado. As solicitações permanecem nesta máquina." },
   "psKeyRestored": { "message": "Chave salva restaurada. A verificação ao vivo do provedor/modelo não está incluída." },
@@ -188,7 +187,7 @@
   "psKeyRemoved": { "message": "Chave salva removida e permissão de host revogada." },
   "psKeyRemoveFailed": { "message": "Não foi possível remover a chave. Tente novamente." },
   "psSummary": { "message": "Provedor de LLM" },
-  "psKinds": { "message": "Nuvem · Local · No dispositivo" },
+  "psKinds": { "message": "Predefinição · Nuvem · Local · No dispositivo" },
   "psBuiltinDetected": { "message": "Opção no dispositivo detectada" },
   "psProvider": { "message": "Provedor" },
   "psKeySaved": { "message": "Chave salva" },
@@ -213,7 +212,9 @@
     "placeholders": { "name": { "content": "$1" }, "url": { "content": "$2" }, "model": { "content": "$3" } }
   },
   "psNoticeCustom": { "message": "🏠 **Configuração necessária:** inicie seu servidor local compatível com OpenAI (Ollama, LM Studio, llamafile, vLLM…) e insira acima o endereço `/v1/chat/completions`. Hosts permitidos via `http://`: `localhost`, `127.0.0.1` e faixas de LAN privada (`192.168.x.x`, `10.x.x.x`, `172.16–31.x.x`). Ao salvar, é feita uma verificação rápida de que o servidor está acessível. As solicitações permanecem na sua máquina ou rede local — nada é enviado à nuvem." },
+  "psNoticePreset": { "message": "📦 **Predefinição incluída:** esta versão inclui um provedor pré-configurado. O endpoint, o modelo e a chave são fixos e não podem ser editados. As solicitações vão para esse servidor configurado, que pode estar na sua rede local. Nada é enviado a nenhum outro lugar." },
   "psEnableBuiltinModel": { "message": "Ativar o modelo no dispositivo" },
+  "psUsePreset": { "message": "Usar predefinição" },
   "psSaveVerify": { "message": "Salvar e verificar" },
   "psSaveVerifyKey": { "message": "Salvar e verificar a chave" },
   "psRemoveKey": { "message": "Remover chave" },

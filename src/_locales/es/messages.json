@@ -138,20 +138,17 @@
   "autoSendDialogConfirm": { "message": "Activar el envío automático" },
 
   "unlabeledField": { "message": "Campo sin etiqueta" },
-  "reviewEyebrow": { "message": "Tú tienes la última palabra" },
-  "reviewTitle": { "message": "Revisar sugerencias" },
   "reviewHint": { "message": "Las evidencias muestran de dónde procede el texto, no que la coincidencia sea correcta. Cada interruptor elige entre el valor coincidente y el valor actual de la página; solo se escriben los campos activados." },
   "chooseOption": { "message": "(elige una opción)" },
   "checkboxTrue": { "message": "true — marcar esta casilla" },
   "checkboxFalse": { "message": "false — dejar / desmarcar" },
   "proposedValue": { "message": "Valor propuesto" },
   "manualOverride": { "message": "Modificación manual · Compruébalo con atención" },
-  "currentValue": { "message": "Valor actual:" },
   "sourceEvidence": { "message": "Evidencias de la fuente" },
   "noAssignments": { "message": "No se devolvió ninguna asignación admitida y respaldada por evidencias. El formulario no se ha modificado." },
-  "unmappedSummary": {
-    "message": "$COUNT$ campos sin asignar",
-    "placeholders": { "count": { "content": "$1" } }
+  "unmatchedReason": {
+    "message": "Sin coincidencia: $REASON$",
+    "placeholders": { "reason": { "content": "$1" } }
   },
   "fillNotice": { "message": "Rellenar puede activar la validación, el guardado automático o las solicitudes de red del sitio. Esta extensión nunca hace clic en Enviar. Deshacer no puede revertir los efectos del lado del servidor." },
 
@@ -171,8 +168,10 @@
   "kindCloud": { "message": "Nube" },
   "kindLocal": { "message": "Local" },
   "kindBuiltin": { "message": "En el dispositivo" },
+  "kindPreset": { "message": "Preajuste" },
   "psBuiltinUnavailableSaved": { "message": "El proveedor en el dispositivo guardado no está disponible ahora mismo en este navegador. Elige otro proveedor." },
   "psBuiltinRestored": { "message": "Proveedor en el dispositivo restaurado. Las sugerencias permanecen en este dispositivo." },
+  "psPresetApplied": { "message": "Preajuste incluido aplicado. Su punto de conexión, modelo y clave son fijos y están listos para usar." },
   "psCustomEndpointMissing": { "message": "Falta el punto de conexión personalizado guardado. Vuelve a configurarlo." },
   "psLocalRestored": { "message": "Proveedor local restaurado. Las solicitudes permanecen en este equipo." },
   "psKeyRestored": { "message": "Clave guardada restaurada. No se incluye la verificación en vivo del proveedor/modelo." },
@@ -188,7 +187,7 @@
   "psKeyRemoved": { "message": "Clave guardada eliminada y permiso de host revocado." },
   "psKeyRemoveFailed": { "message": "No se pudo eliminar la clave. Inténtalo de nuevo." },
   "psSummary": { "message": "Proveedor de LLM" },
-  "psKinds": { "message": "Nube · Local · En el dispositivo" },
+  "psKinds": { "message": "Preajuste · Nube · Local · En el dispositivo" },
   "psBuiltinDetected": { "message": "Opción en el dispositivo detectada" },
   "psProvider": { "message": "Proveedor" },
   "psKeySaved": { "message": "Clave guardada" },
@@ -213,7 +212,9 @@
     "placeholders": { "name": { "content": "$1" }, "url": { "content": "$2" }, "model": { "content": "$3" } }
   },
   "psNoticeCustom": { "message": "🏠 **Configuración necesaria:** inicia tu servidor local compatible con OpenAI (Ollama, LM Studio, llamafile, vLLM…) e introduce arriba su dirección `/v1/chat/completions`. Hosts permitidos por `http://`: `localhost`, `127.0.0.1` y rangos de LAN privada (`192.168.x.x`, `10.x.x.x`, `172.16–31.x.x`). Al guardar se hace una comprobación rápida de que el servidor es accesible. Las solicitudes permanecen en tu equipo o red local — no se envía nada a la nube." },
+  "psNoticePreset": { "message": "📦 **Preajuste incluido:** esta compilación incluye un proveedor preconfigurado. Su punto de conexión, modelo y clave son fijos y no se pueden editar. Las solicitudes van a ese servidor configurado, que puede estar en tu red local. No se envía nada a ningún otro lugar." },
   "psEnableBuiltinModel": { "message": "Activar el modelo en el dispositivo" },
+  "psUsePreset": { "message": "Usar preajuste" },
   "psSaveVerify": { "message": "Guardar y verificar" },
   "psSaveVerifyKey": { "message": "Guardar y verificar la clave" },
   "psRemoveKey": { "message": "Quitar la clave" },

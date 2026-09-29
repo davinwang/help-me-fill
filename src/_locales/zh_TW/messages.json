@@ -138,20 +138,17 @@
   "autoSendDialogConfirm": { "message": "開啟自動傳送" },
 
   "unlabeledField": { "message": "無標籤欄位" },
-  "reviewEyebrow": { "message": "最終由你決定" },
-  "reviewTitle": { "message": "審核建議" },
   "reviewHint": { "message": "證據顯示文字來自何處，並不代表對應一定正確。每列的開關在配對值與頁面目前值之間選擇；只有開啟的欄位才會寫入。" },
   "chooseOption": { "message": "（請選擇一個選項）" },
   "checkboxTrue": { "message": "true — 勾選此項" },
   "checkboxFalse": { "message": "false — 保留 / 不勾選" },
   "proposedValue": { "message": "建議值" },
   "manualOverride": { "message": "手動修改 · 請仔細核對" },
-  "currentValue": { "message": "目前值：" },
   "sourceEvidence": { "message": "來源證據" },
   "noAssignments": { "message": "未傳回任何有證據支援的指派。表單未作變更。" },
-  "unmappedSummary": {
-    "message": "$COUNT$ 個欄位未對應",
-    "placeholders": { "count": { "content": "$1" } }
+  "unmatchedReason": {
+    "message": "未配對：$REASON$",
+    "placeholders": { "reason": { "content": "$1" } }
   },
   "fillNotice": { "message": "填寫可能觸發網站的驗證、自動儲存或網路請求。此擴充功能絕不會點擊「提交」。復原無法逆轉伺服器端的副作用。" },
 

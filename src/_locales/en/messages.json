@@ -150,20 +150,17 @@
   "autoSendDialogConfirm": { "message": "Enable auto-send" },
 
   "unlabeledField": { "message": "Unlabeled field" },
-  "reviewEyebrow": { "message": "You make the final call" },
-  "reviewTitle": { "message": "Review suggestions" },
   "reviewHint": { "message": "Evidence shows where text came from, not that the match is correct. Each switch chooses between the matched value and the page's current value; only switched-on fields are written." },
   "chooseOption": { "message": "(choose an option)" },
   "checkboxTrue": { "message": "true — tick this box" },
   "checkboxFalse": { "message": "false — leave / untick" },
   "proposedValue": { "message": "Proposed value" },
   "manualOverride": { "message": "Manual override · Check carefully" },
-  "currentValue": { "message": "Current value:" },
   "sourceEvidence": { "message": "Source evidence" },
   "noAssignments": { "message": "No supported, evidence-backed assignments were returned. The form has not been changed." },
-  "unmappedSummary": {
-    "message": "$COUNT$ fields left unmapped",
-    "placeholders": { "count": { "content": "$1" } }
+  "unmatchedReason": {
+    "message": "Not matched: $REASON$",
+    "placeholders": { "reason": { "content": "$1" } }
   },
   "fillNotice": { "message": "Filling can trigger the site's validation, autosave, or network requests. This extension never clicks Submit. Undo cannot reverse server-side effects." },
 

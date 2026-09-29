@@ -138,20 +138,17 @@
   "autoSendDialogConfirm": { "message": "تفعيل الإرسال التلقائي" },
 
   "unlabeledField": { "message": "حقل بلا تسمية" },
-  "reviewEyebrow": { "message": "أنت صاحب القرار النهائي" },
-  "reviewTitle": { "message": "مراجعة الاقتراحات" },
   "reviewHint": { "message": "توضّح الأدلة مصدر النص، لا أن المطابقة صحيحة. يختار كل مفتاح بين القيمة المطابقة والقيمة الحالية للصفحة؛ ولا تتم كتابة سوى الحقول المفعّلة." },
   "chooseOption": { "message": "(اختر خيارًا)" },
   "checkboxTrue": { "message": "true — ضع علامة في هذا المربع" },
   "checkboxFalse": { "message": "false — اتركه / أزل العلامة" },
   "proposedValue": { "message": "القيمة المقترحة" },
   "manualOverride": { "message": "تعديل يدوي · تحقق بعناية" },
-  "currentValue": { "message": "القيمة الحالية:" },
   "sourceEvidence": { "message": "أدلة المصدر" },
   "noAssignments": { "message": "لم تُرجَع أي تعيينات مدعومة ومستندة إلى أدلة. لم يتم تغيير النموذج." },
-  "unmappedSummary": {
-    "message": "$COUNT$ حقول غير مربوطة",
-    "placeholders": { "count": { "content": "$1" } }
+  "unmatchedReason": {
+    "message": "غير مربوط: $REASON$",
+    "placeholders": { "reason": { "content": "$1" } }
   },
   "fillNotice": { "message": "قد تؤدي التعبئة إلى تشغيل تحقق الموقع أو الحفظ التلقائي أو طلبات الشبكة. لا تنقر هذه الإضافة أبدًا على «إرسال». لا يمكن للتراجع عكس الآثار من جانب الخادم." },
 
@@ -171,8 +168,10 @@
   "kindCloud": { "message": "سحابي" },
   "kindLocal": { "message": "محلي" },
   "kindBuiltin": { "message": "على الجهاز" },
+  "kindPreset": { "message": "إعداد مسبق" },
   "psBuiltinUnavailableSaved": { "message": "المزوّد على الجهاز المحفوظ غير متاح في هذا المتصفح حاليًا. اختر مزوّدًا آخر." },
   "psBuiltinRestored": { "message": "تمت استعادة المزوّد على الجهاز. تبقى الاقتراحات على هذا الجهاز." },
+  "psPresetApplied": { "message": "تم تطبيق الإعداد المسبق المضمّن. نقطة النهاية والنموذج والمفتاح ثابتة وجاهزة للاستخدام." },
   "psCustomEndpointMissing": { "message": "نقطة النهاية المخصصة المحفوظة مفقودة. قم بتكوينها مرة أخرى." },
   "psLocalRestored": { "message": "تمت استعادة المزوّد المحلي. تبقى الطلبات على هذا الحاسوب." },
   "psKeyRestored": { "message": "تمت استعادة المفتاح المحفوظ. لا يتضمن ذلك التحقق المباشر من المزوّد/النموذج." },
@@ -188,7 +187,7 @@
   "psKeyRemoved": { "message": "تمت إزالة المفتاح المحفوظ وإبطال إذن المضيف." },
   "psKeyRemoveFailed": { "message": "تعذّرت إزالة المفتاح. حاول مرة أخرى." },
   "psSummary": { "message": "مزوّد LLM" },
-  "psKinds": { "message": "سحابي · محلي · على الجهاز" },
+  "psKinds": { "message": "إعداد مسبق · سحابي · محلي · على الجهاز" },
   "psBuiltinDetected": { "message": "تم اكتشاف خيار على الجهاز" },
   "psProvider": { "message": "المزوّد" },
   "psKeySaved": { "message": "تم حفظ المفتاح" },
@@ -213,7 +212,9 @@
     "placeholders": { "name": { "content": "$1" }, "url": { "content": "$2" }, "model": { "content": "$3" } }
   },
   "psNoticeCustom": { "message": "🏠 **يلزم الإعداد:** شغّل خادمك المحلي المتوافق مع OpenAI (مثل Ollama أو LM Studio أو llamafile أو vLLM…) وأدخل أعلاه عنوان `/v1/chat/completions` الخاص به. المضيفات المسموحة عبر `http://`: و`localhost` و`127.0.0.1` ونطاقات الشبكة المحلية الخاصة (`192.168.x.x` و`10.x.x.x` و`172.16–31.x.x`). يُجري الحفظ فحصًا سريعًا للتأكد من إمكانية الوصول إلى الخادم. تبقى الطلبات على حاسوبك أو شبكتك المحلية — ولا يتم إرسال أي شيء إلى السحابة." },
+  "psNoticePreset": { "message": "📦 **إعداد مسبق مضمّن:** يتضمّن هذا الإصدار مزوّدًا مُعدًّا مسبقًا. نقطة النهاية والنموذج والمفتاح ثابتة ولا يمكن تعديلها. تذهب الطلبات إلى ذلك الخادم المُعدّ، والذي قد يكون على شبكتك المحلية. ولا يُرسل أي شيء إلى أي مكان آخر." },
   "psEnableBuiltinModel": { "message": "تمكين النموذج على الجهاز" },
+  "psUsePreset": { "message": "استخدام الإعداد المسبق" },
   "psSaveVerify": { "message": "حفظ وتحقق" },
   "psSaveVerifyKey": { "message": "حفظ المفتاح والتحقق" },
   "psRemoveKey": { "message": "إزالة المفتاح" },

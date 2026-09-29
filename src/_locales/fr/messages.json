@@ -138,20 +138,17 @@
   "autoSendDialogConfirm": { "message": "Activer l'envoi automatique" },
 
   "unlabeledField": { "message": "Champ sans intitulé" },
-  "reviewEyebrow": { "message": "Vous avez le dernier mot" },
-  "reviewTitle": { "message": "Relire les suggestions" },
   "reviewHint": { "message": "Les preuves indiquent d'où vient le texte, pas que la correspondance est correcte. Chaque interrupteur choisit entre la valeur associée et la valeur actuelle de la page ; seuls les champs activés sont écrits." },
   "chooseOption": { "message": "(choisissez une option)" },
   "checkboxTrue": { "message": "true — cocher cette case" },
   "checkboxFalse": { "message": "false — laisser / décocher" },
   "proposedValue": { "message": "Valeur proposée" },
   "manualOverride": { "message": "Modification manuelle · Vérifiez attentivement" },
-  "currentValue": { "message": "Valeur actuelle :" },
   "sourceEvidence": { "message": "Preuves sources" },
   "noAssignments": { "message": "Aucune affectation étayée par des preuves et prise en charge n'a été renvoyée. Le formulaire n'a pas été modifié." },
-  "unmappedSummary": {
-    "message": "$COUNT$ champs non mappés",
-    "placeholders": { "count": { "content": "$1" } }
+  "unmatchedReason": {
+    "message": "Non mappé : $REASON$",
+    "placeholders": { "reason": { "content": "$1" } }
   },
   "fillNotice": { "message": "Le remplissage peut déclencher la validation, l'enregistrement automatique ou des requêtes réseau du site. Cette extension ne clique jamais sur Envoyer. L'annulation ne peut pas inverser les effets côté serveur." },
 
@@ -171,8 +168,10 @@
   "kindCloud": { "message": "Cloud" },
   "kindLocal": { "message": "Local" },
   "kindBuiltin": { "message": "Sur l'appareil" },
+  "kindPreset": { "message": "Préréglage" },
   "psBuiltinUnavailableSaved": { "message": "Le fournisseur sur l'appareil enregistré n'est pas disponible dans ce navigateur pour le moment. Choisissez un autre fournisseur." },
   "psBuiltinRestored": { "message": "Fournisseur sur l'appareil restauré. Les suggestions restent sur cet appareil." },
+  "psPresetApplied": { "message": "Préréglage intégré appliqué. Son point de terminaison, son modèle et sa clé sont fixes et prêts à l'emploi." },
   "psCustomEndpointMissing": { "message": "Le point de terminaison personnalisé enregistré est manquant. Configurez-le à nouveau." },
   "psLocalRestored": { "message": "Fournisseur local restauré. Les requêtes restent sur cette machine." },
   "psKeyRestored": { "message": "Clé enregistrée restaurée. La vérification en direct du fournisseur/modèle n'est pas incluse." },
@@ -188,7 +187,7 @@
   "psKeyRemoved": { "message": "Clé enregistrée supprimée et autorisation d'hôte révoquée." },
   "psKeyRemoveFailed": { "message": "Impossible de supprimer la clé. Réessayez." },
   "psSummary": { "message": "Fournisseur LLM" },
-  "psKinds": { "message": "Cloud · Local · Sur l'appareil" },
+  "psKinds": { "message": "Préréglage · Cloud · Local · Sur l'appareil" },
   "psBuiltinDetected": { "message": "Option sur l'appareil détectée" },
   "psProvider": { "message": "Fournisseur" },
   "psKeySaved": { "message": "Clé enregistrée" },
@@ -213,7 +212,9 @@
     "placeholders": { "name": { "content": "$1" }, "url": { "content": "$2" }, "model": { "content": "$3" } }
   },
   "psNoticeCustom": { "message": "🏠 **Configuration requise :** démarrez votre serveur local compatible OpenAI (Ollama, LM Studio, llamafile, vLLM…) et saisissez ci-dessus son adresse `/v1/chat/completions`. Hôtes autorisés via `http://` : `localhost`, `127.0.0.1`, et les plages LAN privées (`192.168.x.x`, `10.x.x.x`, `172.16–31.x.x`). L'enregistrement effectue une vérification rapide de l'accessibilité du serveur. Les requêtes restent sur votre machine ou votre réseau local — rien n'est envoyé vers le cloud." },
+  "psNoticePreset": { "message": "📦 **Préréglage intégré :** cette version fournit un fournisseur préconfiguré. Son point de terminaison, son modèle et sa clé sont fixes et ne peuvent pas être modifiés. Les requêtes sont envoyées à ce serveur configuré, qui peut se trouver sur votre réseau local. Rien n'est envoyé ailleurs." },
   "psEnableBuiltinModel": { "message": "Activer le modèle sur l'appareil" },
+  "psUsePreset": { "message": "Utiliser le préréglage" },
   "psSaveVerify": { "message": "Enregistrer et vérifier" },
   "psSaveVerifyKey": { "message": "Enregistrer et vérifier la clé" },
   "psRemoveKey": { "message": "Supprimer la clé" },

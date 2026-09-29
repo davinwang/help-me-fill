@@ -138,20 +138,17 @@
   "autoSendDialogConfirm": { "message": "Automatisches Senden aktivieren" },
 
   "unlabeledField": { "message": "Feld ohne Beschriftung" },
-  "reviewEyebrow": { "message": "Sie haben das letzte Wort" },
-  "reviewTitle": { "message": "Vorschläge prüfen" },
   "reviewHint": { "message": "Belege zeigen, woher der Text stammt – nicht, dass die Zuordnung korrekt ist. Jeder Schalter entscheidet zwischen dem zugeordneten Wert und dem aktuellen Seitenwert; nur eingeschaltete Felder werden geschrieben." },
   "chooseOption": { "message": "(Option wählen)" },
   "checkboxTrue": { "message": "true — dieses Kästchen aktivieren" },
   "checkboxFalse": { "message": "false — lassen / deaktivieren" },
   "proposedValue": { "message": "Vorgeschlagener Wert" },
   "manualOverride": { "message": "Manuelle Änderung · Sorgfältig prüfen" },
-  "currentValue": { "message": "Aktueller Wert:" },
   "sourceEvidence": { "message": "Quellbelege" },
   "noAssignments": { "message": "Es wurden keine unterstützten, beleggestützten Zuordnungen zurückgegeben. Das Formular wurde nicht verändert." },
-  "unmappedSummary": {
-    "message": "$COUNT$ Felder nicht zugeordnet",
-    "placeholders": { "count": { "content": "$1" } }
+  "unmatchedReason": {
+    "message": "Nicht zugeordnet: $REASON$",
+    "placeholders": { "reason": { "content": "$1" } }
   },
   "fillNotice": { "message": "Das Ausfüllen kann die Validierung, das automatische Speichern oder Netzwerkanfragen der Website auslösen. Diese Erweiterung klickt niemals auf „Senden“. Das Rückgängigmachen kann serverseitige Wirkungen nicht umkehren." },
 
@@ -171,8 +168,10 @@
   "kindCloud": { "message": "Cloud" },
   "kindLocal": { "message": "Lokal" },
   "kindBuiltin": { "message": "Auf dem Gerät" },
+  "kindPreset": { "message": "Voreinstellung" },
   "psBuiltinUnavailableSaved": { "message": "Der gespeicherte Gerätemodell-Anbieter ist in diesem Browser derzeit nicht verfügbar. Wählen Sie einen anderen Anbieter." },
   "psBuiltinRestored": { "message": "Gerätemodell-Anbieter wiederhergestellt. Vorschläge bleiben auf diesem Gerät." },
+  "psPresetApplied": { "message": "Mitgelieferte Voreinstellung angewendet. Endpunkt, Modell und Schlüssel sind fest und einsatzbereit." },
   "psCustomEndpointMissing": { "message": "Der gespeicherte benutzerdefinierte Endpunkt fehlt. Konfigurieren Sie ihn erneut." },
   "psLocalRestored": { "message": "Lokaler Anbieter wiederhergestellt. Anfragen bleiben auf diesem Rechner." },
   "psKeyRestored": { "message": "Gespeicherter Schlüssel wiederhergestellt. Eine Live-Überprüfung von Anbieter/Modell ist nicht enthalten." },
@@ -188,7 +187,7 @@
   "psKeyRemoved": { "message": "Gespeicherter Schlüssel entfernt und Host-Berechtigung widerrufen." },
   "psKeyRemoveFailed": { "message": "Der Schlüssel konnte nicht entfernt werden. Versuchen Sie es erneut." },
   "psSummary": { "message": "LLM-Anbieter" },
-  "psKinds": { "message": "Cloud · Lokal · Auf dem Gerät" },
+  "psKinds": { "message": "Voreinstellung · Cloud · Lokal · Auf dem Gerät" },
   "psBuiltinDetected": { "message": "Gerätemodell-Option erkannt" },
   "psProvider": { "message": "Anbieter" },
   "psKeySaved": { "message": "Schlüssel gespeichert" },
@@ -213,7 +212,9 @@
     "placeholders": { "name": { "content": "$1" }, "url": { "content": "$2" }, "model": { "content": "$3" } }
   },
   "psNoticeCustom": { "message": "🏠 **Einrichtung erforderlich:** Starten Sie Ihren lokalen OpenAI-kompatiblen Server (Ollama, LM Studio, llamafile, vLLM…) und geben Sie oben dessen `/v1/chat/completions`-Adresse ein. Über `http://` erlaubte Hosts: `localhost`, `127.0.0.1` sowie private LAN-Bereiche (`192.168.x.x`, `10.x.x.x`, `172.16–31.x.x`). Beim Speichern wird kurz geprüft, ob der Server erreichbar ist. Anfragen bleiben auf Ihrem Rechner oder lokalen Netzwerk — es wird nichts an die Cloud gesendet." },
+  "psNoticePreset": { "message": "📦 **Mitgelieferte Voreinstellung:** Dieses Build enthält einen vorkonfigurierten Anbieter. Endpunkt, Modell und Schlüssel sind fest und können nicht bearbeitet werden. Anfragen gehen an diesen konfigurierten Server, der sich in Ihrem lokalen Netzwerk befinden kann. Es wird nichts an andere Stellen gesendet." },
   "psEnableBuiltinModel": { "message": "Gerätemodell aktivieren" },
+  "psUsePreset": { "message": "Voreinstellung verwenden" },
   "psSaveVerify": { "message": "Speichern & überprüfen" },
   "psSaveVerifyKey": { "message": "Schlüssel speichern & überprüfen" },
   "psRemoveKey": { "message": "Schlüssel entfernen" },

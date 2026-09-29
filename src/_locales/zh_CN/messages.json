@@ -138,20 +138,17 @@
   "autoSendDialogConfirm": { "message": "开启自动发送" },
 
   "unlabeledField": { "message": "无标签字段" },
-  "reviewEyebrow": { "message": "最终由你决定" },
-  "reviewTitle": { "message": "审核建议" },
   "reviewHint": { "message": "证据显示文本来自何处，并不代表匹配一定正确。每行的开关在匹配值与页面当前值之间选择；只有开启的字段才会写入。" },
   "chooseOption": { "message": "（请选择一个选项）" },
   "checkboxTrue": { "message": "true — 勾选此项" },
   "checkboxFalse": { "message": "false — 保留 / 不勾选" },
   "proposedValue": { "message": "建议值" },
   "manualOverride": { "message": "手动修改 · 请仔细核对" },
-  "currentValue": { "message": "当前值：" },
   "sourceEvidence": { "message": "来源证据" },
   "noAssignments": { "message": "未返回任何有证据支持的赋值。表单未作更改。" },
-  "unmappedSummary": {
-    "message": "$COUNT$ 个字段未映射",
-    "placeholders": { "count": { "content": "$1" } }
+  "unmatchedReason": {
+    "message": "未匹配：$REASON$",
+    "placeholders": { "reason": { "content": "$1" } }
   },
   "fillNotice": { "message": "填写可能触发网站的校验、自动保存或网络请求。本扩展绝不会点击“提交”。撤销无法逆转服务器端的副作用。" },
 
