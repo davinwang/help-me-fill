@@ -71,9 +71,8 @@
   "previewOutgoing": { "message": "معاينة البيانات الصادرة" },
   "viewMappingInstructions": { "message": "عرض تعليمات الربط" },
   "generateBuiltin": { "message": "إنشاء الاقتراحات على الجهاز" },
-  "generateLocal": { "message": "إنشاء الاقتراحات محليًا" },
   "generateCloud": {
-    "message": "الإرسال إلى $PROVIDER$ وإنشاء الاقتراحات",
+    "message": "الإرسال إلى $PROVIDER$ للتحليل",
     "placeholders": { "provider": { "content": "$1" } }
   },
   "generateCloudFallback": { "message": "المزوّد" },
@@ -96,7 +95,10 @@
   },
   "retryScan": { "message": "إعادة محاولة الاكتشاف" },
   "retryMatch": { "message": "إعادة محاولة المطابقة" },
-  "autoSendAlways": { "message": "إرسال وعدم السؤال مرة أخرى" },
+  "autoSendAlways": {
+    "message": "الإرسال إلى $PROVIDER$ وعدم السؤال مرة أخرى",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
   "sendOptions": { "message": "خيارات إرسال أخرى" },
   "autoSendStatus": {
     "message": "الإرسال التلقائي مفعّل لـ $PROVIDER$: تتم مطابقة الصفحات الجديدة تلقائيًا.",

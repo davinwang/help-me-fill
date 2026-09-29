@@ -71,9 +71,8 @@
   "previewOutgoing": { "message": "Pré-visualizar os dados de saída" },
   "viewMappingInstructions": { "message": "Ver as instruções de mapeamento" },
   "generateBuiltin": { "message": "Gerar sugestões no dispositivo" },
-  "generateLocal": { "message": "Gerar sugestões localmente" },
   "generateCloud": {
-    "message": "Enviar para $PROVIDER$ e gerar sugestões",
+    "message": "Enviar para $PROVIDER$ para analisar",
     "placeholders": { "provider": { "content": "$1" } }
   },
   "generateCloudFallback": { "message": "provedor" },
@@ -96,7 +95,10 @@
   },
   "retryScan": { "message": "Tentar detectar novamente" },
   "retryMatch": { "message": "Tentar associar novamente" },
-  "autoSendAlways": { "message": "Enviar e não perguntar novamente" },
+  "autoSendAlways": {
+    "message": "Enviar para $PROVIDER$ e não perguntar novamente",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
   "sendOptions": { "message": "Mais opções de envio" },
   "autoSendStatus": {
     "message": "O envio automático está ativado para $PROVIDER$: novas páginas são associadas automaticamente.",

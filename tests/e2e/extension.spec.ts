@@ -49,12 +49,12 @@ test('production sidebar parses a bilingual PDF and scans the real tab', async (
     // current values appear before any document exists.
     await expect.poll(() => app.panel.text()).toContain('10 fillable fields detected');
     await expect.poll(() => app.panel.text()).toContain('Fields detected — add a document so AI can match them.');
-    expect(await app.panel.text()).not.toContain('Send to OpenAI and generate suggestions');
+    expect(await app.panel.text()).not.toContain('Send to OpenAI to analyze');
     await app.panel.upload('tests/fixtures/generated/case-02.pdf');
     await expect.poll(() => app.panel.text()).toContain('case-02.pdf');
     expect(await app.panel.evaluate(() => document.querySelector('.text-preview')?.textContent)).toContain('陈小明');
     // A cloud provider starts manual: the send control appears by itself.
-    await expect.poll(() => app.panel.text()).toContain('Send to OpenAI and generate suggestions');
+    await expect.poll(() => app.panel.text()).toContain('Send to OpenAI to analyze');
     expect(await app.page.locator('input[name="fullName"]').inputValue()).toBe('');
     const image = await app.panel.send('Page.captureScreenshot', { format: 'png' });
     await writeFile(info.outputPath('sidebar.png'), Buffer.from(image.data, 'base64'));
@@ -154,10 +154,10 @@ test('reload and tab switches keep the review on an identical form', async ({}, 
     const counts = { requests: 0, error: '' } as { requests: number; error: string; release?: () => void };
     await enableProvider(app, info.project.name === 'edge' ? 'edge://extensions/' : 'chrome://extensions/');
     await app.panel.upload(`tests/fixtures/generated/${scenario.id}.pdf`);
-    await expect.poll(() => app.panel.text()).toContain('Send to OpenAI and generate suggestions');
+    await expect.poll(() => app.panel.text()).toContain('Send to OpenAI to analyze');
     await app.panel.send('Fetch.enable', { patterns: [{ urlPattern: 'http*', requestStage: 'Request' }] });
     installMappingMock(app, scenario, counts);
-    await app.panel.click('Send to OpenAI and generate suggestions');
+    await app.panel.click('Send to OpenAI to analyze');
     await expect.poll(() => app.panel.text()).toContain('Matches are suggestions');
     expect(counts.error).toBe(''); expect(counts.requests).toBe(1);
     // A reload is re-detected quietly: the identical form keeps the review, and

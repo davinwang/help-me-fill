@@ -71,9 +71,8 @@
   "previewOutgoing": { "message": "预览将发送的数据" },
   "viewMappingInstructions": { "message": "查看映射指令" },
   "generateBuiltin": { "message": "在端侧生成建议" },
-  "generateLocal": { "message": "在本地生成建议" },
   "generateCloud": {
-    "message": "发送到 $PROVIDER$ 并生成建议",
+    "message": "发送到 $PROVIDER$ 进行分析",
     "placeholders": { "provider": { "content": "$1" } }
   },
   "generateCloudFallback": { "message": "服务商" },
@@ -96,7 +95,10 @@
   },
   "retryScan": { "message": "重试检测" },
   "retryMatch": { "message": "重新匹配" },
-  "autoSendAlways": { "message": "发送并且以后不再询问" },
+  "autoSendAlways": {
+    "message": "发送到 $PROVIDER$ 并且以后不再询问",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
   "sendOptions": { "message": "更多发送选项" },
   "autoSendStatus": {
     "message": "已对 $PROVIDER$ 开启自动发送：新页面会自动匹配。",

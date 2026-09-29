@@ -71,9 +71,8 @@
   "previewOutgoing": { "message": "送信データをプレビュー" },
   "viewMappingInstructions": { "message": "マッピング指示を表示" },
   "generateBuiltin": { "message": "デバイス上で提案を生成" },
-  "generateLocal": { "message": "ローカルで提案を生成" },
   "generateCloud": {
-    "message": "$PROVIDER$ に送信して提案を生成",
+    "message": "$PROVIDER$ に送信して分析",
     "placeholders": { "provider": { "content": "$1" } }
   },
   "generateCloudFallback": { "message": "プロバイダー" },
@@ -96,7 +95,10 @@
   },
   "retryScan": { "message": "検出を再試行" },
   "retryMatch": { "message": "照合を再試行" },
-  "autoSendAlways": { "message": "送信して今後は確認しない" },
+  "autoSendAlways": {
+    "message": "$PROVIDER$ に送信して今後は確認しない",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
   "sendOptions": { "message": "その他の送信オプション" },
   "autoSendStatus": {
     "message": "$PROVIDER$ への自動送信が有効です。新しいページは自動的に照合されます。",

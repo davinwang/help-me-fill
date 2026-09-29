@@ -67,6 +67,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   current field values and page URL are never sent to the AI provider.
 
 ### Changed
+- **Send controls name their destination; auto-send consent is per provider**
+  (`src/sidepanel/components/SendActions.tsx`, `src/sidepanel/auto-send.ts`):
+  the primary button and its "don't ask again" menu item now name the resolved
+  provider for every network kind (cloud, local, preset) — "Send to `<provider>`
+  to analyze" / "Send to `<provider>` and don't ask again" — instead of the
+  misleading "Generate suggestions locally"; only the on-device model keeps its
+  own wording and its auto-send default. The "don't ask again" preference is now
+  one boolean per provider (`{ [providerId]: boolean }`) rather than a single
+  provider+endpoint entry, so each provider keeps its own consent. Saving a
+  verified key or removing a key resets that provider's flag to an explicit
+  `false` so the next send asks again. The nine locale catalogs drop the now
+  unused `generateLocal` key and gain a `$PROVIDER$` placeholder on
+  `generateCloud` and `autoSendAlways`.
 - **Side panel consolidated into one card with a split send button**
   (`src/sidepanel/components/SendActions.tsx` added, `DisclosurePreview.tsx`
   removed): the "N fillable fields detected" list and the pre-match send controls

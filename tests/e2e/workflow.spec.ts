@@ -23,14 +23,14 @@ for (const framework of ['native', 'react', 'vue']) {
       await expect.poll(() => app.panel.text()).toContain(`${scenario.id}.pdf`);
       // A cloud provider starts manual: the send control appears by itself,
       // nothing leaves the browser, and the page is untouched.
-      await expect.poll(() => app.panel.text()).toContain('Send to OpenAI and generate suggestions');
+      await expect.poll(() => app.panel.text()).toContain('Send to OpenAI to analyze');
       expect(counts.requests).toBe(0);
       expect(await app.page.locator('input[name="fullName"]').inputValue()).toBe('');
       // The single page keeps document access available while reviewing.
       expect(await app.panel.evaluate(() => document.querySelectorAll('.drop-zone, .doc-card').length)).toBe(2);
       await app.panel.send('Fetch.enable', { patterns: [{ urlPattern: 'http*', requestStage: 'Request' }] });
       installMappingMock(app, scenario, counts);
-      await app.panel.click('Send to OpenAI and generate suggestions');
+      await app.panel.click('Send to OpenAI to analyze');
       await expect.poll(() => app.panel.text()).toContain('Matches are suggestions');
       expect(counts.error).toBe(''); expect(counts.requests).toBe(1);
       // Empty page fields are armed by default; the page keeps its values.
@@ -96,20 +96,20 @@ test('auto-send asks first and then matches automatically', async ({}, info) => 
     const counts = { requests: 0, error: '' } as { requests: number; error: string; release?: () => void };
     await enableProvider(app, info.project.name === 'edge' ? 'edge://extensions/' : 'chrome://extensions/');
     await app.panel.upload(`tests/fixtures/generated/${scenario.id}.pdf`);
-    await expect.poll(() => app.panel.text()).toContain('Send to OpenAI and generate suggestions');
+    await expect.poll(() => app.panel.text()).toContain('Send to OpenAI to analyze');
     await app.panel.send('Fetch.enable', { patterns: [{ urlPattern: 'http*', requestStage: 'Request' }] });
     installMappingMock(app, scenario, counts, true);
     // The split menu's auto-send row warns first for a cloud provider;
     // declining stores nothing and sends nothing.
     await app.panel.click('More send options');
-    await app.panel.click("Send and don't ask again");
+    await app.panel.click("Send to OpenAI and don't ask again");
     await expect.poll(() => app.panel.text()).toContain('Auto-send document text to OpenAI?');
     await app.panel.click('Cancel');
     await expect.poll(() => app.panel.text()).not.toContain('Auto-send document text to OpenAI?');
     expect(counts.requests).toBe(0);
     // Confirming through the warning turns auto-send on and matches on the spot.
     await app.panel.click('More send options');
-    await app.panel.click("Send and don't ask again");
+    await app.panel.click("Send to OpenAI and don't ask again");
     await expect.poll(() => app.panel.text()).toContain('Auto-send document text to OpenAI?');
     await app.panel.click('Enable auto-send');
     await expect.poll(() => app.panel.text()).toContain('Auto-send is on for OpenAI');
@@ -120,6 +120,6 @@ test('auto-send asks first and then matches automatically', async ({}, info) => 
     expect(counts.error).toBe('');
     expect(await app.panel.evaluate(() => document.querySelectorAll('.field-list input.switch:checked').length)).toBe(10);
     const stored = await app.panel.evaluate(() => chrome.storage.local.get(null));
-    expect((stored as Record<string, { provider?: string; value?: boolean }>).autoSend).toMatchObject({ provider: 'openai', value: true });
+    expect((stored as Record<string, Record<string, boolean>>).autoSend).toMatchObject({ openai: true });
   } finally { await app.close(); }
 });

@@ -27,7 +27,11 @@ export function SendActions({ parsed, scan, settings, disabled, onGenerate, onAu
     document.addEventListener('keydown', escape);
     return () => { document.removeEventListener('mousedown', dismiss); document.removeEventListener('keydown', escape); };
   }, [open]);
-  const label = kind === 'builtin' ? t('generateBuiltin') : kind === 'local' || kind === 'preset' ? t('generateLocal') : t('generateCloud', [resolved?.name ?? t('generateCloudFallback')]);
+  // Every network provider (cloud, local, preset) names its destination so the
+  // user always sees where the extracted text goes; only the on-device model
+  // keeps its own wording (and defaults to auto-send, so its button rarely shows).
+  const destination = resolved?.name ?? t('generateCloudFallback');
+  const label = kind === 'builtin' ? t('generateBuiltin') : t('generateCloud', [destination]);
   return <div className="send-actions">
     <details><summary>{t('previewOutgoing')}</summary><pre>{JSON.stringify(makePayload(parsed.lines, scan.fields), null, 2)}</pre></details>
     <details><summary>{t('viewMappingInstructions')}</summary><pre>{SYSTEM_PROMPT}</pre></details>
@@ -35,7 +39,7 @@ export function SendActions({ parsed, scan, settings, disabled, onGenerate, onAu
       <button type="button" className="split-main" disabled={disabled} onClick={onGenerate}>{label}</button>
       <button type="button" className="split-toggle" aria-haspopup="menu" aria-expanded={open} aria-label={t('sendOptions')} disabled={disabled} onClick={() => setOpen(value => !value)}>▾</button>
       {open && <div className="split-menu" role="menu">
-        <button type="button" role="menuitem" disabled={disabled} onClick={() => { setOpen(false); onAutoSend(true, true); }}>{t('autoSendAlways')}</button>
+        <button type="button" role="menuitem" disabled={disabled} onClick={() => { setOpen(false); onAutoSend(true, true); }}>{t('autoSendAlways', [destination])}</button>
       </div>}
     </div>
   </div>;

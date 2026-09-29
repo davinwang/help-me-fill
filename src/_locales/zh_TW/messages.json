@@ -71,9 +71,8 @@
   "previewOutgoing": { "message": "預覽將傳送的資料" },
   "viewMappingInstructions": { "message": "檢視對應指令" },
   "generateBuiltin": { "message": "在裝置端產生建議" },
-  "generateLocal": { "message": "在本機產生建議" },
   "generateCloud": {
-    "message": "傳送到 $PROVIDER$ 並產生建議",
+    "message": "傳送到 $PROVIDER$ 進行分析",
     "placeholders": { "provider": { "content": "$1" } }
   },
   "generateCloudFallback": { "message": "服務商" },
@@ -96,7 +95,10 @@
   },
   "retryScan": { "message": "重試偵測" },
   "retryMatch": { "message": "重新配對" },
-  "autoSendAlways": { "message": "傳送並且之後不再詢問" },
+  "autoSendAlways": {
+    "message": "傳送到 $PROVIDER$ 並且之後不再詢問",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
   "sendOptions": { "message": "更多傳送選項" },
   "autoSendStatus": {
     "message": "已對 $PROVIDER$ 開啟自動傳送：新頁面會自動配對。",

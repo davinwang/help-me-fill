@@ -6,6 +6,7 @@ import { validateSettings, verifyProvider } from '../../ai/provider';
 import { errorMessage, UserError } from '../../shared/errors';
 import { t } from '../../shared/i18n';
 import { openSecret, sealSecret } from '../../shared/secret-box';
+import { resetAutoSend } from '../auto-send';
 import { Rich } from './Rich';
 
 // The custom and bundled preset providers have no registry entry; these helpers
@@ -134,6 +135,7 @@ export function ProviderSettings({ disabled, onChange }: Props) {
       if (provider === 'preset') {
         // Endpoint, model, and key are fixed by the packaged preset: apply it
         // without a permission prompt or a network pre-check.
+        await resetAutoSend(provider);
         onChange(settings);
         setStatus(t('psPresetApplied'));
         if (card.current) card.current.open = false;
@@ -154,6 +156,8 @@ export function ProviderSettings({ disabled, onChange }: Props) {
       }
       await chrome.storage.local.set({ preferences: { provider, model: settings.model, ...(provider === 'custom' ? { endpoint: settings.endpoint } : {}) } });
       setSavedKeys(previous => { const next = new Set(previous); if (settings.apiKey) next.add(provider); else next.delete(provider); return next; });
+      // A verified save invalidates any earlier auto-send consent for this provider.
+      if (provider !== 'builtin') await resetAutoSend(provider);
       onChange(settings);
       setStatus(provider === 'builtin'
         ? t('psBuiltinVerified')
@@ -169,6 +173,8 @@ export function ProviderSettings({ disabled, onChange }: Props) {
     try {
       await chrome.storage.local.remove(`key:${provider}`);
       setSavedKeys(previous => { const next = new Set(previous); next.delete(provider); return next; });
+      // Removing the key drops the provider's auto-send consent too.
+      await resetAutoSend(provider);
       setKey(''); onChange(undefined);
       // One-step cleanup: dropping the key also drops the browser's network
       // access to the provider origin. A custom endpoint that is empty or

@@ -71,9 +71,8 @@
   "previewOutgoing": { "message": "Previsualizar los datos salientes" },
   "viewMappingInstructions": { "message": "Ver las instrucciones de asignación" },
   "generateBuiltin": { "message": "Generar sugerencias en el dispositivo" },
-  "generateLocal": { "message": "Generar sugerencias localmente" },
   "generateCloud": {
-    "message": "Enviar a $PROVIDER$ y generar sugerencias",
+    "message": "Enviar a $PROVIDER$ para analizar",
     "placeholders": { "provider": { "content": "$1" } }
   },
   "generateCloudFallback": { "message": "proveedor" },
@@ -96,7 +95,10 @@
   },
   "retryScan": { "message": "Reintentar la detección" },
   "retryMatch": { "message": "Volver a intentar el emparejamiento" },
-  "autoSendAlways": { "message": "Enviar y no volver a preguntar" },
+  "autoSendAlways": {
+    "message": "Enviar a $PROVIDER$ y no volver a preguntar",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
   "sendOptions": { "message": "Más opciones de envío" },
   "autoSendStatus": {
     "message": "El envío automático está activado para $PROVIDER$: las páginas nuevas se emparejan automáticamente.",

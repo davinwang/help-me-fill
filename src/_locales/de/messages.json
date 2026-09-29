@@ -71,9 +71,8 @@
   "previewOutgoing": { "message": "Ausgehende Daten anzeigen" },
   "viewMappingInstructions": { "message": "Zuordnungsanweisungen anzeigen" },
   "generateBuiltin": { "message": "Vorschläge auf dem Gerät erstellen" },
-  "generateLocal": { "message": "Vorschläge lokal erstellen" },
   "generateCloud": {
-    "message": "An $PROVIDER$ senden und Vorschläge erstellen",
+    "message": "An $PROVIDER$ zur Analyse senden",
     "placeholders": { "provider": { "content": "$1" } }
   },
   "generateCloudFallback": { "message": "Anbieter" },
@@ -96,7 +95,10 @@
   },
   "retryScan": { "message": "Erkennung wiederholen" },
   "retryMatch": { "message": "Zuordnung erneut versuchen" },
-  "autoSendAlways": { "message": "Senden und nicht mehr fragen" },
+  "autoSendAlways": {
+    "message": "An $PROVIDER$ senden und nicht mehr fragen",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
   "sendOptions": { "message": "Weitere Sendeoptionen" },
   "autoSendStatus": {
     "message": "Automatisches Senden ist für $PROVIDER$ aktiviert: Neue Seiten werden automatisch zugeordnet.",

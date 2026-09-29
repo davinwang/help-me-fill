@@ -83,9 +83,8 @@
   "previewOutgoing": { "message": "Preview outgoing data" },
   "viewMappingInstructions": { "message": "View mapping instructions" },
   "generateBuiltin": { "message": "Generate suggestions on-device" },
-  "generateLocal": { "message": "Generate suggestions locally" },
   "generateCloud": {
-    "message": "Send to $PROVIDER$ and generate suggestions",
+    "message": "Send to $PROVIDER$ to analyze",
     "placeholders": { "provider": { "content": "$1" } }
   },
   "generateCloudFallback": { "message": "provider" },
@@ -108,7 +107,10 @@
   },
   "retryScan": { "message": "Retry detection" },
   "retryMatch": { "message": "Try matching again" },
-  "autoSendAlways": { "message": "Send and don't ask again" },
+  "autoSendAlways": {
+    "message": "Send to $PROVIDER$ and don't ask again",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
   "sendOptions": { "message": "More send options" },
   "autoSendStatus": {
     "message": "Auto-send is on for $PROVIDER$: new pages are matched automatically.",

@@ -71,9 +71,8 @@
   "previewOutgoing": { "message": "Aperçu des données sortantes" },
   "viewMappingInstructions": { "message": "Voir les instructions de mappage" },
   "generateBuiltin": { "message": "Générer les suggestions sur l'appareil" },
-  "generateLocal": { "message": "Générer les suggestions localement" },
   "generateCloud": {
-    "message": "Envoyer à $PROVIDER$ et générer les suggestions",
+    "message": "Envoyer à $PROVIDER$ pour analyser",
     "placeholders": { "provider": { "content": "$1" } }
   },
   "generateCloudFallback": { "message": "fournisseur" },
@@ -96,7 +95,10 @@
   },
   "retryScan": { "message": "Relancer la détection" },
   "retryMatch": { "message": "Réessayer l'association" },
-  "autoSendAlways": { "message": "Envoyer et ne plus demander" },
+  "autoSendAlways": {
+    "message": "Envoyer à $PROVIDER$ et ne plus demander",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
   "sendOptions": { "message": "Autres options d'envoi" },
   "autoSendStatus": {
     "message": "L'envoi automatique est activé pour $PROVIDER$ : les nouvelles pages sont associées automatiquement.",
