@@ -1,20 +1,28 @@
 import { chromium, expect, type BrowserContext, type CDPSession, type Page, type TestInfo } from '@playwright/test';
-import { rm, readFile, writeFile, stat } from 'node:fs/promises';
+import { cp, rm, readFile, writeFile, stat } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import type { BenchmarkCase } from '../fixtures/cases';
 
 // The repository may carry a local, git-ignored preset provider (preset-llm.json)
 // that scripts/build.mjs copies into dist/ and wires as a required host permission.
-// These specs exercise the manual BYO-key setup flow, so the bundled preset is
-// stripped from the disposable dist before load; CI builds never contain one.
-async function stripBundledPreset() {
-  const presetPath = resolve('dist/preset-llm.json');
-  try { await stat(presetPath); } catch { return; }
-  await rm(presetPath);
-  const manifestPath = resolve('dist/manifest.json');
-  const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
-  delete manifest.host_permissions;
-  await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
+// These specs exercise the manual BYO-key setup flow, so they load a throwaway copy
+// of dist with that preset stripped; the real dist/ is never modified.
+let extensionDir: Promise<string> | undefined;
+function preparedExtension(): Promise<string> {
+  extensionDir ??= (async () => {
+    const dir = resolve('test-results', 'e2e-extension');
+    await rm(dir, { recursive: true, force: true });
+    await cp('dist', dir, { recursive: true });
+    const presetPath = resolve(dir, 'preset-llm.json');
+    try { await stat(presetPath); } catch { return dir; }
+    await rm(presetPath);
+    const manifestPath = resolve(dir, 'manifest.json');
+    const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
+    delete manifest.host_permissions;
+    await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
+    return dir;
+  })();
+  return extensionDir;
 }
 
 // Side panels are real extension targets, but are not Playwright tab Pages.
@@ -76,7 +84,6 @@ export class Panel {
   dispose() { this.cdp.off('Target.receivedMessageFromTarget', this.listener); }
 }
 export async function openExtension(info: TestInfo, framework = 'react', scenario = 'case-01') {
-  await stripBundledPreset();
   // chrome.i18n follows the browser UI language, and this harness matches English
   // labels. Playwright's `locale` option only drives navigator.language and
   // Accept-Language, so the UI language has to be passed as a launch flag too.
@@ -86,7 +93,7 @@ export async function openExtension(info: TestInfo, framework = 'react', scenari
     ignoreDefaultArgs: ['--disable-extensions'], args: ['--enable-unsafe-extension-debugging', `--lang=${locale ?? 'en-US'}`],
   });
   const cdp = await context.browser()!.newBrowserCDPSession();
-  const { id } = await cdp.send('Extensions.loadUnpacked', { path: resolve('dist') });
+  const { id } = await cdp.send('Extensions.loadUnpacked', { path: await preparedExtension() });
   const worker = context.serviceWorkers().find(worker => worker.url().includes(id)) ?? await context.waitForEvent('serviceworker', { predicate: worker => worker.url().includes(id), timeout: 15_000 });
   await expect.poll(() => worker.evaluate(async () => (await chrome.sidePanel.getPanelBehavior()).openPanelOnActionClick === false && chrome.action.onClicked.hasListeners())).toBe(true);
   const page = await context.newPage();
