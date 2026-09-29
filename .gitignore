@@ -23,6 +23,9 @@ tests/fixtures/generated/
 !.env.example
 *.local
 
+# --- Packaged preset provider (local only; contains an API key) ---
+preset-llm.json
+
 # --- Logs ---
 logs/
 *.log

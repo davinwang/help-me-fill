@@ -1,7 +1,7 @@
 import { UserError } from '../shared/errors';
 import { t } from '../shared/i18n';
 
-export type ProviderKind = 'cloud' | 'local' | 'builtin';
+export type ProviderKind = 'cloud' | 'local' | 'builtin' | 'preset';
 export type Transport = 'openai' | 'anthropic' | 'gemini' | 'builtin';
 
 export const PROVIDERS = {
@@ -9,8 +9,7 @@ export const PROVIDERS = {
   deepseek: { name: 'DeepSeek', origin: 'https://api.deepseek.com/*', endpoint: 'https://api.deepseek.com/chat/completions', transport: 'openai', defaultModel: 'deepseek-flash', keyUrl: 'https://platform.deepseek.com/api_keys', kind: 'cloud' },
   anthropic: { name: 'Anthropic', origin: 'https://api.anthropic.com/*', endpoint: 'https://api.anthropic.com/v1/messages', transport: 'anthropic', defaultModel: 'claude-haiku-4-5', keyUrl: 'https://console.anthropic.com/settings/keys', kind: 'cloud' },
   gemini: { name: 'Google Gemini', origin: 'https://generativelanguage.googleapis.com/*', endpoint: 'https://generativelanguage.googleapis.com/v1beta/models', transport: 'gemini', defaultModel: 'gemini-2.5-flash', keyUrl: 'https://aistudio.google.com/apikey', kind: 'cloud' },
-  zhipu: { name: '智谱', origin: 'https://open.bigmodel.cn/*', endpoint: 'https://open.bigmodel.cn/api/paas/v4/chat/completions', transport: 'openai', defaultModel: 'glm-5.3-flash', keyUrl: 'https://open.bigmodel.cn/apikey/platform', kind: 'cloud' },
-  openrouter: { name: 'OpenRouter', origin: 'https://openrouter.ai/*', endpoint: 'https://openrouter.ai/api/v1/chat/completions', transport: 'openai', defaultModel: 'google/gemini-2.5-flash', keyUrl: 'https://openrouter.ai/settings/keys', kind: 'cloud' },
+  zhipu: { name: 'Zhipu', origin: 'https://open.bigmodel.cn/*', endpoint: 'https://open.bigmodel.cn/api/paas/v4/chat/completions', transport: 'openai', defaultModel: 'glm-5.3-flash', keyUrl: 'https://open.bigmodel.cn/apikey/platform', kind: 'cloud' },
   // Local, OpenAI-compatible servers. Loopback origins are the only host
   // permission these presets need; the API key is optional (both ignore it by default).
   ollama: { name: 'Ollama', origin: 'http://localhost/*', endpoint: 'http://localhost:11434/v1/chat/completions', transport: 'openai', defaultModel: 'llama3.2', keyUrl: 'https://ollama.com/download', kind: 'local' },
@@ -23,14 +22,21 @@ export const BUILTIN = { id: 'builtin', name: 'On-device (Chrome/Edge built-in)'
 // endpoint comes from settings; the origin is derived and validated to loopback
 // or an RFC1918 private-network address.
 export const CUSTOM = { id: 'custom', name: 'Custom local server', origin: '', endpoint: '', transport: 'openai', defaultModel: '', keyUrl: '', kind: 'local' } as const;
+// Build-time bundled provider. Unlike the other presets it has no fixed endpoint
+// in the source tree: scripts/build.mjs copies a local, git-ignored preset-llm.json
+// into dist/ and grants its host, and the panel resolves the endpoint from settings.
+// Its URL/model/key are rendered read-only in the settings UI.
+export const PRESET = { id: 'preset', name: 'Preset', origin: '', endpoint: '', transport: 'openai', defaultModel: '', keyUrl: '', kind: 'preset' } as const;
 
-export type ProviderId = keyof typeof PROVIDERS | 'builtin' | 'custom';
-export type ProviderSettings = { provider: ProviderId; model: string; apiKey: string; endpoint?: string };
+export type ProviderId = keyof typeof PROVIDERS | 'builtin' | 'custom' | 'preset';
+// `endpoint` is set for the custom and bundled-preset providers; `name` is the
+// display label a bundled preset carries (other kinds use the registry name).
+export type ProviderSettings = { provider: ProviderId; model: string; apiKey: string; endpoint?: string; name?: string };
 export type TransportRequest = { url: string; headers: Record<string, string>; body: unknown };
 export type ResolvedProvider = { id: ProviderId; name: string; origin: string; endpoint: string; transport: Transport; keyUrl: string; kind: ProviderKind };
 
 export function isProvider(value: unknown): value is ProviderId {
-  return value === 'builtin' || value === 'custom' || (typeof value === 'string' && Object.hasOwn(PROVIDERS, value));
+  return value === 'builtin' || value === 'custom' || value === 'preset' || (typeof value === 'string' && Object.hasOwn(PROVIDERS, value));
 }
 
 // True for localhost, IPv4 loopback (127.0.0.0/8), and the RFC1918 private
@@ -73,7 +79,7 @@ export function isLoopbackEndpoint(endpoint: string): boolean {
 // stays an explicit click.
 export function defaultAutoSend(settings: ProviderSettings): boolean {
   if (settings.provider === 'builtin') return true;
-  const endpoint = settings.provider === 'custom' ? settings.endpoint ?? '' : PROVIDERS[settings.provider].endpoint;
+  const endpoint = settings.provider === 'custom' || settings.provider === 'preset' ? settings.endpoint ?? '' : PROVIDERS[settings.provider].endpoint;
   return isLoopbackEndpoint(endpoint);
 }
 
@@ -81,9 +87,12 @@ export function defaultAutoSend(settings: ProviderSettings): boolean {
 // resolve from the registry; the custom preset resolves from the user endpoint.
 export function resolveProvider(settings: ProviderSettings): ResolvedProvider {
   if (settings.provider === 'builtin') return { ...BUILTIN };
-  if (settings.provider === 'custom') {
+  if (settings.provider === 'custom' || settings.provider === 'preset') {
+    const entry = settings.provider === 'custom' ? CUSTOM : PRESET;
     const endpoint = (settings.endpoint ?? '').trim();
-    return { ...CUSTOM, endpoint, origin: localEndpointOrigin(endpoint) };
+    // A bundled preset supplies its own display name; the registry entry is the fallback.
+    const name = settings.provider === 'preset' && settings.name?.trim() ? settings.name.trim() : entry.name;
+    return { ...entry, name, endpoint, origin: localEndpointOrigin(endpoint) };
   }
   const entry = PROVIDERS[settings.provider];
   return { id: settings.provider, name: entry.name, origin: entry.origin, endpoint: entry.endpoint, transport: entry.transport, keyUrl: entry.keyUrl, kind: entry.kind };

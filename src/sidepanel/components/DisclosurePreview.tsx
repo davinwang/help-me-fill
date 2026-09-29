@@ -13,14 +13,14 @@ export function DisclosurePreview({ document, scan, settings, autoSend, disabled
     <span className="eyebrow">{t('consentEyebrow')}</span><h2>{t('consentTitle')}</h2>
     {kind === 'builtin'
       ? <p><Rich message={t('consentBuiltin')} /></p>
-      : kind === 'local'
+      : kind === 'local' || kind === 'preset'
         ? <p><Rich message={t('consentLocal', [resolved?.name ?? ''])} /></p>
         : <p><Rich message={t('consentCloud', [resolved?.name ?? t('consentProviderFallback')])} /></p>}
     {resolved && <p className="hint">{t('destinationLabel')} {kind === 'builtin' ? t('consentDestinationBuiltin') : destination}<br />{t('modelLabel')} {settings?.model}</p>}
     <details><summary>{t('previewOutgoing')}</summary><pre>{JSON.stringify(makePayload(document.lines, scan.fields), null, 2)}</pre></details>
     <details><summary>{t('viewMappingInstructions')}</summary><pre>{SYSTEM_PROMPT}</pre></details>
-    <p className="hint">{kind === 'builtin' ? t('consentAccuracyBuiltin') : kind === 'local' ? t('consentAccuracyLocal') : t('consentAccuracyCloud')} {t('consentRequestsNote')}</p>
-    <button className="wide" type="button" disabled={disabled || !settings || !scan.fields.length} onClick={onGenerate}>{kind === 'builtin' ? t('generateBuiltin') : kind === 'local' ? t('generateLocal') : t('generateCloud', [resolved?.name ?? t('generateCloudFallback')])}</button>
+    <p className="hint">{kind === 'builtin' ? t('consentAccuracyBuiltin') : kind === 'local' || kind === 'preset' ? t('consentAccuracyLocal') : t('consentAccuracyCloud')} {t('consentRequestsNote')}</p>
+    <button className="wide" type="button" disabled={disabled || !settings || !scan.fields.length} onClick={onGenerate}>{kind === 'builtin' ? t('generateBuiltin') : kind === 'local' || kind === 'preset' ? t('generateLocal') : t('generateCloud', [resolved?.name ?? t('generateCloudFallback')])}</button>
     <div className="section-top auto-send">
       <label className="check-label"><input type="checkbox" className="switch" checked={autoSend} disabled={disabled} aria-label={t('autoSendLabel')} onChange={event => onAutoSend(event.target.checked)} /><span>{t('autoSendLabel')}</span></label>
       {!autoSend && <button type="button" className="link-button" disabled={disabled} onClick={() => onAutoSend(true, true)}>{t('autoSendAlways')}</button>}

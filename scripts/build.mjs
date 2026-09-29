@@ -1,5 +1,5 @@
 import { build } from 'vite';
-import { mkdir, copyFile, cp, readFile, stat } from 'node:fs/promises';
+import { mkdir, copyFile, cp, readFile, stat, writeFile } from 'node:fs/promises';
 import assert from 'node:assert/strict';
 import { Script } from 'node:vm';
 
@@ -25,11 +25,32 @@ await mkdir('dist/icons', { recursive: true });
 for (const size of [16, 32, 48, 128]) {
   await copyFile(`brand/icons/${size}.png`, `dist/icons/${size}.png`);
 }
+// Optional bundled preset provider: a local, git-ignored preset-llm.json (when
+// present) is copied into dist/ and its host is added to the manifest as a
+// REQUIRED permission, so the packaged build reaches it at startup without a
+// runtime prompt (chrome.permissions.request needs a user gesture).
+let presetHost;
+try {
+  const preset = JSON.parse(await readFile('preset-llm.json', 'utf8'));
+  const url = new URL(preset.endpoint);
+  assert.equal(url.protocol, 'http:', 'Preset endpoint must be an http:// URL');
+  presetHost = `${url.protocol}//${url.hostname}/*`;
+  await copyFile('preset-llm.json', 'dist/preset-llm.json');
+} catch (error) {
+  if (error?.code !== 'ENOENT') throw error;
+}
 // Fail the build if the packaged content script needs module loading, permissions
 // expand unexpectedly, or manifest resources are missing from the unpacked output.
 const manifest = JSON.parse(await readFile('dist/manifest.json', 'utf8'));
+if (presetHost) {
+  manifest.host_permissions = [presetHost];
+  await writeFile('dist/manifest.json', `${JSON.stringify(manifest, null, 2)}\n`);
+}
 assert.deepEqual([...manifest.permissions].sort(), ['activeTab', 'scripting', 'sidePanel', 'storage'].sort());
-assert(!manifest.host_permissions && !manifest.content_scripts && !manifest.web_accessible_resources);
+assert(!manifest.content_scripts && !manifest.web_accessible_resources);
+// host_permissions is empty except for the single host a bundled preset needs.
+assert.deepEqual(manifest.host_permissions ?? [], presetHost ? [presetHost] : []);
+if (presetHost) assert((await stat('dist/preset-llm.json')).isFile());
 assert.deepEqual(manifest.optional_host_permissions, [
   'https://api.openai.com/*', 'https://api.anthropic.com/*',
   'https://generativelanguage.googleapis.com/*', 'https://api.deepseek.com/*',

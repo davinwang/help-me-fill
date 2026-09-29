@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { PROVIDERS, BUILTIN, CUSTOM, isProvider, localEndpointOrigin, type ProviderId, type ProviderKind, type ProviderSettings as Settings } from '../../ai/registry';
+import { PROVIDERS, BUILTIN, CUSTOM, PRESET, isProvider, localEndpointOrigin, type ProviderId, type ProviderKind, type ProviderSettings as Settings } from '../../ai/registry';
+import { loadPreset, presetSettings, type PresetConfig } from '../../ai/preset';
 import { detectBuiltin, type BuiltinState } from '../../ai/builtin-support';
 import { validateSettings, verifyProvider } from '../../ai/provider';
 import { errorMessage, UserError } from '../../shared/errors';
@@ -7,31 +8,39 @@ import { t } from '../../shared/i18n';
 import { openSecret, sealSecret } from '../../shared/secret-box';
 import { Rich } from './Rich';
 
-// The custom preset has no registry entry; these helpers keep the select total.
+// The custom and bundled preset providers have no registry entry; these helpers
+// keep the select total.
 function kindOf(id: ProviderId): ProviderKind {
   if (id === 'builtin') return 'builtin';
   if (id === 'custom') return 'local';
+  if (id === 'preset') return 'preset';
   return PROVIDERS[id].kind;
 }
-function defaultModelFor(id: ProviderId): string {
+function defaultModelFor(id: ProviderId, preset?: PresetConfig): string {
   if (id === 'builtin') return BUILTIN.defaultModel;
   if (id === 'custom') return '';
+  if (id === 'preset') return preset?.model ?? '';
   return PROVIDERS[id].defaultModel;
 }
-function nameOf(id: ProviderId): string {
+function nameOf(id: ProviderId, preset?: PresetConfig): string {
   if (id === 'builtin') return BUILTIN.name;
   if (id === 'custom') return CUSTOM.name;
+  if (id === 'preset') return preset?.name ?? PRESET.name;
   return PROVIDERS[id].name;
 }
 function originFor(id: ProviderId, endpoint?: string): string {
   if (id === 'builtin') return '';
-  if (id === 'custom') return localEndpointOrigin(endpoint ?? '');
+  if (id === 'custom' || id === 'preset') return localEndpointOrigin(endpoint ?? '');
   return PROVIDERS[id].origin;
 }
 // Kind glyph carried by every option. The dropdown is already grouped by kind,
 // but the collapsed select shows only the selected option, so a leading icon
 // keeps the cloud/local/on-device distinction visible without a separate badge.
-const KIND_ICON: Record<ProviderKind, string> = { cloud: '☁️', local: '🏠', builtin: '📱' };
+const KIND_ICON: Record<ProviderKind, string> = { cloud: '☁️', local: '🏠', builtin: '📱', preset: '📦' };
+// A bundled preset is accepted once per panel session (page lifetime). Later
+// mounts (the dialog reopening) restore from storage instead of re-applying, so
+// an in-session provider change is not silently reverted.
+let presetApplied = false;
 
 type Props = { disabled: boolean; onChange: (settings?: Settings) => void };
 export function ProviderSettings({ disabled, onChange }: Props) {
@@ -40,6 +49,7 @@ export function ProviderSettings({ disabled, onChange }: Props) {
   const [apiKey, setKey] = useState('');
   const [endpoint, setEndpoint] = useState('');
   const [builtin, setBuiltin] = useState<BuiltinState | undefined>(undefined);
+  const [preset, setPreset] = useState<PresetConfig>();
   const [savedKeys, setSavedKeys] = useState<ReadonlySet<ProviderId>>(() => new Set());
   const [status, setStatus] = useState(() => t('psStatusDefault'));
   const [saving, setSaving] = useState(false);
@@ -57,6 +67,28 @@ export function ProviderSettings({ disabled, onChange }: Props) {
       const all = await chrome.storage.local.get(null);
       if (!alive) return;
       setSavedKeys(new Set(Object.keys(all).filter(name => name.startsWith('key:') && typeof all[name] === 'string' && all[name] !== '').map(name => name.slice(4) as ProviderId)));
+      // A bundled preset wins the first mount of each panel session: it is
+      // accepted as-is so the first-time setup never appears.
+      const bundled = await loadPreset();
+      if (!alive) return;
+      if (bundled) {
+        setPreset(bundled);
+        setProvider('preset'); setModel(bundled.model); setKey(bundled.apiKey); setEndpoint(bundled.endpoint);
+      }
+      if (bundled && !presetApplied) {
+        presetApplied = true;
+        try {
+          const settings = presetSettings(bundled);
+          validateSettings(settings);
+          // Persist without a prompt so a later mount restores the same provider.
+          await chrome.storage.local.set({ preferences: { provider: 'preset', model: bundled.model, endpoint: bundled.endpoint }, 'key:preset': await sealSecret(bundled.apiKey) });
+          if (!alive) return;
+          setSavedKeys(previous => new Set(previous).add('preset'));
+          onChange(settings);
+          setStatus(t('psPresetApplied'));
+        } catch (error) { if (alive) setStatus(errorMessage(error)); }
+        return;
+      }
       const preferences = all.preferences as { provider?: unknown; model?: unknown; endpoint?: unknown } | undefined;
       if (!preferences || !isProvider(preferences.provider) || typeof preferences.model !== 'string') return;
       const id = preferences.provider;
@@ -67,18 +99,19 @@ export function ProviderSettings({ disabled, onChange }: Props) {
         setStatus(t('psBuiltinRestored'));
         return;
       }
-      const savedEndpoint = id === 'custom' && typeof preferences.endpoint === 'string' ? preferences.endpoint : '';
+      const savedEndpoint = (id === 'custom' || id === 'preset') && typeof preferences.endpoint === 'string' ? preferences.endpoint : '';
       if (id === 'custom' && !savedEndpoint) { setStatus(t('psCustomEndpointMissing')); return; }
+      if (id === 'preset' && !savedEndpoint) { setStatus(t('psRestoreFailed')); return; }
       // The key is stored sealed (AES-GCM) in local storage; open it in memory only.
       const sealed = typeof all[`key:${id}`] === 'string' ? all[`key:${id}`] as string : '';
       const key = sealed ? await openSecret(sealed) : '';
       if (!alive) return;
-      setProvider(id); setModel(preferences.model); setKey(key); if (id === 'custom') setEndpoint(savedEndpoint);
+      setProvider(id); setModel(preferences.model); setKey(key); if (id === 'custom' || id === 'preset') setEndpoint(savedEndpoint);
       // Local servers may have no key; the granted host permission is the gate.
       if (originFor(id, savedEndpoint) && await chrome.permissions.contains({ origins: [originFor(id, savedEndpoint)] })) {
         if (!alive) return;
-        onChange({ provider: id, model: preferences.model, apiKey: key, ...(id === 'custom' ? { endpoint: savedEndpoint } : {}) });
-        setStatus(kindOf(id) === 'local' ? t('psLocalRestored') : t('psKeyRestored'));
+        onChange({ provider: id, model: preferences.model, apiKey: key, ...(id === 'custom' || id === 'preset' ? { endpoint: savedEndpoint } : {}), ...(id === 'preset' && bundled ? { name: bundled.name } : {}) });
+        setStatus(id === 'preset' ? t('psPresetApplied') : kindOf(id) === 'local' ? t('psLocalRestored') : t('psKeyRestored'));
       }
     })().catch(() => { if (alive) setStatus(t('psRestoreFailed')); });
     return () => { alive = false; };
@@ -90,10 +123,19 @@ export function ProviderSettings({ disabled, onChange }: Props) {
         provider,
         model: provider === 'builtin' ? BUILTIN.defaultModel : model.trim(),
         apiKey: provider === 'builtin' ? '' : apiKey.trim(),
-        ...(provider === 'custom' ? { endpoint: endpoint.trim() } : {}),
+        ...(provider === 'custom' || provider === 'preset' ? { endpoint: endpoint.trim() } : {}),
+        ...(provider === 'preset' && preset ? { name: preset.name } : {}),
       };
       validateSettings(settings);
       setSaving(true);
+      if (provider === 'preset') {
+        // Endpoint, model, and key are fixed by the packaged preset: apply it
+        // without a permission prompt or a network pre-check.
+        onChange(settings);
+        setStatus(t('psPresetApplied'));
+        if (card.current) card.current.open = false;
+        return;
+      }
       if (provider !== 'builtin') {
         // This call must remain directly inside the user gesture, before any await.
         const permission = chrome.permissions.request({ origins: [originFor(provider, settings.endpoint)] });
@@ -144,12 +186,13 @@ export function ProviderSettings({ disabled, onChange }: Props) {
     <summary>{t('psSummary')} <span className="subtle">{t('psKinds')}{builtin ? ` · ${t('psBuiltinDetected')}` : ''}</span></summary>
     <fieldset disabled={disabled || saving}>
       <label>{t('psProvider')}
-        <select value={provider} onChange={event => { const id = event.target.value as ProviderId; setProvider(id); setModel(defaultModelFor(id)); setKey(''); dirty(); }}>
+        <select value={provider} onChange={event => { const id = event.target.value as ProviderId; setProvider(id); setModel(defaultModelFor(id, preset)); setKey(id === 'preset' && preset ? preset.apiKey : ''); if (id === 'preset' && preset) setEndpoint(preset.endpoint); dirty(); }}>
           <optgroup label={t('kindCloud')}>{cloudEntries.map(([id, info]) => <option key={id} value={id}>{optionLabel(info.name, info.kind, id)}</option>)}</optgroup>
           <optgroup label={t('kindLocal')}>
             {localEntries.map(([id, info]) => <option key={id} value={id}>{optionLabel(info.name, info.kind, id)}</option>)}
             <option value="custom">{optionLabel(CUSTOM.name, CUSTOM.kind, 'custom')}</option>
           </optgroup>
+          {preset && <optgroup label={t('kindPreset')}><option value="preset">{optionLabel(preset.name, PRESET.kind, 'preset')}</option></optgroup>}
           {builtin && <optgroup label={t('kindBuiltin')}><option value="builtin">{optionLabel(BUILTIN.name, BUILTIN.kind, 'builtin')}</option></optgroup>}
         </select>
         {savedKeys.has(provider) && <span className="badge badge-saved" title={t('psKeySavedTitle')}>🔑 {t('psKeySaved')}</span>}
@@ -157,14 +200,15 @@ export function ProviderSettings({ disabled, onChange }: Props) {
       {provider === 'builtin' ? <p className="hint">{builtin === 'available'
         ? t('psBuiltinReady')
         : t('psBuiltinDownload')}</p> : <>
-        {provider === 'custom' && <label>{t('psEndpointUrl')}<input value={endpoint} placeholder="http://localhost:11434/v1/chat/completions" autoComplete="off" spellCheck={false} onChange={event => { setEndpoint(event.target.value); dirty(); }} /></label>}
-        <label>{t('psModelId')}<input value={model} placeholder={kind === 'local' ? t('psModelPlaceholderLocal') : t('psModelPlaceholderCloud')} autoComplete="off" spellCheck={false} onChange={event => { setModel(event.target.value); dirty(); }} /></label>
-        <label>{kind === 'local' ? t('psApiKeyOptional') : t('psApiKey')}{kind === 'cloud' && provider !== 'custom' && <a className="link-button" href={PROVIDERS[provider].keyUrl} target="_blank" rel="noreferrer">{t('psGetApiKey')}</a>}<input type="password" value={apiKey} autoComplete="off" spellCheck={false} placeholder={kind === 'local' ? t('psKeyPlaceholderLocal') : t('psKeyPlaceholderCloud')} onChange={event => { setKey(event.target.value); dirty(); }} /></label>
+        {(provider === 'custom' || provider === 'preset') && <label>{t('psEndpointUrl')}<input value={endpoint} readOnly={provider === 'preset'} disabled={provider === 'preset'} placeholder="http://localhost:11434/v1/chat/completions" autoComplete="off" spellCheck={false} onChange={event => { setEndpoint(event.target.value); dirty(); }} /></label>}
+        <label>{t('psModelId')}<input value={model} readOnly={provider === 'preset'} disabled={provider === 'preset'} placeholder={kind === 'local' ? t('psModelPlaceholderLocal') : t('psModelPlaceholderCloud')} autoComplete="off" spellCheck={false} onChange={event => { setModel(event.target.value); dirty(); }} /></label>
+        <label>{kind === 'local' ? t('psApiKeyOptional') : t('psApiKey')}{kind === 'cloud' && provider !== 'custom' && provider !== 'preset' && <a className="link-button" href={PROVIDERS[provider].keyUrl} target="_blank" rel="noreferrer">{t('psGetApiKey')}</a>}<input type="password" value={apiKey} readOnly={provider === 'preset'} disabled={provider === 'preset'} autoComplete="off" spellCheck={false} placeholder={kind === 'local' ? t('psKeyPlaceholderLocal') : t('psKeyPlaceholderCloud')} onChange={event => { setKey(event.target.value); dirty(); }} /></label>
       </>}
-      {kind === 'cloud' && <p className="notice notice-cloud" role="note"><Rich message={t('psNoticeCloud', [nameOf(provider)])} /></p>}
+      {kind === 'cloud' && <p className="notice notice-cloud" role="note"><Rich message={t('psNoticeCloud', [nameOf(provider, preset)])} /></p>}
       {(provider === 'ollama' || provider === 'lmstudio') && <p className="notice notice-local" role="note"><Rich message={t('psNoticeLocal', [PROVIDERS[provider].name, PROVIDERS[provider].keyUrl, PROVIDERS[provider].defaultModel])} /></p>}
       {provider === 'custom' && <p className="notice notice-local" role="note"><Rich message={t('psNoticeCustom')} /></p>}
-      <div className="button-row"><button type="button" onClick={() => void save()}>{provider === 'builtin' ? t('psEnableBuiltinModel') : kind === 'local' ? t('psSaveVerify') : t('psSaveVerifyKey')}</button>{provider !== 'builtin' && <button type="button" className="secondary" onClick={() => void remove()}>{t('psRemoveKey')}</button>}</div>
+      {provider === 'preset' && <p className="notice notice-local" role="note"><Rich message={t('psNoticePreset')} /></p>}
+      <div className="button-row"><button type="button" onClick={() => void save()}>{provider === 'builtin' ? t('psEnableBuiltinModel') : provider === 'preset' ? t('psUsePreset') : kind === 'local' ? t('psSaveVerify') : t('psSaveVerifyKey')}</button>{provider !== 'builtin' && provider !== 'preset' && <button type="button" className="secondary" onClick={() => void remove()}>{t('psRemoveKey')}</button>}</div>
     </fieldset>
     <p className="hint" role="status">{status}</p>
     <p className="hint">{t('psKeyHint')}</p>
