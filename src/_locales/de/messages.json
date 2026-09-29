@@ -27,7 +27,9 @@
     "message": "KI, hilf mir beim Ausfüllen ($COUNT$)",
     "placeholders": { "count": { "content": "$1" } }
   },
-  "footerNote": { "message": "Die Dokumentenanalyse bleibt lokal. KI-Vorschläge senden extrahierten Text und Feldmetadaten nach Ihrer Zustimmung an den von Ihnen gewählten Anbieter. Das Schließen dieses Bereichs kann die Arbeit abbrechen; Anfragen werden niemals automatisch fortgesetzt." },
+  "footerPrivacyBuiltin": { "message": "Datenschutz: Text wird lokal vom On-Device-Modell des Browsers verarbeitet – er verlässt dieses Gerät nie, und es gibt keine Netzwerkanfragen." },
+  "footerPrivacyLocal": { "message": "Datenschutz: Anfragen gehen nur an einen lokalen oder Intranet-Server; nichts wird in die Cloud gesendet." },
+  "footerPrivacyCloud": { "message": "Datenschutz: Extrahierter Dokumenttext und Feldmetadaten werden an diesen Cloud-Anbieter gesendet; dessen Aufbewahrungsrichtlinie und API-Kosten gelten." },
   "progressReadingPage": {
     "message": "Seite $PAGE$ von $TOTAL$ wird lokal gelesen…",
     "placeholders": { "page": { "content": "$1" }, "total": { "content": "$2" } }
@@ -77,6 +79,7 @@
   },
   "consentProviderFallback": { "message": "Ihr gewählter Anbieter" },
   "consentDestinationBuiltin": { "message": "Gerätemodell (keine Netzwerkanfrage)" },
+  "providerLabel": { "message": "Anbieter:" },
   "destinationLabel": { "message": "Ziel:" },
   "modelLabel": { "message": "Modell:" },
   "previewOutgoing": { "message": "Ausgehende Daten anzeigen" },

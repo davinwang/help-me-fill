@@ -39,7 +39,9 @@
     "message": "AI help me fill ($COUNT$)",
     "placeholders": { "count": { "content": "$1" } }
   },
-  "footerNote": { "message": "Document parsing stays local. AI suggestions send extracted text and field metadata to your chosen provider after consent. Closing this panel may cancel work; requests are never resumed automatically." },
+  "footerPrivacyBuiltin": { "message": "Privacy: text is processed locally by the browser's on-device model — it never leaves this device and no network requests are made." },
+  "footerPrivacyLocal": { "message": "Privacy: requests go only to a local or intranet server; nothing is sent to the cloud." },
+  "footerPrivacyCloud": { "message": "Privacy: extracted document text and field metadata are sent to this cloud provider; its data-retention policy and API costs apply." },
   "progressReadingPage": {
     "message": "Reading page $PAGE$ of $TOTAL$ locally…",
     "placeholders": { "page": { "content": "$1" }, "total": { "content": "$2" } }
@@ -89,6 +91,7 @@
   },
   "consentProviderFallback": { "message": "your selected provider" },
   "consentDestinationBuiltin": { "message": "On-device model (no network request)" },
+  "providerLabel": { "message": "Provider:" },
   "destinationLabel": { "message": "Destination:" },
   "modelLabel": { "message": "Model:" },
   "previewOutgoing": { "message": "Preview outgoing data" },

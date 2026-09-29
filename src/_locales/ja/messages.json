@@ -27,7 +27,9 @@
     "message": "AI に入力してもらう（$COUNT$）",
     "placeholders": { "count": { "content": "$1" } }
   },
-  "footerNote": { "message": "文書の解析は常にローカルで行われます。AI の提案は、同意後に抽出テキストとフィールドのメタデータを選択したプロバイダーへ送信します。このパネルを閉じると処理がキャンセルされる場合があります。リクエストが自動的に再開されることはありません。" },
+  "footerPrivacyBuiltin": { "message": "プライバシー：テキストはブラウザーのオンデバイスモデルがローカルで処理します。このデバイスの外には出ず、ネットワーク要求も行いません。" },
+  "footerPrivacyLocal": { "message": "プライバシー：要求はローカルまたはイントラネットのサーバーにのみ送信され、クラウドには送信されません。" },
+  "footerPrivacyCloud": { "message": "プライバシー：抽出した文書テキストとフィールドのメタデータはこのクラウドプロバイダーに送信されます。プロバイダーのデータ保持ポリシーと API 料金が適用されます。" },
   "progressReadingPage": {
     "message": "$TOTAL$ ページ中 $PAGE$ ページ目をローカルで読み取り中…",
     "placeholders": { "page": { "content": "$1" }, "total": { "content": "$2" } }
@@ -77,6 +79,7 @@
   },
   "consentProviderFallback": { "message": "選択したプロバイダー" },
   "consentDestinationBuiltin": { "message": "デバイス上モデル（ネットワークリクエストなし）" },
+  "providerLabel": { "message": "プロバイダー:" },
   "destinationLabel": { "message": "送信先:" },
   "modelLabel": { "message": "モデル:" },
   "previewOutgoing": { "message": "送信データをプレビュー" },

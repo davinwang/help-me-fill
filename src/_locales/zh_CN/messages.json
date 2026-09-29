@@ -27,7 +27,9 @@
     "message": "AI 帮我填（$COUNT$）",
     "placeholders": { "count": { "content": "$1" } }
   },
-  "footerNote": { "message": "文档解析始终在本地完成。AI 建议会在你同意后，将提取文本与字段元数据发送给你选择的服务商。关闭本面板可能取消工作；请求绝不会被自动恢复。" },
+  "footerPrivacyBuiltin": { "message": "隐私：文本由浏览器端侧模型在本地处理，绝不会离开此设备，无网络请求。" },
+  "footerPrivacyLocal": { "message": "隐私：请求仅发往本地或内网服务器，不会发送到云端。" },
+  "footerPrivacyCloud": { "message": "隐私：提取的文档文本与字段元数据会发送到该云端服务商，适用其数据保留政策与 API 费用。" },
   "progressReadingPage": {
     "message": "正在本地读取第 $PAGE$ 页，共 $TOTAL$ 页…",
     "placeholders": { "page": { "content": "$1" }, "total": { "content": "$2" } }
@@ -77,6 +79,7 @@
   },
   "consentProviderFallback": { "message": "你选择的服务商" },
   "consentDestinationBuiltin": { "message": "端侧模型（无网络请求）" },
+  "providerLabel": { "message": "服务商：" },
   "destinationLabel": { "message": "目标：" },
   "modelLabel": { "message": "模型：" },
   "previewOutgoing": { "message": "预览将发送的数据" },

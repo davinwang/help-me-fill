@@ -27,7 +27,9 @@
     "message": "L'IA m'aide à remplir ($COUNT$)",
     "placeholders": { "count": { "content": "$1" } }
   },
-  "footerNote": { "message": "L'analyse des documents reste locale. Les suggestions de l'IA envoient le texte extrait et les métadonnées des champs au fournisseur de votre choix après consentement. Fermer ce panneau peut annuler le travail ; les requêtes ne sont jamais reprises automatiquement." },
+  "footerPrivacyBuiltin": { "message": "Confidentialité : le texte est traité localement par le modèle embarqué du navigateur — il ne quitte jamais cet appareil et aucune requête réseau n'est effectuée." },
+  "footerPrivacyLocal": { "message": "Confidentialité : les requêtes vont uniquement à un serveur local ou intranet ; rien n'est envoyé au cloud." },
+  "footerPrivacyCloud": { "message": "Confidentialité : le texte extrait du document et les métadonnées des champs sont envoyés à ce fournisseur cloud ; sa politique de conservation des données et les coûts d'API s'appliquent." },
   "progressReadingPage": {
     "message": "Lecture locale de la page $PAGE$ sur $TOTAL$…",
     "placeholders": { "page": { "content": "$1" }, "total": { "content": "$2" } }
@@ -77,6 +79,7 @@
   },
   "consentProviderFallback": { "message": "votre fournisseur sélectionné" },
   "consentDestinationBuiltin": { "message": "Modèle sur l'appareil (aucune requête réseau)" },
+  "providerLabel": { "message": "Fournisseur :" },
   "destinationLabel": { "message": "Destination :" },
   "modelLabel": { "message": "Modèle :" },
   "previewOutgoing": { "message": "Aperçu des données sortantes" },

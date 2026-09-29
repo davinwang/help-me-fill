@@ -27,7 +27,9 @@
     "message": "AI 幫我填（$COUNT$）",
     "placeholders": { "count": { "content": "$1" } }
   },
-  "footerNote": { "message": "文件解析一律在本機完成。AI 建議會在你同意後，將擷取文字與欄位中繼資料傳送給你選擇的服務商。關閉此面板可能取消工作；請求絕不會自動恢復。" },
+  "footerPrivacyBuiltin": { "message": "隱私：文字由瀏覽器端側模型在本機處理，絕不會離開此裝置，無網路請求。" },
+  "footerPrivacyLocal": { "message": "隱私：請求僅送往本機或內部網路伺服器，不會傳送到雲端。" },
+  "footerPrivacyCloud": { "message": "隱私：擷取的文件文字與欄位中繼資料會傳送到該雲端服務商，適用其資料保留政策與 API 費用。" },
   "progressReadingPage": {
     "message": "正在本機讀取第 $PAGE$ 頁，共 $TOTAL$ 頁…",
     "placeholders": { "page": { "content": "$1" }, "total": { "content": "$2" } }
@@ -77,6 +79,7 @@
   },
   "consentProviderFallback": { "message": "你選擇的服務商" },
   "consentDestinationBuiltin": { "message": "裝置端模型（無網路請求）" },
+  "providerLabel": { "message": "服務商：" },
   "destinationLabel": { "message": "目標：" },
   "modelLabel": { "message": "模型：" },
   "previewOutgoing": { "message": "預覽將傳送的資料" },

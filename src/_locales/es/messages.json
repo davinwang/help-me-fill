@@ -27,7 +27,9 @@
     "message": "IA, ayúdame a rellenar ($COUNT$)",
     "placeholders": { "count": { "content": "$1" } }
   },
-  "footerNote": { "message": "El análisis del documento permanece local. Las sugerencias de la IA envían el texto extraído y los metadatos de los campos al proveedor que elijas tras tu consentimiento. Cerrar este panel puede cancelar el trabajo; las solicitudes nunca se reanudan automáticamente." },
+  "footerPrivacyBuiltin": { "message": "Privacidad: el texto se procesa localmente con el modelo integrado del navegador; nunca sale de este dispositivo y no se realizan solicitudes de red." },
+  "footerPrivacyLocal": { "message": "Privacidad: las solicitudes van solo a un servidor local o de intranet; no se envía nada a la nube." },
+  "footerPrivacyCloud": { "message": "Privacidad: el texto extraído del documento y los metadatos de los campos se envían a este proveedor en la nube; se aplican su política de retención de datos y los costes de API." },
   "progressReadingPage": {
     "message": "Leyendo localmente la página $PAGE$ de $TOTAL$…",
     "placeholders": { "page": { "content": "$1" }, "total": { "content": "$2" } }
@@ -77,6 +79,7 @@
   },
   "consentProviderFallback": { "message": "tu proveedor seleccionado" },
   "consentDestinationBuiltin": { "message": "Modelo en el dispositivo (sin solicitud de red)" },
+  "providerLabel": { "message": "Proveedor:" },
   "destinationLabel": { "message": "Destino:" },
   "modelLabel": { "message": "Modelo:" },
   "previewOutgoing": { "message": "Previsualizar los datos salientes" },
