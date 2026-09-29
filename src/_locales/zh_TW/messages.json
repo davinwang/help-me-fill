@@ -51,10 +51,11 @@
   "errAddOneDocument": { "message": "請一次新增一個文件；已解析的文件會保留在下方清單中。" },
   "dropZoneLabel": { "message": "文件上傳" },
   "dropZoneTitle": { "message": "從你的文件開始" },
-  "dropZoneBody": { "message": "將文件拖到此處，或選擇一個檔案。可視需要新增多個。" },
+  "dropZoneBody": { "message": "將文件拖到此處或選擇檔案，文件內容將作為表單欄位值的來源，可視需要新增多個。" },
   "chooseDocument": { "message": "選擇文件" },
+  "chooseMoreDocuments": { "message": "選擇更多文件" },
   "chooseDocumentFile": { "message": "選擇文件檔案" },
-  "dropZoneFormats": { "message": "PDF · Word (.docx) · Excel (.xlsx/.xls) · Markdown (.md) · 文字 (.txt) · 每個 10 MiB" },
+  "dropZoneFormats": { "message": "PDF · Word · Excel · Markdown · 文字 · 每個 10 MiB" },
 
   "parsed": { "message": "已解析" },
   "removeDocument": {

@@ -51,10 +51,11 @@
   "errAddOneDocument": { "message": "Ajoutez un document à la fois ; les documents analysés restent dans la liste ci-dessous." },
   "dropZoneLabel": { "message": "Téléversement de document" },
   "dropZoneTitle": { "message": "Commencez avec vos documents" },
-  "dropZoneBody": { "message": "Déposez des documents ici, ou choisissez un fichier. Ajoutez-en autant que nécessaire." },
+  "dropZoneBody": { "message": "Déposez des documents ici, ou choisissez un fichier. Leur contenu fournit les valeurs des champs du formulaire. Ajoutez-en autant que nécessaire." },
   "chooseDocument": { "message": "Choisir un document" },
+  "chooseMoreDocuments": { "message": "Choisir d'autres documents" },
   "chooseDocumentFile": { "message": "Choisir un fichier de document" },
-  "dropZoneFormats": { "message": "PDF · Word (.docx) · Excel (.xlsx/.xls) · Markdown (.md) · Texte (.txt) · 10 Mio chacun" },
+  "dropZoneFormats": { "message": "PDF · Word · Excel · Markdown · Texte · 10 Mio chacun" },
 
   "parsed": { "message": "Analysé" },
   "removeDocument": {

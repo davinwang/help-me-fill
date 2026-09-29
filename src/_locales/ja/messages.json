@@ -51,10 +51,11 @@
   "errAddOneDocument": { "message": "文書は一度に 1 つずつ追加してください。解析済みの文書は下の一覧に残ります。" },
   "dropZoneLabel": { "message": "文書のアップロード" },
   "dropZoneTitle": { "message": "あなたの文書から始めましょう" },
-  "dropZoneBody": { "message": "文書をここにドロップするか、ファイルを選択してください。必要なだけ追加できます。" },
+  "dropZoneBody": { "message": "文書をここにドロップするか、ファイルを選択してください。文書の内容がフォーム項目に入力する値のソースになります。必要なだけ追加できます。" },
   "chooseDocument": { "message": "文書を選択" },
+  "chooseMoreDocuments": { "message": "文書をさらに選択" },
   "chooseDocumentFile": { "message": "文書ファイルを選択" },
-  "dropZoneFormats": { "message": "PDF · Word (.docx) · Excel (.xlsx/.xls) · Markdown (.md) · テキスト (.txt) · 各 10 MiB" },
+  "dropZoneFormats": { "message": "PDF · Word · Excel · Markdown · テキスト · 各 10 MiB" },
 
   "parsed": { "message": "解析済み" },
   "removeDocument": {

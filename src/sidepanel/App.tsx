@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { ProviderSettings } from './components/ProviderSettings';
 import { DropZone } from './components/DropZone';
-import { DocumentPreview } from './components/DocumentPreview';
 import { DisclosurePreview } from './components/DisclosurePreview';
 import { PageFields } from './components/PageFields';
 import { FillResults } from './components/FillResults';
@@ -227,10 +226,10 @@ export function App() {
       {busy && <div className="progress" role="status"><span className="spinner" aria-hidden="true" /><span>{state.progress ?? ({ parsing: t('progressParsing'), mapping: t('progressMapping'), filling: t('progressFilling'), undoing: t('progressUndoing') } as Record<string, string>)[state.phase]}</span><button type="button" className="link-button" onClick={cancel}>{t('cancel')}</button></div>}
       {state.scanError && <div className="notice scan-notice" role="status"><span>{state.scanError}</span><button type="button" className="link-button" onClick={() => void sync()}>{t('retryScan')}</button></div>}
       <div className={needsDocument ? 'attention' : ''}>
-        <DropZone disabled={busy} onFile={upload} onError={error => dispatch({ type: 'ERROR', error })} />
+        <DropZone disabled={busy} documents={state.documents} onFile={upload} onError={error => dispatch({ type: 'ERROR', error })}
+          onRemove={index => { abortRun(); dispatch({ type: 'REMOVE_DOCUMENT', index }); }} />
       </div>
       {needsDocument && <p className="prompt" role="status">{t('selectDocumentPrompt', [scan!.fields.length])}</p>}
-      {state.documents.map((document, index) => <DocumentPreview key={`${document.name}-${index}`} document={document} disabled={busy} onRemove={() => { abortRun(); dispatch({ type: 'REMOVE_DOCUMENT', index }); }} />)}
       {detected && <PageFields state={state} dispatch={dispatch} disabled={locked} onFill={fill} />}
       {detected && !!state.documents.length && !review && autoSend === true && <p className="hint auto-send-status" role="status">{t('autoSendStatus', [resolveProvider(settings).name])} <button type="button" className="link-button" onClick={() => changeAutoSend(false)}>{t('autoSendOff')}</button></p>}
       {showConsent && <DisclosurePreview document={mergeDocuments(state.documents)} scan={scan!} settings={settings} autoSend={false} disabled={busy} onGenerate={generate} onAutoSend={changeAutoSend} />}

@@ -51,10 +51,11 @@
   "errAddOneDocument": { "message": "أضف مستندًا واحدًا في كل مرة؛ تبقى المستندات المحلّلة في القائمة أدناه." },
   "dropZoneLabel": { "message": "رفع المستندات" },
   "dropZoneTitle": { "message": "ابدأ بمستنداتك" },
-  "dropZoneBody": { "message": "أفلت المستندات هنا، أو اختر ملفًا. أضف ما تحتاجه." },
+  "dropZoneBody": { "message": "أفلت المستندات هنا، أو اختر ملفًا. يوفّر محتواها قيم حقول النموذج. أضف ما تحتاجه." },
   "chooseDocument": { "message": "اختر مستندًا" },
+  "chooseMoreDocuments": { "message": "اختر المزيد من المستندات" },
   "chooseDocumentFile": { "message": "اختر ملف مستند" },
-  "dropZoneFormats": { "message": "PDF · Word (.docx) · Excel (.xlsx/.xls) · Markdown (.md) · نص (.txt) · 10 ميبيبايت لكل ملف" },
+  "dropZoneFormats": { "message": "PDF · Word · Excel · Markdown · نص · 10 ميبيبايت لكل ملف" },
 
   "parsed": { "message": "تم التحليل" },
   "removeDocument": {

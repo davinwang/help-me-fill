@@ -51,10 +51,11 @@
   "errAddOneDocument": { "message": "请一次添加一个文档；已解析的文档会保留在下方列表中。" },
   "dropZoneLabel": { "message": "文档上传" },
   "dropZoneTitle": { "message": "从你的文档开始" },
-  "dropZoneBody": { "message": "将文档拖到此处，或选择一个文件。可按需添加多个。" },
+  "dropZoneBody": { "message": "将文档拖到此处或选择文件，文档内容将作为表单字段值的来源，可按需添加多个。" },
   "chooseDocument": { "message": "选择文档" },
+  "chooseMoreDocuments": { "message": "选择更多文档" },
   "chooseDocumentFile": { "message": "选择文档文件" },
-  "dropZoneFormats": { "message": "PDF · Word (.docx) · Excel (.xlsx/.xls) · Markdown (.md) · 文本 (.txt) · 每个 10 MiB" },
+  "dropZoneFormats": { "message": "PDF · Word · Excel · Markdown · 文本 · 每个 10 MiB" },
 
   "parsed": { "message": "已解析" },
   "removeDocument": {

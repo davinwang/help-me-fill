@@ -63,10 +63,11 @@
   "errAddOneDocument": { "message": "Add one document at a time; parsed documents stay in the list below." },
   "dropZoneLabel": { "message": "Document upload" },
   "dropZoneTitle": { "message": "Start with your documents" },
-  "dropZoneBody": { "message": "Drop documents here, or choose a file. Add as many as you need." },
+  "dropZoneBody": { "message": "Drop documents here, or choose a file — their content is the source of your form's field values. Add as many as you need." },
   "chooseDocument": { "message": "Choose document" },
+  "chooseMoreDocuments": { "message": "Choose more documents" },
   "chooseDocumentFile": { "message": "Choose a document file" },
-  "dropZoneFormats": { "message": "PDF · Word (.docx) · Excel (.xlsx/.xls) · Markdown (.md) · Text (.txt) · 10 MiB each" },
+  "dropZoneFormats": { "message": "PDF · Word · Excel · Markdown · Text · 10 MiB each" },
 
   "parsed": { "message": "Parsed" },
   "removeDocument": {
