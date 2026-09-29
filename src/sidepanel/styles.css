@@ -43,6 +43,11 @@ button.icon-button::after { content: attr(data-tooltip); position: absolute; top
 button.icon-button:hover:not(:disabled)::after, button.icon-button:focus-visible::after { opacity: 1; }
 button.wide { width: 100%; margin-top: 8px; }
 .doc-card { padding: 12px 16px; }
+/* The summary row itself is the disclosure control, so the native marker is
+hidden; the parsed badge hints the toggle through its tooltip. */
+.doc-card summary { list-style: none; }
+.doc-card summary::-webkit-details-marker { display: none; }
+.kind-icon { flex-shrink: 0; display: block; }
 .doc-card .section-top { gap: 8px; }
 .doc-card .badge { margin-inline-end: auto; }
 .button-row { flex-wrap: wrap; }
