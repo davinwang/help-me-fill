@@ -114,12 +114,11 @@
   "generateCloudFallback": { "message": "provider" },
   "enableProviderToContinue": { "message": "Enable a provider above to continue." },
 
-  "fieldsEyebrow": { "message": "Detected on this page" },
   "fieldsTitle": {
     "message": "$COUNT$ fillable fields detected",
     "placeholders": { "count": { "content": "$1" } }
   },
-  "fieldsHint": { "message": "These are the page's current values. Detection keeps running as you switch pages or the form changes." },
+  "fieldsHint": { "message": "These are the page's current values; the switches unlock once fields are matched." },
   "selectDocumentPrompt": { "message": "Fields detected — add a document so AI can match them." },
   "fieldEmpty": { "message": "(no value yet)" },
   "useMatchedValue": {
@@ -151,7 +150,7 @@
   "autoSendDialogConfirm": { "message": "Enable auto-send" },
 
   "unlabeledField": { "message": "Unlabeled field" },
-  "reviewHint": { "message": "Evidence shows where text came from, not that the match is correct. Each switch chooses between the matched value and the page's current value; only switched-on fields are written." },
+  "reviewHint": { "message": "Matches are suggestions — review each one; only switched-on fields are written." },
   "chooseOption": { "message": "(choose an option)" },
   "checkboxTrue": { "message": "true — tick this box" },
   "checkboxFalse": { "message": "false — leave / untick" },

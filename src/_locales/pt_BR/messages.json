@@ -102,12 +102,11 @@
   "generateCloudFallback": { "message": "provedor" },
   "enableProviderToContinue": { "message": "Ative um provedor acima para continuar." },
 
-  "fieldsEyebrow": { "message": "Detectado nesta página" },
   "fieldsTitle": {
     "message": "$COUNT$ campos preenchíveis detectados",
     "placeholders": { "count": { "content": "$1" } }
   },
-  "fieldsHint": { "message": "Estes são os valores atuais da página. A detecção continua ao trocar de página ou quando o formulário muda." },
+  "fieldsHint": { "message": "Estes são os valores atuais da página; as chaves ficam disponíveis após a correspondência." },
   "selectDocumentPrompt": { "message": "Campos detectados — adicione um documento para a IA conseguir associá-los." },
   "fieldEmpty": { "message": "(ainda sem valor)" },
   "useMatchedValue": {
@@ -139,7 +138,7 @@
   "autoSendDialogConfirm": { "message": "Ativar o envio automático" },
 
   "unlabeledField": { "message": "Campo sem rótulo" },
-  "reviewHint": { "message": "As evidências mostram de onde o texto veio, não que a correspondência esteja correta. Cada chave escolhe entre o valor associado e o valor atual da página; apenas campos ativados são escritos." },
+  "reviewHint": { "message": "As correspondências são apenas sugestões — revise cada uma; apenas campos ativados são escritos." },
   "chooseOption": { "message": "(escolha uma opção)" },
   "checkboxTrue": { "message": "true — marcar esta caixa" },
   "checkboxFalse": { "message": "false — deixar / desmarcar" },

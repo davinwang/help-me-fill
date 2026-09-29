@@ -102,12 +102,11 @@
   "generateCloudFallback": { "message": "المزوّد" },
   "enableProviderToContinue": { "message": "قم بتمكين مزوّد أعلاه للمتابعة." },
 
-  "fieldsEyebrow": { "message": "تم اكتشافه في هذه الصفحة" },
   "fieldsTitle": {
     "message": "تم اكتشاف $COUNT$ حقلًا قابلًا للتعبئة",
     "placeholders": { "count": { "content": "$1" } }
   },
-  "fieldsHint": { "message": "هذه هي القيم الحالية للصفحة. يستمر الاكتشاف عند تبديل الصفحات أو تغيّر النموذج." },
+  "fieldsHint": { "message": "هذه هي القيم الحالية للصفحة؛ وتصبح المفاتيح متاحة بعد المطابقة." },
   "selectDocumentPrompt": { "message": "تم اكتشاف حقول — أضف مستندًا ليتمكن الذكاء الاصطناعي من مطابقتها." },
   "fieldEmpty": { "message": "(لا توجد قيمة بعد)" },
   "useMatchedValue": {
@@ -139,7 +138,7 @@
   "autoSendDialogConfirm": { "message": "تفعيل الإرسال التلقائي" },
 
   "unlabeledField": { "message": "حقل بلا تسمية" },
-  "reviewHint": { "message": "توضّح الأدلة مصدر النص، لا أن المطابقة صحيحة. يختار كل مفتاح بين القيمة المطابقة والقيمة الحالية للصفحة؛ ولا تتم كتابة سوى الحقول المفعّلة." },
+  "reviewHint": { "message": "المطابقات اقتراحات فقط؛ راجع كلًا منها؛ لا تتم كتابة سوى الحقول المفعّلة." },
   "chooseOption": { "message": "(اختر خيارًا)" },
   "checkboxTrue": { "message": "true — ضع علامة في هذا المربع" },
   "checkboxFalse": { "message": "false — اتركه / أزل العلامة" },

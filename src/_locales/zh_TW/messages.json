@@ -102,12 +102,11 @@
   "generateCloudFallback": { "message": "服務商" },
   "enableProviderToContinue": { "message": "請在上方啟用一個服務商以繼續。" },
 
-  "fieldsEyebrow": { "message": "在此頁面偵測到" },
   "fieldsTitle": {
     "message": "偵測到 $COUNT$ 個可填欄位",
     "placeholders": { "count": { "content": "$1" } }
   },
-  "fieldsHint": { "message": "這裡顯示頁面目前值。切換頁面或表單變化時會持續偵測。" },
+  "fieldsHint": { "message": "這裡顯示頁面目前值；各列開關在配對後可用。" },
   "selectDocumentPrompt": { "message": "已偵測到欄位——加入一份文件，讓 AI 幫你配對。" },
   "fieldEmpty": { "message": "（尚無值）" },
   "useMatchedValue": {
@@ -139,7 +138,7 @@
   "autoSendDialogConfirm": { "message": "開啟自動傳送" },
 
   "unlabeledField": { "message": "無標籤欄位" },
-  "reviewHint": { "message": "證據顯示文字來自何處，並不代表對應一定正確。每列的開關在配對值與頁面目前值之間選擇；只有開啟的欄位才會寫入。" },
+  "reviewHint": { "message": "配對僅供參考，請逐項核對；只有開啟的欄位才會寫入。" },
   "chooseOption": { "message": "（請選擇一個選項）" },
   "checkboxTrue": { "message": "true — 勾選此項" },
   "checkboxFalse": { "message": "false — 保留 / 不勾選" },

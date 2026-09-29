@@ -18,7 +18,7 @@ for (const framework of ['native', 'react', 'vue']) {
       expect(await app.panel.evaluate(() => !!document.querySelector('.attention .drop-zone'))).toBe(true);
       expect(await app.panel.evaluate(() => [...document.querySelectorAll('.field-list li')].map(item => item.querySelector('.section-top strong')?.textContent)))
         .toEqual(scenario.fields.map(field => field.label));
-      expect(await app.panel.text()).not.toContain('Evidence shows where text came from');
+      expect(await app.panel.text()).not.toContain('Matches are suggestions');
       await app.panel.upload(`tests/fixtures/generated/${scenario.id}.pdf`);
       await expect.poll(() => app.panel.text()).toContain(`${scenario.id}.pdf`);
       // A cloud provider starts manual: the disclosure card appears by itself,
@@ -31,7 +31,7 @@ for (const framework of ['native', 'react', 'vue']) {
       await app.panel.send('Fetch.enable', { patterns: [{ urlPattern: 'http*', requestStage: 'Request' }] });
       installMappingMock(app, scenario, counts);
       await app.panel.click('Send to OpenAI and generate suggestions');
-      await expect.poll(() => app.panel.text()).toContain('Evidence shows where text came from');
+      await expect.poll(() => app.panel.text()).toContain('Matches are suggestions');
       expect(counts.error).toBe(''); expect(counts.requests).toBe(1);
       // Empty page fields are armed by default; the page keeps its values.
       const switches = () => app.panel.evaluate(() => [...document.querySelectorAll('.field-list input.switch')].map(input => (input as HTMLInputElement).checked));
@@ -113,7 +113,7 @@ test('auto-send asks first and then matches automatically', async ({}, info) => 
     await expect.poll(() => counts.requests).toBe(1);
     expect(await app.page.locator('input[name="fullName"]').inputValue()).toBe('');
     counts.release!();
-    await expect.poll(() => app.panel.text()).toContain('Evidence shows where text came from');
+    await expect.poll(() => app.panel.text()).toContain('Matches are suggestions');
     expect(counts.error).toBe('');
     expect(await app.panel.evaluate(() => document.querySelectorAll('.field-list input.switch:checked').length)).toBe(10);
     const stored = await app.panel.evaluate(() => chrome.storage.local.get(null));

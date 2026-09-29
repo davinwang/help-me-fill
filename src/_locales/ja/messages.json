@@ -102,12 +102,11 @@
   "generateCloudFallback": { "message": "プロバイダー" },
   "enableProviderToContinue": { "message": "続行するには上でプロバイダーを有効にしてください。" },
 
-  "fieldsEyebrow": { "message": "このページで検出" },
   "fieldsTitle": {
     "message": "$COUNT$ 個の入力可能なフィールドを検出",
     "placeholders": { "count": { "content": "$1" } }
   },
-  "fieldsHint": { "message": "表示しているのはページの現在の値です。ページを切り替えたりフォームが変わると、検出は自動的に続行します。" },
+  "fieldsHint": { "message": "表示しているのはページの現在の値です。スイッチは照合後に使えるようになります。" },
   "selectDocumentPrompt": { "message": "フィールドを検出しました。文書を追加すると AI が照合できます。" },
   "fieldEmpty": { "message": "（値なし）" },
   "useMatchedValue": {
@@ -139,7 +138,7 @@
   "autoSendDialogConfirm": { "message": "自動送信を有効にする" },
 
   "unlabeledField": { "message": "ラベルのないフィールド" },
-  "reviewHint": { "message": "根拠はテキストの出所を示すものであり、照合が正しいことを保証しません。各スイッチで照合した値とページの現在値のどちらを使うかを選べます。書き込まれるのはオンにしたフィールドだけです。" },
+  "reviewHint": { "message": "照合は参考情報です。必ず確認してください。書き込まれるのはオンにしたフィールドだけです。" },
   "chooseOption": { "message": "（オプションを選択）" },
   "checkboxTrue": { "message": "true — このボックスをオンにする" },
   "checkboxFalse": { "message": "false — そのまま / オフにする" },

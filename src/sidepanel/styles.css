@@ -94,9 +94,15 @@ pre, .text-preview { max-height: 230px; overflow: auto; white-space: pre-wrap; o
 .spinner { width: 14px; height: 14px; flex-shrink: 0; border: 2px solid #c8c2f1; border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 /* Matched rows keep the compact field-list look: the switch rides the
-   section-top row and the editor replaces the value line in place. */
+   section-top row and the editor replaces the value line in place. The
+   unmatched reason and the evidence toggle ride the field-name line too; only
+   the opened evidence body takes its own block below the row. */
 .field-list .section-top .switch { flex-shrink: 0; }
-.field-list details { margin-top: 6px; }
+.unmatched-inline { margin-inline-start: 5px; font-size: 11px; color: var(--muted); }
+.field-list .evidence-toggle { margin-inline-start: 6px; padding: 0; border: 0; background: transparent; color: var(--accent); font: inherit; font-size: 11px; font-weight: 600; cursor: pointer; }
+.field-list .evidence-toggle::before { content: '▸ '; font-size: 9px; }
+.field-list .evidence-toggle[aria-expanded='true']::before { content: '▾ '; }
+.field-list .evidence-body { margin-top: 6px; }
 .field-list .replace-hint { margin-top: 4px; }
 .check-label { display: flex; align-items: center; gap: 7px; font-size: 12px; line-height: 1.5; }
 input[type=checkbox] { accent-color: var(--accent); margin: 0; width: 15px; height: 15px; flex-shrink: 0; }

@@ -102,12 +102,11 @@
   "generateCloudFallback": { "message": "服务商" },
   "enableProviderToContinue": { "message": "请在上方启用一个服务商以继续。" },
 
-  "fieldsEyebrow": { "message": "在此页面检测到" },
   "fieldsTitle": {
     "message": "检测到 $COUNT$ 个可填字段",
     "placeholders": { "count": { "content": "$1" } }
   },
-  "fieldsHint": { "message": "这里显示页面当前值。切换页面或表单变化时会持续检测。" },
+  "fieldsHint": { "message": "这里显示页面当前值；各行开关在匹配后可用。" },
   "selectDocumentPrompt": { "message": "已检测到字段——添加一个文档，让 AI 帮你匹配。" },
   "fieldEmpty": { "message": "（暂无值）" },
   "useMatchedValue": {
@@ -139,10 +138,10 @@
   "autoSendDialogConfirm": { "message": "开启自动发送" },
 
   "unlabeledField": { "message": "无标签字段" },
-  "reviewHint": { "message": "证据显示文本来自何处，并不代表匹配一定正确。每行的开关在匹配值与页面当前值之间选择；只有开启的字段才会写入。" },
+  "reviewHint": { "message": "匹配仅供参考，请逐条核对；只有开启的字段才会写入。" },
   "chooseOption": { "message": "（请选择一个选项）" },
-  "checkboxTrue": { "message": "true — 勾选此项" },
-  "checkboxFalse": { "message": "false — 保留 / 不勾选" },
+  "checkboxTrue": { "message": "true — 已勾选此项" },
+  "checkboxFalse": { "message": "false — 未勾选此项" },
   "proposedValue": { "message": "建议值" },
   "manualOverride": { "message": "手动修改 · 请仔细核对" },
   "sourceEvidence": { "message": "来源证据" },

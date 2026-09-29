@@ -102,12 +102,11 @@
   "generateCloudFallback": { "message": "Anbieter" },
   "enableProviderToContinue": { "message": "Aktivieren Sie oben einen Anbieter, um fortzufahren." },
 
-  "fieldsEyebrow": { "message": "Auf dieser Seite erkannt" },
   "fieldsTitle": {
     "message": "$COUNT$ ausfüllbare Felder erkannt",
     "placeholders": { "count": { "content": "$1" } }
   },
-  "fieldsHint": { "message": "Dies sind die aktuellen Werte der Seite. Die Erkennung läuft weiter, wenn Sie die Seite wechseln oder sich das Formular ändert." },
+  "fieldsHint": { "message": "Dies sind die aktuellen Werte der Seite; die Schalter werden nach der Zuordnung aktiv." },
   "selectDocumentPrompt": { "message": "Felder erkannt – fügen Sie ein Dokument hinzu, damit die KI sie zuordnen kann." },
   "fieldEmpty": { "message": "(noch kein Wert)" },
   "useMatchedValue": {
@@ -139,7 +138,7 @@
   "autoSendDialogConfirm": { "message": "Automatisches Senden aktivieren" },
 
   "unlabeledField": { "message": "Feld ohne Beschriftung" },
-  "reviewHint": { "message": "Belege zeigen, woher der Text stammt – nicht, dass die Zuordnung korrekt ist. Jeder Schalter entscheidet zwischen dem zugeordneten Wert und dem aktuellen Seitenwert; nur eingeschaltete Felder werden geschrieben." },
+  "reviewHint": { "message": "Zuordnungen sind nur Vorschläge – bitte jeden prüfen; nur eingeschaltete Felder werden geschrieben." },
   "chooseOption": { "message": "(Option wählen)" },
   "checkboxTrue": { "message": "true — dieses Kästchen aktivieren" },
   "checkboxFalse": { "message": "false — lassen / deaktivieren" },

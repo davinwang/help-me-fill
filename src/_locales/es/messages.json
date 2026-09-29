@@ -102,12 +102,11 @@
   "generateCloudFallback": { "message": "proveedor" },
   "enableProviderToContinue": { "message": "Activa arriba un proveedor para continuar." },
 
-  "fieldsEyebrow": { "message": "Detectado en esta página" },
   "fieldsTitle": {
     "message": "$COUNT$ campos rellenables detectados",
     "placeholders": { "count": { "content": "$1" } }
   },
-  "fieldsHint": { "message": "Estos son los valores actuales de la página. La detección sigue activa al cambiar de página o cuando cambia el formulario." },
+  "fieldsHint": { "message": "Estos son los valores actuales de la página; los interruptores se activan tras la coincidencia." },
   "selectDocumentPrompt": { "message": "Campos detectados: añade un documento para que la IA los empareje." },
   "fieldEmpty": { "message": "(aún sin valor)" },
   "useMatchedValue": {
@@ -139,7 +138,7 @@
   "autoSendDialogConfirm": { "message": "Activar el envío automático" },
 
   "unlabeledField": { "message": "Campo sin etiqueta" },
-  "reviewHint": { "message": "Las evidencias muestran de dónde procede el texto, no que la coincidencia sea correcta. Cada interruptor elige entre el valor coincidente y el valor actual de la página; solo se escriben los campos activados." },
+  "reviewHint": { "message": "Las coincidencias son solo sugerencias: revisa cada una; solo se escriben los campos activados." },
   "chooseOption": { "message": "(elige una opción)" },
   "checkboxTrue": { "message": "true — marcar esta casilla" },
   "checkboxFalse": { "message": "false — dejar / desmarcar" },

@@ -102,12 +102,11 @@
   "generateCloudFallback": { "message": "fournisseur" },
   "enableProviderToContinue": { "message": "Activez un fournisseur ci-dessus pour continuer." },
 
-  "fieldsEyebrow": { "message": "Détecté sur cette page" },
   "fieldsTitle": {
     "message": "$COUNT$ champs remplissables détectés",
     "placeholders": { "count": { "content": "$1" } }
   },
-  "fieldsHint": { "message": "Voici les valeurs actuelles de la page. La détection continue lorsque vous changez de page ou que le formulaire change." },
+  "fieldsHint": { "message": "Voici les valeurs actuelles de la page ; les interrupteurs s'activent une fois les champs associés." },
   "selectDocumentPrompt": { "message": "Champs détectés — ajoutez un document pour que l'IA puisse les associer." },
   "fieldEmpty": { "message": "(pas encore de valeur)" },
   "useMatchedValue": {
@@ -139,7 +138,7 @@
   "autoSendDialogConfirm": { "message": "Activer l'envoi automatique" },
 
   "unlabeledField": { "message": "Champ sans intitulé" },
-  "reviewHint": { "message": "Les preuves indiquent d'où vient le texte, pas que la correspondance est correcte. Chaque interrupteur choisit entre la valeur associée et la valeur actuelle de la page ; seuls les champs activés sont écrits." },
+  "reviewHint": { "message": "Les correspondances ne sont que des suggestions — vérifiez chacune ; seuls les champs activés sont écrits." },
   "chooseOption": { "message": "(choisissez une option)" },
   "checkboxTrue": { "message": "true — cocher cette case" },
   "checkboxFalse": { "message": "false — laisser / décocher" },
