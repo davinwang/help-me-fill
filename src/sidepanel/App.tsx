@@ -3,7 +3,6 @@ import { ProviderSettings } from './components/ProviderSettings';
 import { DropZone } from './components/DropZone';
 import { DisclosurePreview } from './components/DisclosurePreview';
 import { PageFields } from './components/PageFields';
-import { FillResults } from './components/FillResults';
 import { AutoSendDialog } from './components/AutoSendDialog';
 import { parseDocument, mergeDocuments } from '../parsers';
 import { createProvider } from '../ai/provider';
@@ -138,10 +137,7 @@ export function App() {
       if (info.kind !== 'builtin' && !await chrome.permissions.contains({ origins: [info.origin] })) throw new UserError(t('errHostPermissionMissing'));
       const outcome = await createProvider(config).map({ lines: document.lines, fields: compactFields(snapshot.fields), signal, onProgress: text => { if (!signal.aborted) dispatch({ type: 'PROGRESS', text }); } });
       await assertActive(snapshot.target);
-      const seconds = (outcome.elapsedMs / 1000).toFixed(1);
-      return { type: 'PLAN', scanId: snapshot.scanId, plan: outcome.plan, metrics: outcome.usage
-        ? t('metricsUsage', [info.name, config.model, outcome.calls, seconds, JSON.stringify(outcome.usage)])
-        : t('metrics', [info.name, config.model, outcome.calls, seconds]) };
+      return { type: 'PLAN', scanId: snapshot.scanId, plan: outcome.plan };
     });
   }
   // The automatic match: one attempt per context snapshot (documents + page +
@@ -230,10 +226,9 @@ export function App() {
           onRemove={index => { abortRun(); dispatch({ type: 'REMOVE_DOCUMENT', index }); }} />
       </div>
       {needsDocument && <p className="prompt" role="status">{t('selectDocumentPrompt', [scan!.fields.length])}</p>}
-      {detected && <PageFields state={state} dispatch={dispatch} disabled={locked} onFill={fill} />}
+      {detected && <PageFields state={state} dispatch={dispatch} disabled={locked} onFill={fill} onUndo={undo} />}
       {detected && !!state.documents.length && !review && autoSend === true && <p className="hint auto-send-status" role="status">{t('autoSendStatus', [resolveProvider(settings).name])} <button type="button" className="link-button" onClick={() => changeAutoSend(false)}>{t('autoSendOff')}</button></p>}
       {showConsent && <DisclosurePreview document={mergeDocuments(state.documents)} scan={scan!} settings={settings} autoSend={false} disabled={busy} onGenerate={generate} onAutoSend={changeAutoSend} />}
-      {!blocked && state.result && scan && <FillResults result={state.result} scan={scan} disabled={locked} onUndo={undo} />}
       {!blocked && !detected && !!scan && <p className="hint">{t('errNoFields')}</p>}
     </>}
     {dialog && settings && <AutoSendDialog settings={settings} onConfirm={confirmAutoSend} onCancel={() => setDialog(undefined)} />}

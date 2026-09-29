@@ -192,11 +192,11 @@ test('reload and tab switches keep the review on an identical form', async ({}, 
     await expect.poll(() => app.panel.text()).not.toContain('Retry detection');
     await expect.poll(() => app.panel.text()).toContain('Matches are suggestions');
     await app.panel.click('AI help me fill (10)');
-    await expect.poll(() => app.panel.text(), { timeout: 25_000 }).toContain('Operation results');
+    await expect.poll(() => app.panel.text(), { timeout: 25_000 }).toContain('Undo last fill');
     await expect(other.locator('[name="fullName"]')).toHaveValue(scenario.fields[0].expected!);
     await expect(app.page.locator('[name="fullName"]')).toHaveValue('Tab A value');
     await app.panel.click('Undo last fill');
-    await expect.poll(() => app.panel.evaluate(() => [...document.querySelectorAll('.results .badge')].filter(node => node.textContent === 'restored').length), { timeout: 25_000 }).toBe(10);
+    await expect.poll(() => app.panel.evaluate(() => [...document.querySelectorAll('.field-list .badge')].filter(node => node.textContent === 'restored').length), { timeout: 25_000 }).toBe(10);
     await expect(other.locator('[name="fullName"]')).toHaveValue('');
     await expect(app.page.locator('[name="fullName"]')).toHaveValue('Tab A value');
     await other.close();
@@ -299,7 +299,7 @@ for (const interruption of ['cancel', 'tab switch', 'panel close']) {
         await app.trigger();
         const reopened = await attachPanel(app.cdp, app.id);
         expect(await reopened.text()).not.toContain('Matches are suggestions');
-        expect(await reopened.text()).not.toContain('Operation results');
+        expect(await reopened.text()).not.toContain('Undo last fill');
         reopened.dispose();
       }
       await expect(app.page.locator('[name="email"]')).toHaveValue('');

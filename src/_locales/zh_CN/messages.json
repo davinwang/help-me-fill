@@ -39,14 +39,6 @@
   },
   "errNoFields": { "message": "此页面上未找到受支持的字段。" },
   "errHostPermissionMissing": { "message": "缺少主机权限。请重新启用该服务商。" },
-  "metrics": {
-    "message": "$NAME$ · $MODEL$ · $CALLS$ 次请求 · $SECONDS$ 秒",
-    "placeholders": { "name": { "content": "$1" }, "model": { "content": "$2" }, "calls": { "content": "$3" }, "seconds": { "content": "$4" } }
-  },
-  "metricsUsage": {
-    "message": "$NAME$ · $MODEL$ · $CALLS$ 次请求 · $SECONDS$ 秒 · 用量：$USAGE$",
-    "placeholders": { "name": { "content": "$1" }, "model": { "content": "$2" }, "calls": { "content": "$3" }, "seconds": { "content": "$4" }, "usage": { "content": "$5" } }
-  },
 
   "errAddOneDocument": { "message": "请一次添加一个文档；已解析的文档会保留在下方列表中。" },
   "dropZoneLabel": { "message": "文档上传" },
@@ -152,14 +144,10 @@
   },
   "fillNotice": { "message": "填写可能触发网站的校验、自动保存或网络请求。本扩展绝不会点击“提交”。撤销无法逆转服务器端的副作用。" },
 
-  "fillResultsLabel": { "message": "填写结果" },
-  "operationResults": { "message": "操作结果" },
-  "resultsHint": { "message": "已在此页面校验，但未经服务器确认。再次填写前请重新扫描。" },
-  "fieldFallback": { "message": "字段" },
   "statusFilled": { "message": "已填写" },
   "statusRestored": { "message": "已还原" },
   "statusSkipped": { "message": "已跳过" },
-  "statusFailed": { "message": "失败" },
+  "statusFailed": { "message": "更新失败" },
   "statusChangedReverted": { "message": "已更改/被回退" },
   "undoLastFill": { "message": "撤销上次填写" },
   "undoHint": { "message": "撤销会保留之后的编辑，且无法逆转自动保存或其他页面端副作用。重置或重新扫描会清除撤销记录。" },

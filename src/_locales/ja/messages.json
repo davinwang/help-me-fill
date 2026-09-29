@@ -39,14 +39,6 @@
   },
   "errNoFields": { "message": "このページに対応するフィールドが見つかりませんでした。" },
   "errHostPermissionMissing": { "message": "ホスト権限がありません。プロバイダーを再度有効にしてください。" },
-  "metrics": {
-    "message": "$NAME$ · $MODEL$ · リクエスト $CALLS$ 回 · $SECONDS$ 秒",
-    "placeholders": { "name": { "content": "$1" }, "model": { "content": "$2" }, "calls": { "content": "$3" }, "seconds": { "content": "$4" } }
-  },
-  "metricsUsage": {
-    "message": "$NAME$ · $MODEL$ · リクエスト $CALLS$ 回 · $SECONDS$ 秒 · 使用量: $USAGE$",
-    "placeholders": { "name": { "content": "$1" }, "model": { "content": "$2" }, "calls": { "content": "$3" }, "seconds": { "content": "$4" }, "usage": { "content": "$5" } }
-  },
 
   "errAddOneDocument": { "message": "文書は一度に 1 つずつ追加してください。解析済みの文書は下の一覧に残ります。" },
   "dropZoneLabel": { "message": "文書のアップロード" },
@@ -152,14 +144,10 @@
   },
   "fillNotice": { "message": "入力により、サイトの検証・自動保存・ネットワークリクエストが発生する場合があります。この拡張機能は「送信」を絶対にクリックしません。取り消しはサーバー側の影響を元に戻せません。" },
 
-  "fillResultsLabel": { "message": "入力結果" },
-  "operationResults": { "message": "操作結果" },
-  "resultsHint": { "message": "このページ上で検証済みですが、サーバーによる確認はされていません。次に入力する前に再スキャンしてください。" },
-  "fieldFallback": { "message": "フィールド" },
   "statusFilled": { "message": "入力済み" },
   "statusRestored": { "message": "復元済み" },
   "statusSkipped": { "message": "スキップ" },
-  "statusFailed": { "message": "失敗" },
+  "statusFailed": { "message": "更新失敗" },
   "statusChangedReverted": { "message": "変更/元に戻された" },
   "undoLastFill": { "message": "直前の入力を取り消す" },
   "undoHint": { "message": "取り消しは以降の編集を保持し、自動保存やその他のページ側の影響を元に戻せません。リセットや再スキャンで取り消し情報は消去されます。" },

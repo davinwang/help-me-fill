@@ -39,14 +39,6 @@
   },
   "errNoFields": { "message": "此頁面上未找到支援的欄位。" },
   "errHostPermissionMissing": { "message": "缺少主機權限。請重新啟用該服務商。" },
-  "metrics": {
-    "message": "$NAME$ · $MODEL$ · $CALLS$ 次請求 · $SECONDS$ 秒",
-    "placeholders": { "name": { "content": "$1" }, "model": { "content": "$2" }, "calls": { "content": "$3" }, "seconds": { "content": "$4" } }
-  },
-  "metricsUsage": {
-    "message": "$NAME$ · $MODEL$ · $CALLS$ 次請求 · $SECONDS$ 秒 · 用量：$USAGE$",
-    "placeholders": { "name": { "content": "$1" }, "model": { "content": "$2" }, "calls": { "content": "$3" }, "seconds": { "content": "$4" }, "usage": { "content": "$5" } }
-  },
 
   "errAddOneDocument": { "message": "請一次新增一個文件；已解析的文件會保留在下方清單中。" },
   "dropZoneLabel": { "message": "文件上傳" },
@@ -152,14 +144,10 @@
   },
   "fillNotice": { "message": "填寫可能觸發網站的驗證、自動儲存或網路請求。此擴充功能絕不會點擊「提交」。復原無法逆轉伺服器端的副作用。" },
 
-  "fillResultsLabel": { "message": "填寫結果" },
-  "operationResults": { "message": "操作結果" },
-  "resultsHint": { "message": "已在此頁面驗證，但未經伺服器確認。再次填寫前請重新掃描。" },
-  "fieldFallback": { "message": "欄位" },
   "statusFilled": { "message": "已填寫" },
   "statusRestored": { "message": "已還原" },
   "statusSkipped": { "message": "已跳過" },
-  "statusFailed": { "message": "失敗" },
+  "statusFailed": { "message": "更新失敗" },
   "statusChangedReverted": { "message": "已變更/被回退" },
   "undoLastFill": { "message": "復原上次填寫" },
   "undoHint": { "message": "復原會保留之後的編輯，且無法逆轉自動儲存或其他頁面端副作用。重設或重新掃描會清除復原紀錄。" },

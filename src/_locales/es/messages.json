@@ -39,14 +39,6 @@
   },
   "errNoFields": { "message": "No se encontraron campos admitidos en esta página." },
   "errHostPermissionMissing": { "message": "Falta el permiso de host. Vuelve a activar el proveedor." },
-  "metrics": {
-    "message": "$NAME$ · $MODEL$ · $CALLS$ solicitud(es) · $SECONDS$ s",
-    "placeholders": { "name": { "content": "$1" }, "model": { "content": "$2" }, "calls": { "content": "$3" }, "seconds": { "content": "$4" } }
-  },
-  "metricsUsage": {
-    "message": "$NAME$ · $MODEL$ · $CALLS$ solicitud(es) · $SECONDS$ s · uso: $USAGE$",
-    "placeholders": { "name": { "content": "$1" }, "model": { "content": "$2" }, "calls": { "content": "$3" }, "seconds": { "content": "$4" }, "usage": { "content": "$5" } }
-  },
 
   "errAddOneDocument": { "message": "Añade un documento a la vez; los documentos analizados permanecen en la lista de abajo." },
   "dropZoneLabel": { "message": "Subida de documentos" },
@@ -152,14 +144,10 @@
   },
   "fillNotice": { "message": "Rellenar puede activar la validación, el guardado automático o las solicitudes de red del sitio. Esta extensión nunca hace clic en Enviar. Deshacer no puede revertir los efectos del lado del servidor." },
 
-  "fillResultsLabel": { "message": "Resultados del rellenado" },
-  "operationResults": { "message": "Resultados de la operación" },
-  "resultsHint": { "message": "Verificado en esta página, no confirmado por el servidor. Vuelve a escanear antes de otro rellenado." },
-  "fieldFallback": { "message": "Campo" },
   "statusFilled": { "message": "rellenado" },
   "statusRestored": { "message": "restaurado" },
   "statusSkipped": { "message": "omitido" },
-  "statusFailed": { "message": "fallido" },
+  "statusFailed": { "message": "fallo al actualizar" },
   "statusChangedReverted": { "message": "cambiado/revertido" },
   "undoLastFill": { "message": "Deshacer el último rellenado" },
   "undoHint": { "message": "Deshacer conserva las ediciones posteriores y no puede revertir el guardado automático u otros efectos del lado de la página. Restablecer o volver a escanear borra el deshacer." },

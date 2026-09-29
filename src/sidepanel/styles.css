@@ -103,6 +103,13 @@ pre, .text-preview { max-height: 230px; overflow: auto; white-space: pre-wrap; o
 .field-list .evidence-toggle::before { content: '▸ '; font-size: 9px; }
 .field-list .evidence-toggle[aria-expanded='true']::before { content: '▾ '; }
 .field-list .evidence-body { margin-top: 6px; }
+/* Fill outcomes render as inline badges on the field-name row: ✓ for written
+   or restored values, ✕ for failures; the full detail rides the title. */
+.field-list .section-top .badge { margin-inline-start: 6px; vertical-align: 1px; }
+.field-list .badge.filled::before, .field-list .badge.restored::before { content: '✓ '; }
+.field-list .badge.failed::before, .field-list .badge.changed-reverted::before { content: '✕ '; }
+.field-list .badge.failed, .field-list .badge.changed-reverted { color: #963747; background: #fff0f1; }
+.field-list .badge.skipped { color: var(--muted); background: #f0f0f6; }
 .field-list .replace-hint { margin-top: 4px; }
 .check-label { display: flex; align-items: center; gap: 7px; font-size: 12px; line-height: 1.5; }
 input[type=checkbox] { accent-color: var(--accent); margin: 0; width: 15px; height: 15px; flex-shrink: 0; }
@@ -131,8 +138,6 @@ input[type=checkbox].switch:disabled { opacity: .45; cursor: not-allowed; }
 .preserve { white-space: pre-wrap; overflow-wrap: anywhere; font-weight: 600; }
 blockquote { margin: 8px 0; padding: 10px; border-inline-start: 2px solid #c9c3ee; background: #f7f6fd; font-size: 12px; white-space: pre-wrap; overflow-wrap: anywhere; }
 ul { padding-inline-start: 18px; font-size: 12px; line-height: 1.8; }
-.results { list-style: none; padding: 0; }
-.results li { border-bottom: 1px solid var(--border); padding: 9px 0; }
 footer { color: var(--muted); font-size: 10px; line-height: 1.7; margin-top: 22px; padding-top: 15px; border-top: 1px solid var(--border); }
 @media (max-width: 340px) { main { padding: 0 10px 24px; } header, .steps { margin-left: -10px; margin-right: -10px; } header { padding: 10px; } .card { padding: 12px; } .section-top { flex-wrap: wrap; } .intro h2 { font-size: 21px; } header .subtle { display: none; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }

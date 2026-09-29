@@ -81,7 +81,7 @@ describe('review defaults', () => {
   const bound = (scanId: string, currentValue: string): BoundScan => ({ scanId, url: target.url, fields: [local(currentValue)], exclusions: {}, target });
   it('arms empty page fields and lets the switch flip either way', () => {
     let state = sessionReducer(initialSession, { type: 'DETECT', scan: bound('s1', '') });
-    state = sessionReducer(state, { type: 'PLAN', scanId: 's1', plan, metrics: 'mock' });
+    state = sessionReducer(state, { type: 'PLAN', scanId: 's1', plan });
     expect(state.rows[0].useAi).toBe(true);
     state = sessionReducer(state, { type: 'SELECT_ALL', useAi: false });
     expect(state.rows[0].useAi).toBe(false);
@@ -90,13 +90,13 @@ describe('review defaults', () => {
   });
   it('leaves occupied fields off by default and keeps the page value visible', () => {
     let state = sessionReducer(initialSession, { type: 'DETECT', scan: bound('s1', 'Kept') });
-    state = sessionReducer(state, { type: 'PLAN', scanId: 's1', plan, metrics: 'mock' });
+    state = sessionReducer(state, { type: 'PLAN', scanId: 's1', plan });
     expect(state.rows[0].useAi).toBe(false);
     expect(state.scan?.fields[0].currentValue).toBe('Kept');
   });
   it('drops plans on target invalidation but keeps the live scan', () => {
     let state = sessionReducer(initialSession, { type: 'DETECT', scan: bound('s1', '') });
-    state = sessionReducer(state, { type: 'PLAN', scanId: 's1', plan, metrics: '' });
+    state = sessionReducer(state, { type: 'PLAN', scanId: 's1', plan });
     state = sessionReducer(state, { type: 'INVALIDATE', error: 'tab switched' });
     expect(state.rows).toEqual([]); expect(state.plan).toBeUndefined(); expect(state.scan).toBeDefined();
   });

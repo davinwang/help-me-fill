@@ -39,14 +39,6 @@
   },
   "errNoFields": { "message": "لم يتم العثور على حقول مدعومة في هذه الصفحة." },
   "errHostPermissionMissing": { "message": "إذن المضيف مفقود. قم بتمكين المزوّد مرة أخرى." },
-  "metrics": {
-    "message": "$NAME$ · $MODEL$ · $CALLS$ طلب · $SECONDS$ ثانية",
-    "placeholders": { "name": { "content": "$1" }, "model": { "content": "$2" }, "calls": { "content": "$3" }, "seconds": { "content": "$4" } }
-  },
-  "metricsUsage": {
-    "message": "$NAME$ · $MODEL$ · $CALLS$ طلب · $SECONDS$ ثانية · الاستخدام: $USAGE$",
-    "placeholders": { "name": { "content": "$1" }, "model": { "content": "$2" }, "calls": { "content": "$3" }, "seconds": { "content": "$4" }, "usage": { "content": "$5" } }
-  },
 
   "errAddOneDocument": { "message": "أضف مستندًا واحدًا في كل مرة؛ تبقى المستندات المحلّلة في القائمة أدناه." },
   "dropZoneLabel": { "message": "رفع المستندات" },
@@ -152,14 +144,10 @@
   },
   "fillNotice": { "message": "قد تؤدي التعبئة إلى تشغيل تحقق الموقع أو الحفظ التلقائي أو طلبات الشبكة. لا تنقر هذه الإضافة أبدًا على «إرسال». لا يمكن للتراجع عكس الآثار من جانب الخادم." },
 
-  "fillResultsLabel": { "message": "نتائج التعبئة" },
-  "operationResults": { "message": "نتائج العملية" },
-  "resultsHint": { "message": "تم التحقق في هذه الصفحة، ولم يؤكده الخادم. أعد الفحص قبل تعبئة أخرى." },
-  "fieldFallback": { "message": "حقل" },
   "statusFilled": { "message": "تمت التعبئة" },
   "statusRestored": { "message": "تمت الاستعادة" },
   "statusSkipped": { "message": "تم التخطي" },
-  "statusFailed": { "message": "فشل" },
+  "statusFailed": { "message": "فشل التحديث" },
   "statusChangedReverted": { "message": "تغيّر/تراجع" },
   "undoLastFill": { "message": "التراجع عن آخر تعبئة" },
   "undoHint": { "message": "يحافظ التراجع على التعديلات اللاحقة ولا يمكنه عكس الحفظ التلقائي أو غيره من الآثار من جانب الصفحة. تؤدي إعادة التعيين أو إعادة الفحص إلى مسح التراجع." },

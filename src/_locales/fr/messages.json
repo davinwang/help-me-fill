@@ -39,14 +39,6 @@
   },
   "errNoFields": { "message": "Aucun champ pris en charge n'a été trouvé sur cette page." },
   "errHostPermissionMissing": { "message": "L'autorisation d'hôte est manquante. Réactivez le fournisseur." },
-  "metrics": {
-    "message": "$NAME$ · $MODEL$ · $CALLS$ requête(s) · $SECONDS$ s",
-    "placeholders": { "name": { "content": "$1" }, "model": { "content": "$2" }, "calls": { "content": "$3" }, "seconds": { "content": "$4" } }
-  },
-  "metricsUsage": {
-    "message": "$NAME$ · $MODEL$ · $CALLS$ requête(s) · $SECONDS$ s · usage : $USAGE$",
-    "placeholders": { "name": { "content": "$1" }, "model": { "content": "$2" }, "calls": { "content": "$3" }, "seconds": { "content": "$4" }, "usage": { "content": "$5" } }
-  },
 
   "errAddOneDocument": { "message": "Ajoutez un document à la fois ; les documents analysés restent dans la liste ci-dessous." },
   "dropZoneLabel": { "message": "Téléversement de document" },
@@ -152,14 +144,10 @@
   },
   "fillNotice": { "message": "Le remplissage peut déclencher la validation, l'enregistrement automatique ou des requêtes réseau du site. Cette extension ne clique jamais sur Envoyer. L'annulation ne peut pas inverser les effets côté serveur." },
 
-  "fillResultsLabel": { "message": "Résultats du remplissage" },
-  "operationResults": { "message": "Résultats de l'opération" },
-  "resultsHint": { "message": "Vérifié sur cette page, non confirmé par le serveur. Relancez l'analyse avant un autre remplissage." },
-  "fieldFallback": { "message": "Champ" },
   "statusFilled": { "message": "rempli" },
   "statusRestored": { "message": "restauré" },
   "statusSkipped": { "message": "ignoré" },
-  "statusFailed": { "message": "échec" },
+  "statusFailed": { "message": "échec de la mise à jour" },
   "statusChangedReverted": { "message": "modifié/annulé" },
   "undoLastFill": { "message": "Annuler le dernier remplissage" },
   "undoHint": { "message": "L'annulation préserve les modifications ultérieures et ne peut pas inverser l'enregistrement automatique ni d'autres effets côté page. Réinitialiser ou relancer l'analyse efface l'annulation." },

@@ -2,12 +2,18 @@ import { useEffect, useRef, useState, type Dispatch } from 'react';
 import type { Action, ReviewRow, Session } from '../session';
 import { fillableRows } from '../session';
 import { t } from '../../shared/i18n';
+// Statuses are stable machine tokens in the result payload; map each to a
+// localized label for display without changing the wire values.
+const STATUS_KEYS: Record<string, string> = {
+  filled: 'statusFilled', restored: 'statusRestored', skipped: 'statusSkipped',
+  failed: 'statusFailed', 'changed/reverted': 'statusChangedReverted',
+};
 // One compact list for the whole workflow. Before matching it shows the page's
 // current values with every switch disabled; once a plan arrives, matched rows
 // arm their switch, the proposed value, and their evidence in place — the same
 // list updates instead of being replaced by a separate review card. Unmatched
 // rows keep the disabled switch and carry their reason on the field-name line.
-export function PageFields({ state, dispatch, disabled, onFill }: { state: Session; dispatch: Dispatch<Action>; disabled: boolean; onFill: () => void }) {
+export function PageFields({ state, dispatch, disabled, onFill, onUndo }: { state: Session; dispatch: Dispatch<Action>; disabled: boolean; onFill: () => void; onUndo: () => void }) {
   const scan = state.scan!;
   const plan = state.plan;
   // Defensive filter: re-keying keeps rows aligned with the scan, so a row
@@ -49,10 +55,14 @@ export function PageFields({ state, dispatch, disabled, onFill }: { state: Sessi
             const unmapped = plan?.unmapped.find(item => item.fieldId === field.id);
             const empty = field.type === 'checkbox' ? field.currentValue !== 'true' : field.currentValue === '';
             const pageValue = field.type === 'checkbox' ? t(field.currentValue === 'true' ? 'checkboxTrue' : 'checkboxFalse') : field.currentValue;
+            const result = state.result?.results.find(item => item.fieldId === field.id);
             return <li key={field.id}>
               <div className="section-top">
                 <span className="field-name">
                   <strong>{label}</strong> <span className="subtle">{field.type}</span>
+                  {/* The fill outcome rides the field-name row: ✓ written, ✕ failed;
+                      the full detail stays on the badge's title. */}
+                  {result && <span className={`badge ${result.status === 'changed/reverted' ? 'changed-reverted' : result.status}`} title={result.detail}>{t(STATUS_KEYS[result.status] ?? result.status)}</span>}
                   {!row && unmapped && <span className="unmatched-inline">{t('unmatchedReason', [unmapped.reason])}</span>}
                   {row && <button type="button" className="evidence-toggle" aria-expanded={openEvidence.has(field.id)} onClick={() => toggleEvidence(field.id)}>{t('sourceEvidence')}</button>}
                 </span>
@@ -90,8 +100,11 @@ export function PageFields({ state, dispatch, disabled, onFill }: { state: Sessi
       <fieldset disabled={disabled}>
         <p className="notice">{t('fillNotice')}</p>
         <button type="button" className="wide" disabled={disabled || !fillable.length} onClick={onFill}>{t('aiHelpMeFill', [String(fillable.length)])}</button>
+        {state.result && <>
+          <button type="button" className="secondary wide" disabled={disabled || !state.result.canUndo} onClick={onUndo}>{t('undoLastFill')}</button>
+          <p className="hint">{t('undoHint')}</p>
+        </>}
       </fieldset>
-      {state.metrics && <p className="hint">{state.metrics}</p>}
     </section>}
   </>;
 }

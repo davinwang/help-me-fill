@@ -30,7 +30,6 @@ export type Session = {
   result?: OperationResult;
   error?: string;
   progress?: string;
-  metrics?: string;
 };
 export const initialSession: Session = { phase: 'idle', documents: [], rows: [] };
 export type Action =
@@ -41,7 +40,7 @@ export type Action =
   | { type: 'REMOVE_DOCUMENT'; index: number }
   | { type: 'DETECT'; scan: BoundScan }
   | { type: 'DETECT_FAIL'; error: string }
-  | { type: 'PLAN'; scanId: string; plan: MappingPlan; metrics: string }
+  | { type: 'PLAN'; scanId: string; plan: MappingPlan }
   | { type: 'ROW'; fieldId: string; patch: Partial<Pick<ReviewRow, 'value' | 'useAi' | 'manual'>> }
   | { type: 'SELECT_ALL'; useAi: boolean }
   | { type: 'RESULT'; result: OperationResult }
@@ -85,7 +84,7 @@ function rekeyResult(result: OperationResult, map: Map<string, string>): Operati
 // here: a document change is always the last step of its own run, and a stuck
 // phase would keep every control disabled.
 function docsChanged(state: Session, documents: ParsedDocument[]): Session {
-  return { ...state, phase: 'idle', documents, plan: undefined, rows: [], result: undefined, metrics: undefined, progress: undefined, error: undefined };
+  return { ...state, phase: 'idle', documents, plan: undefined, rows: [], result: undefined, progress: undefined, error: undefined };
 }
 // Reconciliation across quiet re-detections:
 // - Same scan id: values only changed — refresh them and keep everything,
@@ -98,7 +97,7 @@ function detected(state: Session, scan: BoundScan): Session {
   const previous = state.scan;
   if (previous && previous.scanId === scan.scanId && previous.url === scan.url) return { ...state, scan, scanError: undefined };
   const carried = previous && previous.url === scan.url && scanSignatures(previous) === scanSignatures(scan) && Boolean(state.rows.length || state.plan || state.result);
-  if (!carried) return { ...state, scan, scanError: undefined, plan: undefined, rows: [], result: undefined, metrics: undefined, error: undefined };
+  if (!carried) return { ...state, scan, scanError: undefined, plan: undefined, rows: [], result: undefined, error: undefined };
   const map = new Map(previous.fields.map((field, index) => [field.id, scan.fields[index].id]));
   return {
     ...state, scan, scanError: undefined,
@@ -121,14 +120,14 @@ export function sessionReducer(state: Session, action: Action): Session {
     case 'PLAN': {
       // A context switch mid-mapping must not resurrect a stale plan.
       if (!state.scan || state.scan.scanId !== action.scanId) return state;
-      return { ...state, phase: 'idle', plan: action.plan, metrics: action.metrics, rows: buildRows(action.plan, state.scan), error: undefined, progress: undefined };
+      return { ...state, phase: 'idle', plan: action.plan, rows: buildRows(action.plan, state.scan), error: undefined, progress: undefined };
     }
     case 'ROW': return { ...state, rows: state.rows.map(row => row.fieldId === action.fieldId ? { ...row, ...action.patch } : row) };
     case 'SELECT_ALL': return { ...state, rows: state.rows.map(row => ({ ...row, useAi: action.useAi })) };
     case 'RESULT': return { ...state, phase: 'idle', result: action.result, error: undefined, progress: undefined };
     case 'ERROR': return { ...state, phase: 'idle', error: action.error, progress: undefined };
-    case 'INVALIDATE': return { ...state, phase: 'idle', plan: undefined, rows: [], result: undefined, metrics: undefined, error: action.error, progress: undefined };
-    case 'PROVIDER_CHANGED': return { ...state, phase: 'idle', plan: undefined, rows: [], result: undefined, metrics: undefined, error: undefined, progress: undefined };
+    case 'INVALIDATE': return { ...state, phase: 'idle', plan: undefined, rows: [], result: undefined, error: action.error, progress: undefined };
+    case 'PROVIDER_CHANGED': return { ...state, phase: 'idle', plan: undefined, rows: [], result: undefined, error: undefined, progress: undefined };
   }
 }
 export const isBusy = (phase: Phase) => phase !== 'idle';

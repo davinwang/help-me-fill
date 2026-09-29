@@ -39,14 +39,6 @@
   },
   "errNoFields": { "message": "Nenhum campo compatível foi encontrado nesta página." },
   "errHostPermissionMissing": { "message": "Falta a permissão de host. Ative o provedor novamente." },
-  "metrics": {
-    "message": "$NAME$ · $MODEL$ · $CALLS$ solicitação(ões) · $SECONDS$ s",
-    "placeholders": { "name": { "content": "$1" }, "model": { "content": "$2" }, "calls": { "content": "$3" }, "seconds": { "content": "$4" } }
-  },
-  "metricsUsage": {
-    "message": "$NAME$ · $MODEL$ · $CALLS$ solicitação(ões) · $SECONDS$ s · uso: $USAGE$",
-    "placeholders": { "name": { "content": "$1" }, "model": { "content": "$2" }, "calls": { "content": "$3" }, "seconds": { "content": "$4" }, "usage": { "content": "$5" } }
-  },
 
   "errAddOneDocument": { "message": "Adicione um documento por vez; os documentos analisados permanecem na lista abaixo." },
   "dropZoneLabel": { "message": "Envio de documentos" },
@@ -152,14 +144,10 @@
   },
   "fillNotice": { "message": "Preencher pode acionar a validação, o salvamento automático ou as solicitações de rede do site. Esta extensão nunca clica em Enviar. Desfazer não pode reverter efeitos do lado do servidor." },
 
-  "fillResultsLabel": { "message": "Resultados do preenchimento" },
-  "operationResults": { "message": "Resultados da operação" },
-  "resultsHint": { "message": "Verificado nesta página, não confirmado pelo servidor. Escaneie novamente antes de outro preenchimento." },
-  "fieldFallback": { "message": "Campo" },
   "statusFilled": { "message": "preenchido" },
   "statusRestored": { "message": "restaurado" },
   "statusSkipped": { "message": "ignorado" },
-  "statusFailed": { "message": "falhou" },
+  "statusFailed": { "message": "falha ao atualizar" },
   "statusChangedReverted": { "message": "alterado/revertido" },
   "undoLastFill": { "message": "Desfazer o último preenchimento" },
   "undoHint": { "message": "Desfazer preserva edições posteriores e não pode reverter o salvamento automático ou outros efeitos do lado da página. Redefinir ou escanear novamente limpa o desfazer." },

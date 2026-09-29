@@ -39,14 +39,6 @@
   },
   "errNoFields": { "message": "Auf dieser Seite wurden keine unterstützten Felder gefunden." },
   "errHostPermissionMissing": { "message": "Die Host-Berechtigung fehlt. Aktivieren Sie den Anbieter erneut." },
-  "metrics": {
-    "message": "$NAME$ · $MODEL$ · $CALLS$ Anfrage(n) · $SECONDS$ s",
-    "placeholders": { "name": { "content": "$1" }, "model": { "content": "$2" }, "calls": { "content": "$3" }, "seconds": { "content": "$4" } }
-  },
-  "metricsUsage": {
-    "message": "$NAME$ · $MODEL$ · $CALLS$ Anfrage(n) · $SECONDS$ s · Nutzung: $USAGE$",
-    "placeholders": { "name": { "content": "$1" }, "model": { "content": "$2" }, "calls": { "content": "$3" }, "seconds": { "content": "$4" }, "usage": { "content": "$5" } }
-  },
 
   "errAddOneDocument": { "message": "Fügen Sie jeweils ein Dokument hinzu; analysierte Dokumente bleiben in der Liste unten." },
   "dropZoneLabel": { "message": "Dokument hochladen" },
@@ -152,14 +144,10 @@
   },
   "fillNotice": { "message": "Das Ausfüllen kann die Validierung, das automatische Speichern oder Netzwerkanfragen der Website auslösen. Diese Erweiterung klickt niemals auf „Senden“. Das Rückgängigmachen kann serverseitige Wirkungen nicht umkehren." },
 
-  "fillResultsLabel": { "message": "Ergebnisse des Ausfüllens" },
-  "operationResults": { "message": "Vorgangsergebnisse" },
-  "resultsHint": { "message": "Auf dieser Seite überprüft, nicht vom Server bestätigt. Scannen Sie vor einem weiteren Ausfüllen erneut." },
-  "fieldFallback": { "message": "Feld" },
   "statusFilled": { "message": "ausgefüllt" },
   "statusRestored": { "message": "wiederhergestellt" },
   "statusSkipped": { "message": "übersprungen" },
-  "statusFailed": { "message": "fehlgeschlagen" },
+  "statusFailed": { "message": "Aktualisierung fehlgeschlagen" },
   "statusChangedReverted": { "message": "geändert/zurückgesetzt" },
   "undoLastFill": { "message": "Letztes Ausfüllen rückgängig machen" },
   "undoHint": { "message": "Das Rückgängigmachen bewahrt spätere Bearbeitungen und kann automatisches Speichern oder andere seitenseitige Wirkungen nicht umkehren. Zurücksetzen oder erneutes Scannen löscht die Rückgängig-Daten." },

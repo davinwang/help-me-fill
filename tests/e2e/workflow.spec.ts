@@ -59,22 +59,24 @@ for (const framework of ['native', 'react', 'vue']) {
       await app.panel.enter('.field-list textarea', 'Hand edited name');
       await expect.poll(() => app.panel.text()).toContain('Manual override');
       await app.panel.click('AI help me fill (10)');
-      await expect.poll(() => app.panel.text(), { timeout: 25_000 }).toContain('Operation results');
-      expect(await app.panel.evaluate(() => [...document.querySelectorAll('.results .badge')].map(node => node.textContent))).toEqual(Array(10).fill('filled'));
+      // The results card is gone: completion is signaled by the undo button and
+      // the ✓ badges that appear on the field-name rows themselves.
+      await expect.poll(() => app.panel.text(), { timeout: 25_000 }).toContain('Undo last fill');
+      expect(await app.panel.evaluate(() => [...document.querySelectorAll('.field-list .badge.filled')].length)).toBe(10);
       await app.page.locator('#rerender').click();
       await expect(app.page.locator('[name="fullName"]')).toHaveValue('Hand edited name');
       for (const field of scenario.fields.slice(1)) await expect(app.page.locator(`[name="${field.name}"]`)).toHaveValue(field.expected!);
       expect(JSON.parse(await app.page.locator('#state').innerText()).fullName).toBe('Hand edited name');
       await app.panel.click('Undo last fill');
-      await expect.poll(() => app.panel.evaluate(() => document.querySelectorAll('.results .badge').length ? [...document.querySelectorAll('.results .badge')].filter(node => node.textContent === 'restored').length : 0), { timeout: 25_000 }).toBe(10);
+      await expect.poll(() => app.panel.evaluate(() => document.querySelectorAll('.field-list .badge').length ? [...document.querySelectorAll('.field-list .badge')].filter(node => node.textContent === 'restored').length : 0), { timeout: 25_000 }).toBe(10);
       await expect.poll(() => disabled('Undo last fill')).toBe(true);
       await app.panel.click('AI help me fill (10)');
-      await expect.poll(() => app.panel.evaluate(() => [...document.querySelectorAll('.results .badge')].filter(node => node.textContent === 'filled').length), { timeout: 25_000 }).toBe(10);
+      await expect.poll(() => app.panel.evaluate(() => [...document.querySelectorAll('.field-list .badge')].filter(node => node.textContent === 'filled').length), { timeout: 25_000 }).toBe(10);
       expect(counts.error).toBe('');
       // A user edit after the repeated fill must survive undo.
       await app.page.locator('[name="fullName"]').fill('Later user edit');
       await app.panel.click('Undo last fill');
-      await expect.poll(() => app.panel.evaluate(() => document.querySelectorAll('.results .badge').length ? [...document.querySelectorAll('.results .badge')].filter(node => node.textContent === 'restored').length : 0), { timeout: 25_000 }).toBe(9);
+      await expect.poll(() => app.panel.evaluate(() => document.querySelectorAll('.field-list .badge').length ? [...document.querySelectorAll('.field-list .badge')].filter(node => node.textContent === 'restored').length : 0), { timeout: 25_000 }).toBe(9);
       await expect(app.page.locator('[name="fullName"]')).toHaveValue('Later user edit');
       await expect(app.page.locator('[name="email"]')).toHaveValue('');
       const persistent = await app.panel.evaluate(() => chrome.storage.local.get(null));

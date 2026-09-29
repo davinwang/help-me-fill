@@ -51,14 +51,6 @@
   },
   "errNoFields": { "message": "No supported fields were found on this page." },
   "errHostPermissionMissing": { "message": "Host permission is missing. Enable the provider again." },
-  "metrics": {
-    "message": "$NAME$ · $MODEL$ · $CALLS$ request(s) · $SECONDS$ s",
-    "placeholders": { "name": { "content": "$1" }, "model": { "content": "$2" }, "calls": { "content": "$3" }, "seconds": { "content": "$4" } }
-  },
-  "metricsUsage": {
-    "message": "$NAME$ · $MODEL$ · $CALLS$ request(s) · $SECONDS$ s · usage: $USAGE$",
-    "placeholders": { "name": { "content": "$1" }, "model": { "content": "$2" }, "calls": { "content": "$3" }, "seconds": { "content": "$4" }, "usage": { "content": "$5" } }
-  },
 
   "errAddOneDocument": { "message": "Add one document at a time; parsed documents stay in the list below." },
   "dropZoneLabel": { "message": "Document upload" },
@@ -164,14 +156,10 @@
   },
   "fillNotice": { "message": "Filling can trigger the site's validation, autosave, or network requests. This extension never clicks Submit. Undo cannot reverse server-side effects." },
 
-  "fillResultsLabel": { "message": "Fill results" },
-  "operationResults": { "message": "Operation results" },
-  "resultsHint": { "message": "Verified on this page, not confirmed by the server. Rescan before another fill." },
-  "fieldFallback": { "message": "Field" },
   "statusFilled": { "message": "filled" },
   "statusRestored": { "message": "restored" },
   "statusSkipped": { "message": "skipped" },
-  "statusFailed": { "message": "failed" },
+  "statusFailed": { "message": "update failed" },
   "statusChangedReverted": { "message": "changed/reverted" },
   "undoLastFill": { "message": "Undo last fill" },
   "undoHint": { "message": "Undo preserves later edits and cannot reverse autosave or other page-side effects. Resetting or rescanning clears undo." },

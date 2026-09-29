@@ -16,12 +16,12 @@ const plan = (fieldIds: string[]): MappingPlan => ({
 const result = (fieldId: string): OperationResult => ({ results: [{ fieldId, status: 'filled', detail: '' }], canUndo: true });
 const document0 = { name: 'cv.pdf' } as unknown as ParsedDocument;
 const review = (scanId: string, fields: LocalField[], fieldIds: string[]): Session =>
-  sessionReducer(sessionReducer(initialSession, { type: 'DETECT', scan: scan(scanId, fields) }), { type: 'PLAN', scanId, plan: plan(fieldIds), metrics: '1 request' });
+  sessionReducer(sessionReducer(initialSession, { type: 'DETECT', scan: scan(scanId, fields) }), { type: 'PLAN', scanId, plan: plan(fieldIds) });
 
 describe('session reducer', () => {
   it('applies a plan only to the scan it was generated for', () => {
     const state = sessionReducer(initialSession, { type: 'DETECT', scan: scan('s1', [field('f1')]) });
-    expect(sessionReducer(state, { type: 'PLAN', scanId: 'stale', plan: plan(['f1']), metrics: 'm' })).toBe(state);
+    expect(sessionReducer(state, { type: 'PLAN', scanId: 'stale', plan: plan(['f1']) })).toBe(state);
   });
   it('arms empty fields and leaves occupied ones off', () => {
     const state = review('s1', [field('f1'), field('f2', { currentValue: 'Kept' })], ['f1', 'f2']);
@@ -66,7 +66,7 @@ describe('session reducer', () => {
   it('drops a stale review when the page structure changes, keeping documents and scan', () => {
     let state = sessionReducer(initialSession, { type: 'DOCUMENT', document: document0 });
     state = sessionReducer(state, { type: 'DETECT', scan: scan('s1', [field('f1')]) });
-    state = sessionReducer(state, { type: 'PLAN', scanId: 's1', plan: plan(['f1']), metrics: '' });
+    state = sessionReducer(state, { type: 'PLAN', scanId: 's1', plan: plan(['f1']) });
     const next = sessionReducer(state, { type: 'DETECT', scan: scan('s3', [field('a'), field('b')]) });
     expect(next.documents).toHaveLength(1);
     expect(next.scan?.scanId).toBe('s3');
