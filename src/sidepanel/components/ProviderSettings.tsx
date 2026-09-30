@@ -43,8 +43,8 @@ const KIND_ICON: Record<ProviderKind, string> = { cloud: '☁️', local: '🏠'
 // an in-session provider change is not silently reverted.
 let presetApplied = false;
 
-type Props = { disabled: boolean; onChange: (settings?: Settings) => void };
-export function ProviderSettings({ disabled, onChange }: Props) {
+type Props = { disabled: boolean; editing: boolean; onChange: (settings?: Settings) => void; onCollapse: () => void };
+export function ProviderSettings({ disabled, editing, onChange, onCollapse }: Props) {
   const [provider, setProvider] = useState<ProviderId>('openai');
   const [model, setModel] = useState<string>(PROVIDERS.openai.defaultModel);
   const [apiKey, setKey] = useState('');
@@ -54,9 +54,12 @@ export function ProviderSettings({ disabled, onChange }: Props) {
   const [savedKeys, setSavedKeys] = useState<ReadonlySet<ProviderId>>(() => new Set());
   const [status, setStatus] = useState(() => t('psStatusDefault'));
   const [saving, setSaving] = useState(false);
-  // The card doubles as the LLM provider dialog: after a successful save it
-  // folds back to its summary so the workflow underneath is not left covered.
+  // The card is the panel's always-visible provider summary and doubles as the
+  // LLM provider dialog: the header's Edit LLM button opens it, and a successful
+  // save or a manual summary collapse folds it back to the summary.
   const card = useRef<HTMLDetailsElement>(null);
+  const collapse = () => { if (card.current) card.current.open = false; onCollapse(); };
+  useEffect(() => { if (editing && card.current && !card.current.open) card.current.open = true; }, [editing]);
   useEffect(() => {
     let alive = true;
     void (async () => {
@@ -87,6 +90,7 @@ export function ProviderSettings({ disabled, onChange }: Props) {
           setSavedKeys(previous => new Set(previous).add('preset'));
           onChange(settings);
           setStatus(t('psPresetApplied'));
+          collapse();
         } catch (error) { if (alive) setStatus(errorMessage(error)); }
         return;
       }
@@ -101,6 +105,7 @@ export function ProviderSettings({ disabled, onChange }: Props) {
         setProvider(id); setModel(BUILTIN.defaultModel);
         onChange({ provider: id, model: BUILTIN.defaultModel, apiKey: '' });
         setStatus(t('psBuiltinRestored'));
+        collapse();
         return;
       }
       const savedEndpoint = (id === 'custom' || id === 'preset') && typeof preferences.endpoint === 'string' ? preferences.endpoint : '';
@@ -116,6 +121,7 @@ export function ProviderSettings({ disabled, onChange }: Props) {
         if (!alive) return;
         onChange({ provider: id, model: preferences.model, apiKey: key, ...(id === 'custom' || id === 'preset' ? { endpoint: savedEndpoint } : {}), ...(id === 'preset' && bundled ? { name: bundled.name } : {}) });
         setStatus(id === 'preset' ? t('psPresetApplied') : kindOf(id) === 'local' ? t('psLocalRestored') : t('psKeyRestored'));
+        collapse();
       }
     })().catch(() => { if (alive) setStatus(t('psRestoreFailed')); });
     return () => { alive = false; };
@@ -138,7 +144,7 @@ export function ProviderSettings({ disabled, onChange }: Props) {
         await resetAutoSend(provider);
         onChange(settings);
         setStatus(t('psPresetApplied'));
-        if (card.current) card.current.open = false;
+        collapse();
         return;
       }
       if (provider !== 'builtin') {
@@ -164,8 +170,8 @@ export function ProviderSettings({ disabled, onChange }: Props) {
         : kindOf(provider) === 'local'
           ? t('psLocalVerified')
           : t('psCloudVerified'));
-      // Verification passed and the settings are stored: collapse the dialog.
-      if (card.current) card.current.open = false;
+      // Verification passed and the settings are stored: fold to the summary.
+      collapse();
     } catch (error) { setStatus(errorMessage(error)); }
     finally { setSaving(false); }
   }
@@ -191,8 +197,10 @@ export function ProviderSettings({ disabled, onChange }: Props) {
   const localEntries = Object.entries(PROVIDERS).filter(([, info]) => info.kind === 'local');
   const savedMark = (id: string) => savedKeys.has(id as ProviderId) ? '  🔑' : '';
   const optionLabel = (name: string, icon: ProviderKind, id: string) => `${KIND_ICON[icon]} ${name}${savedMark(id)}`;
-  return <details className="card settings" open ref={card}>
-    <summary>{t('psSummary')} <span className="subtle">{t('psKinds')}{builtin ? ` · ${t('psBuiltinDetected')}` : ''}</span></summary>
+  return <details className={`card settings${kind === 'cloud' ? ' settings-cloud' : ''}`} open ref={card} onToggle={event => { if (!event.currentTarget.open) onCollapse(); }}>
+    <summary>{t('psSummary')} {nameOf(provider, preset)}{model.trim() ? ` · ${t('modelLabel')} ${model.trim()}` : ''}
+      <span className="subtle">{t(kind === 'builtin' ? 'footerPrivacyBuiltin' : kind === 'cloud' ? 'footerPrivacyCloud' : 'footerPrivacyLocal')}</span>
+    </summary>
     <fieldset disabled={disabled || saving}>
       <label>{t('psProvider')}
         <select value={provider} onChange={event => { const id = event.target.value as ProviderId; setProvider(id); setModel(defaultModelFor(id, preset)); setKey(id === 'preset' && preset ? preset.apiKey : ''); if (id === 'preset' && preset) setEndpoint(preset.endpoint); dirty(); }}>

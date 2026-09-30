@@ -66,7 +66,6 @@
     "placeholders": { "kind": { "content": "$1" }, "pages": { "content": "$2" }, "units": { "content": "$3" }, "chars": { "content": "$4" } }
   },
 
-  "providerLabel": { "message": "服務商：" },
   "modelLabel": { "message": "模型：" },
   "previewOutgoing": { "message": "預覽將傳送的資料" },
   "viewMappingInstructions": { "message": "檢視對應指令" },
@@ -159,9 +158,7 @@
   "psCloudVerified": { "message": "服務商已驗證並啟用。金鑰有效；不保證模型在填寫方面的相容性。" },
   "psKeyRemoved": { "message": "已移除儲存的金鑰，並撤銷了主機權限。" },
   "psKeyRemoveFailed": { "message": "無法移除金鑰。請重試。" },
-  "psSummary": { "message": "LLM 服務商" },
-  "psKinds": { "message": "預設 · 雲端 · 本機 · 裝置端" },
-  "psBuiltinDetected": { "message": "偵測到裝置端選項" },
+  "psSummary": { "message": "LLM 服務商：" },
   "psProvider": { "message": "服務商" },
   "psKeySaved": { "message": "金鑰已儲存" },
   "psKeySavedTitle": { "message": "此服務商已儲存 API 金鑰" },

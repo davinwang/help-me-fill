@@ -66,7 +66,6 @@
     "placeholders": { "kind": { "content": "$1" }, "pages": { "content": "$2" }, "units": { "content": "$3" }, "chars": { "content": "$4" } }
   },
 
-  "providerLabel": { "message": "Anbieter:" },
   "modelLabel": { "message": "Modell:" },
   "previewOutgoing": { "message": "Ausgehende Daten anzeigen" },
   "viewMappingInstructions": { "message": "Zuordnungsanweisungen anzeigen" },
@@ -159,9 +158,7 @@
   "psCloudVerified": { "message": "Anbieter überprüft und aktiviert. Der Schlüssel funktioniert; die Modellkompatibilität für das Ausfüllen ist nicht garantiert." },
   "psKeyRemoved": { "message": "Gespeicherter Schlüssel entfernt und Host-Berechtigung widerrufen." },
   "psKeyRemoveFailed": { "message": "Der Schlüssel konnte nicht entfernt werden. Versuchen Sie es erneut." },
-  "psSummary": { "message": "LLM-Anbieter" },
-  "psKinds": { "message": "Voreinstellung · Cloud · Lokal · Auf dem Gerät" },
-  "psBuiltinDetected": { "message": "Gerätemodell-Option erkannt" },
+  "psSummary": { "message": "LLM-Anbieter:" },
   "psProvider": { "message": "Anbieter" },
   "psKeySaved": { "message": "Schlüssel gespeichert" },
   "psKeySavedTitle": { "message": "Für diesen Anbieter ist ein API-Schlüssel gespeichert" },

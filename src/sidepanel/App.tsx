@@ -206,19 +206,14 @@ export function App() {
   const blocked = !!state.scanError;
   const detected = !blocked && !!scan?.fields.length;
   const review = !blocked && !!state.plan;
-  const showSettings = !settings || editing;
   const locked = busy || blocked;
   const needsDocument = detected && !state.documents.length;
   const showSend = !!settings && autoSend === false && detected && state.documents.length > 0 && !review;
   const step2 = review ? (state.result ? 'done' : 'active') : (settings && detected && state.documents.length ? 'active' : '');
-  // The footer names the active provider and carries the privacy line matching
-  // its kind: on-device, cloud, or local/intranet (presets resolve like local).
-  // A cloud kind highlights the whole footer with the cloud-notice palette.
-  const providerInfo = settings ? resolveProvider(settings) : undefined;
   return <main>
-    <header><div className="brand"><span className="brand-icon" aria-hidden="true">h</span><div><h1>help-me-fill</h1><span className="subtle">{t('brandSubtle')}</span></div></div>{settings && <button type="button" className="link-button" disabled={busy} onClick={() => setEditing(value => !value)}>{t('editLlm')}</button>}</header>
+    <header><div className="brand"><span className="brand-icon" aria-hidden="true">h</span><div><h1>help-me-fill</h1><span className="subtle">{t('brandSubtle')}</span></div></div>{settings && <button type="button" className="link-button" disabled={busy} onClick={() => setEditing(true)}>{t('editLlm')}</button>}</header>
     {!settings && <div className="intro"><h2>{t('introTitle')}</h2><p>{t('introBody')}</p></div>}
-    {showSettings && <ProviderSettings disabled={busy} onChange={providerChanged} />}
+    <ProviderSettings disabled={busy} editing={editing} onChange={providerChanged} onCollapse={() => setEditing(false)} />
     {state.error && <div className="error" role="alert"><span>{state.error}</span>{autoSend && detected && !!state.documents.length && !review && <button type="button" className="link-button" onClick={generate}>{t('retryMatch')}</button>}</div>}
     {!settings && <p className="hint">{t('configureProviderHint')}</p>}
     {settings && <>
@@ -235,9 +230,5 @@ export function App() {
       {!blocked && !detected && !!scan && <p className="hint">{t('errNoFields')}</p>}
     </>}
     {dialog && settings && <AutoSendDialog settings={settings} onConfirm={confirmAutoSend} onCancel={() => setDialog(false)} />}
-    {settings && providerInfo && <footer className={providerInfo.kind === 'cloud' ? 'footer-cloud' : ''}>
-      <p>{t('providerLabel')} {providerInfo.name}{settings.model ? ` · ${t('modelLabel')} ${settings.model}` : ''}</p>
-      <p>{t(providerInfo.kind === 'builtin' ? 'footerPrivacyBuiltin' : providerInfo.kind === 'cloud' ? 'footerPrivacyCloud' : 'footerPrivacyLocal')}</p>
-    </footer>}
   </main>;
 }

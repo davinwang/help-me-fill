@@ -21,6 +21,11 @@ p { font-size: 13px; line-height: 1.65; margin: 8px 0; overflow-wrap: anywhere; 
 .card { background: var(--surface); border: 1px solid var(--border); padding: 16px; border-radius: 13px; margin: 14px 0; box-shadow: 0 2px 4px #1e1e3c03; }
 .settings summary { font-weight: 650; }
 .settings summary .subtle { display: block; margin: 4px 0 0; margin-inline-start: 15px; }
+/* The provider summary names the active provider, its model, and the privacy
+   line. A cloud kind reuses the prominent cloud-notice palette on the folded
+   card so the data-destination warning stays visible after the editor closes. */
+.settings-cloud:not([open]) { background: #fff4e0; border-color: #f0c987; color: #7a4d13; }
+.settings-cloud:not([open]) summary .subtle { color: inherit; }
 summary { cursor: pointer; font-size: 12px; line-height: 1.6; }
 details[open] > summary { margin-bottom: 12px; }
 fieldset { padding: 0; margin: 0; border: 0; min-width: 0; }
@@ -145,12 +150,5 @@ input[type=checkbox].switch:disabled { opacity: .45; cursor: not-allowed; }
 .preserve { white-space: pre-wrap; overflow-wrap: anywhere; font-weight: 600; }
 blockquote { margin: 8px 0; padding: 10px; border-inline-start: 2px solid #c9c3ee; background: #f7f6fd; font-size: 12px; white-space: pre-wrap; overflow-wrap: anywhere; }
 ul { padding-inline-start: 18px; font-size: 12px; line-height: 1.8; }
-footer { color: var(--muted); font-size: 10px; line-height: 1.7; margin-top: 22px; padding-top: 15px; border-top: 1px solid var(--border); }
-/* The footer carries the active provider, its model, and the privacy line
-   matching the provider kind; it renders only with a configured provider. */
-footer p { margin: 0 0 8px; font-size: 10px; }
-/* A cloud-kind footer reuses the prominent cloud-notice palette; local and
-   on-device keep the calm default look. */
-footer.footer-cloud { background: #fff4e0; border: 1px solid #f0c987; border-radius: 6px; color: #7a4d13; padding: 10px; }
 @media (max-width: 340px) { main { padding: 0 10px 24px; } header, .steps { margin-left: -10px; margin-right: -10px; } header { padding: 10px; } .card { padding: 12px; } .section-top { flex-wrap: wrap; } .intro h2 { font-size: 21px; } header .subtle { display: none; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }

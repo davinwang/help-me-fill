@@ -66,7 +66,6 @@
     "placeholders": { "kind": { "content": "$1" }, "pages": { "content": "$2" }, "units": { "content": "$3" }, "chars": { "content": "$4" } }
   },
 
-  "providerLabel": { "message": "المزوّد:" },
   "modelLabel": { "message": "النموذج:" },
   "previewOutgoing": { "message": "معاينة البيانات الصادرة" },
   "viewMappingInstructions": { "message": "عرض تعليمات الربط" },
@@ -159,9 +158,7 @@
   "psCloudVerified": { "message": "تم التحقق من المزوّد وتمكينه. المفتاح يعمل؛ ولا يُضمن توافق النموذج للتعبئة." },
   "psKeyRemoved": { "message": "تمت إزالة المفتاح المحفوظ وإبطال إذن المضيف." },
   "psKeyRemoveFailed": { "message": "تعذّرت إزالة المفتاح. حاول مرة أخرى." },
-  "psSummary": { "message": "مزوّد LLM" },
-  "psKinds": { "message": "إعداد مسبق · سحابي · محلي · على الجهاز" },
-  "psBuiltinDetected": { "message": "تم اكتشاف خيار على الجهاز" },
+  "psSummary": { "message": "مزوّد LLM:" },
   "psProvider": { "message": "المزوّد" },
   "psKeySaved": { "message": "تم حفظ المفتاح" },
   "psKeySavedTitle": { "message": "تم حفظ مفتاح واجهة برمجة تطبيقات لهذا المزوّد" },

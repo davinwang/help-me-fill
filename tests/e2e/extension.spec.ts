@@ -42,7 +42,8 @@ test('production sidebar parses a bilingual PDF and scans the real tab', async (
     await expect.poll(() => app.panel.evaluate(() => document.querySelector<HTMLInputElement>('input[placeholder="Model ID from your provider account"]')?.value)).toBe(PROVIDERS.zhipu.defaultModel);
     await app.panel.evaluate(() => { (document.querySelector('select') as HTMLSelectElement).value = 'openai'; document.querySelector('select')!.dispatchEvent(new Event('change', { bubbles: true })); });
     await enableProvider(app, info.project.name === 'edge' ? 'edge://extensions/' : 'chrome://extensions/');
-    // Once verified and enabled, the settings card hides behind Edit LLM and the workflow shows.
+    // Once verified and enabled, the settings card folds to its provider summary
+    // (provider · model + privacy) and the workflow shows; Edit LLM reopens it.
     expect(await app.panel.text()).not.toContain('Save & verify');
     expect(await app.panel.text()).toContain('Edit LLM');
     // Detection runs in parallel with document selection: fields and their
@@ -71,10 +72,10 @@ test('switching the provider after a saved preference is not reverted', async ({
   try {
     await enableProvider(app, info.project.name === 'edge' ? 'edge://extensions/' : 'chrome://extensions/');
     await app.panel.click('Edit LLM');
-    // Wait for the stored provider to be restored before touching the select.
-    await expect.poll(() => app.panel.text()).toContain('Stored key restored');
+    // The card stays mounted as the provider summary, so its select is already
+    // restored from storage; wait for the stored provider before touching it.
     const selected = () => app.panel.evaluate(() => (document.querySelector('select') as HTMLSelectElement).value);
-    expect(await selected()).toBe('openai');
+    await expect.poll(selected).toBe('openai');
     await app.panel.evaluate(() => {
       const element = document.querySelector('select') as HTMLSelectElement;
       element.value = 'zhipu'; element.dispatchEvent(new Event('change', { bubbles: true }));

@@ -66,7 +66,6 @@
     "placeholders": { "kind": { "content": "$1" }, "pages": { "content": "$2" }, "units": { "content": "$3" }, "chars": { "content": "$4" } }
   },
 
-  "providerLabel": { "message": "Provedor:" },
   "modelLabel": { "message": "Modelo:" },
   "previewOutgoing": { "message": "Pré-visualizar os dados de saída" },
   "viewMappingInstructions": { "message": "Ver as instruções de mapeamento" },
@@ -159,9 +158,7 @@
   "psCloudVerified": { "message": "Provedor verificado e ativado. A chave funciona; a compatibilidade do modelo para preenchimento não é garantida." },
   "psKeyRemoved": { "message": "Chave salva removida e permissão de host revogada." },
   "psKeyRemoveFailed": { "message": "Não foi possível remover a chave. Tente novamente." },
-  "psSummary": { "message": "Provedor de LLM" },
-  "psKinds": { "message": "Predefinição · Nuvem · Local · No dispositivo" },
-  "psBuiltinDetected": { "message": "Opção no dispositivo detectada" },
+  "psSummary": { "message": "Provedor de LLM:" },
   "psProvider": { "message": "Provedor" },
   "psKeySaved": { "message": "Chave salva" },
   "psKeySavedTitle": { "message": "Uma chave de API está salva para este provedor" },

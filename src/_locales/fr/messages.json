@@ -66,7 +66,6 @@
     "placeholders": { "kind": { "content": "$1" }, "pages": { "content": "$2" }, "units": { "content": "$3" }, "chars": { "content": "$4" } }
   },
 
-  "providerLabel": { "message": "Fournisseur :" },
   "modelLabel": { "message": "Modèle :" },
   "previewOutgoing": { "message": "Aperçu des données sortantes" },
   "viewMappingInstructions": { "message": "Voir les instructions de mappage" },
@@ -159,9 +158,7 @@
   "psCloudVerified": { "message": "Fournisseur vérifié et activé. La clé fonctionne ; la compatibilité du modèle pour le remplissage n'est pas garantie." },
   "psKeyRemoved": { "message": "Clé enregistrée supprimée et autorisation d'hôte révoquée." },
   "psKeyRemoveFailed": { "message": "Impossible de supprimer la clé. Réessayez." },
-  "psSummary": { "message": "Fournisseur LLM" },
-  "psKinds": { "message": "Préréglage · Cloud · Local · Sur l'appareil" },
-  "psBuiltinDetected": { "message": "Option sur l'appareil détectée" },
+  "psSummary": { "message": "Fournisseur LLM :" },
   "psProvider": { "message": "Fournisseur" },
   "psKeySaved": { "message": "Clé enregistrée" },
   "psKeySavedTitle": { "message": "Une clé API est enregistrée pour ce fournisseur" },

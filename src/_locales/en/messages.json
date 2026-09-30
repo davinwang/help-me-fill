@@ -78,7 +78,6 @@
     "placeholders": { "kind": { "content": "$1" }, "pages": { "content": "$2" }, "units": { "content": "$3" }, "chars": { "content": "$4" } }
   },
 
-  "providerLabel": { "message": "Provider:" },
   "modelLabel": { "message": "Model:" },
   "previewOutgoing": { "message": "Preview outgoing data" },
   "viewMappingInstructions": { "message": "View mapping instructions" },
@@ -171,9 +170,7 @@
   "psCloudVerified": { "message": "Provider verified and enabled. The key works; model compatibility for filling is not guaranteed." },
   "psKeyRemoved": { "message": "Stored key removed and host permission revoked." },
   "psKeyRemoveFailed": { "message": "Could not remove the key. Try again." },
-  "psSummary": { "message": "LLM provider" },
-  "psKinds": { "message": "Preset · Cloud · Local · On-device" },
-  "psBuiltinDetected": { "message": "On-device option detected" },
+  "psSummary": { "message": "LLM provider:" },
   "psProvider": { "message": "Provider" },
   "psKeySaved": { "message": "Key saved" },
   "psKeySavedTitle": { "message": "An API key is saved for this provider" },

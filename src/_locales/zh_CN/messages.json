@@ -66,7 +66,6 @@
     "placeholders": { "kind": { "content": "$1" }, "pages": { "content": "$2" }, "units": { "content": "$3" }, "chars": { "content": "$4" } }
   },
 
-  "providerLabel": { "message": "服务商：" },
   "modelLabel": { "message": "模型：" },
   "previewOutgoing": { "message": "预览将发送的数据" },
   "viewMappingInstructions": { "message": "查看映射指令" },
@@ -159,9 +158,7 @@
   "psCloudVerified": { "message": "服务商已校验并启用。密钥有效；不保证模型在填写方面的兼容性。" },
   "psKeyRemoved": { "message": "已移除存储的密钥，并撤销了主机权限。" },
   "psKeyRemoveFailed": { "message": "无法移除密钥。请重试。" },
-  "psSummary": { "message": "LLM 服务商" },
-  "psKinds": { "message": "预设 · 云端 · 本地 · 端侧" },
-  "psBuiltinDetected": { "message": "检测到端侧选项" },
+  "psSummary": { "message": "LLM 服务商：" },
   "psProvider": { "message": "服务商" },
   "psKeySaved": { "message": "密钥已保存" },
   "psKeySavedTitle": { "message": "此服务商已保存 API 密钥" },

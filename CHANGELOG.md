@@ -124,6 +124,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   colored badge, and a "🔑 Key saved" chip plus a per-option key glyph mark providers
   with a stored key. The primary button is contextual — "Save & verify key" (cloud),
   "Save & verify" (local), "Enable on-device model" (on-device).
+- **Provider summary (provider · model + privacy) moves into the settings card**
+  (`src/sidepanel/components/ProviderSettings.tsx`, `src/sidepanel/App.tsx`): the
+  always-mounted settings card now names the active provider and model plus its
+  kind's privacy line in its summary row — a cloud kind keeps the prominent
+  cloud-notice palette while the card is folded — and the former bottom footer is
+  removed. The nine locale catalogs repurpose `psSummary` as the `LLM provider:`
+  summary label and drop the now unused `providerLabel`, `psKinds`, and
+  `psBuiltinDetected` keys.
 
 ### Removed
 - **Moonshot (Kimi)** host permission (`https://api.moonshot.cn/*`) dropped
