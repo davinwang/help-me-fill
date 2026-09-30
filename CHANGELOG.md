@@ -132,6 +132,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   removed. The nine locale catalogs repurpose `psSummary` as the `LLM provider:`
   summary label and drop the now unused `providerLabel`, `psKinds`, and
   `psBuiltinDetected` keys.
+- **The provider wait rides the detected-fields card** (`src/sidepanel/App.tsx`,
+  `src/sidepanel/components/PageFields.tsx`): while the LLM computes the match,
+  the small progress strip is gone — the whole "N fillable fields detected" card
+  is covered by a translucent veil with a centered "Waiting for $provider$ to
+  return match results…" status (plus Cancel), so the wait is unmissable. The
+  `progressMapping` string gains a `$PROVIDER$` placeholder in all nine locale
+  catalogs; the parse, fill, and undo phases keep the progress strip.
 
 ### Removed
 - **Moonshot (Kimi)** host permission (`https://api.moonshot.cn/*`) dropped

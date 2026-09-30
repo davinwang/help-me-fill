@@ -18,7 +18,10 @@
   "stepReview": { "message": "Prüfen" },
   "stepFill": { "message": "Ausfüllen" },
   "progressParsing": { "message": "Dokumenttext wird lokal extrahiert…" },
-  "progressMapping": { "message": "Warten auf Ihren Anbieter…" },
+  "progressMapping": {
+    "message": "Warte auf Zuordnungsergebnisse von $PROVIDER$…",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
   "progressFilling": { "message": "Ausgewählte Felder werden ausgefüllt und überprüft…" },
   "progressUndoing": { "message": "Unveränderte Werte werden wiederhergestellt…" },
   "progressCanceling": { "message": "Verbleibende Arbeit wird abgebrochen. Bereits ausgefüllte Felder können bestehen bleiben; prüfen Sie die Ergebnisse." },

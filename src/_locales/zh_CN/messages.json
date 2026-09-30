@@ -18,7 +18,10 @@
   "stepReview": { "message": "审核" },
   "stepFill": { "message": "填写" },
   "progressParsing": { "message": "正在本地提取文档文本…" },
-  "progressMapping": { "message": "正在等待你的服务商…" },
+  "progressMapping": {
+    "message": "正在等待$PROVIDER$返回匹配结果…",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
   "progressFilling": { "message": "正在填写并校验所选字段…" },
   "progressUndoing": { "message": "正在还原未更改的值…" },
   "progressCanceling": { "message": "正在取消剩余工作。已填写的字段可能保留，请检查结果。" },

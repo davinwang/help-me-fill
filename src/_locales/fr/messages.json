@@ -18,7 +18,10 @@
   "stepReview": { "message": "Relecture" },
   "stepFill": { "message": "Remplissage" },
   "progressParsing": { "message": "Extraction locale du texte du document…" },
-  "progressMapping": { "message": "En attente de votre fournisseur…" },
+  "progressMapping": {
+    "message": "En attente des résultats d'association de $PROVIDER$…",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
   "progressFilling": { "message": "Remplissage et vérification des champs sélectionnés…" },
   "progressUndoing": { "message": "Restauration des valeurs inchangées…" },
   "progressCanceling": { "message": "Annulation du travail restant. Les champs déjà remplis peuvent subsister ; vérifiez les résultats." },

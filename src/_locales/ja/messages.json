@@ -18,7 +18,10 @@
   "stepReview": { "message": "確認" },
   "stepFill": { "message": "入力" },
   "progressParsing": { "message": "文書テキストをローカルで抽出中…" },
-  "progressMapping": { "message": "プロバイダーの応答を待機中…" },
+  "progressMapping": {
+    "message": "$PROVIDER$の照合結果を待機中…",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
   "progressFilling": { "message": "選択したフィールドを入力・検証中…" },
   "progressUndoing": { "message": "変更されていない値を復元中…" },
   "progressCanceling": { "message": "残りの処理をキャンセルしています。すでに入力されたフィールドは残る場合があります。結果を確認してください。" },

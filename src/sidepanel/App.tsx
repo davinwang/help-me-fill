@@ -210,6 +210,11 @@ export function App() {
   const needsDocument = detected && !state.documents.length;
   const showSend = !!settings && autoSend === false && detected && state.documents.length > 0 && !review;
   const step2 = review ? (state.result ? 'done' : 'active') : (settings && detected && state.documents.length ? 'active' : '');
+  // While the provider computes the match the fields card itself carries the
+  // wait state: a translucent veil with a centered status line instead of the
+  // small progress strip. `state.progress` (on-device wait/download, the cancel
+  // confirmation) is more specific, so it wins over the provider-name default.
+  const mappingWait = settings && state.phase === 'mapping' ? <div className="fields-wait" role="status"><span className="spinner" aria-hidden="true" /><span>{state.progress ?? t('progressMapping', [resolveProvider(settings).name])}</span><button type="button" className="link-button" onClick={cancel}>{t('cancel')}</button></div> : undefined;
   return <main>
     <header><div className="brand"><span className="brand-icon" aria-hidden="true">h</span><div><h1>help-me-fill</h1><span className="subtle">{t('brandSubtle')}</span></div></div>{settings && <button type="button" className="link-button" disabled={busy} onClick={() => setEditing(true)}>{t('editLlm')}</button>}</header>
     {!settings && <div className="intro"><h2>{t('introTitle')}</h2><p>{t('introBody')}</p></div>}
@@ -218,14 +223,14 @@ export function App() {
     {!settings && <p className="hint">{t('configureProviderHint')}</p>}
     {settings && <>
       <ol className="steps" aria-label={t('workflowLabel')}><li className={state.documents.length ? 'done' : 'active'}>1 {t('stepDocument')}</li><li className={step2}>2 {t('stepReview')}</li><li className={state.result ? 'active' : ''}>3 {t('stepFill')}</li></ol>
-      {busy && <div className="progress" role="status"><span className="spinner" aria-hidden="true" /><span>{state.progress ?? ({ parsing: t('progressParsing'), mapping: t('progressMapping'), filling: t('progressFilling'), undoing: t('progressUndoing') } as Record<string, string>)[state.phase]}</span><button type="button" className="link-button" onClick={cancel}>{t('cancel')}</button></div>}
+      {busy && state.phase !== 'mapping' && <div className="progress" role="status"><span className="spinner" aria-hidden="true" /><span>{state.progress ?? ({ parsing: t('progressParsing'), filling: t('progressFilling'), undoing: t('progressUndoing') } as Record<string, string>)[state.phase]}</span><button type="button" className="link-button" onClick={cancel}>{t('cancel')}</button></div>}
       {state.scanError && <div className="notice scan-notice" role="status"><span>{state.scanError}</span><button type="button" className="link-button" onClick={() => void sync()}>{t('retryScan')}</button></div>}
       <div className={needsDocument ? 'attention' : ''}>
         <DropZone disabled={busy} documents={state.documents} onFile={upload} onError={error => dispatch({ type: 'ERROR', error })}
           onRemove={index => { abortRun(); dispatch({ type: 'REMOVE_DOCUMENT', index }); }} />
       </div>
       {needsDocument && <p className="prompt" role="status">{t('selectDocumentPrompt', [scan!.fields.length])}</p>}
-      {detected && <PageFields state={state} dispatch={dispatch} disabled={locked} onFill={fill} onUndo={undo} send={showSend ? <SendActions parsed={mergeDocuments(state.documents)} scan={scan!} settings={settings} disabled={busy} onGenerate={generate} onAutoSend={changeAutoSend} /> : undefined} />}
+      {detected && <PageFields state={state} dispatch={dispatch} disabled={locked} onFill={fill} onUndo={undo} send={showSend ? <SendActions parsed={mergeDocuments(state.documents)} scan={scan!} settings={settings} disabled={busy} onGenerate={generate} onAutoSend={changeAutoSend} /> : undefined} wait={mappingWait} />}
       {detected && !!state.documents.length && !review && autoSend === true && <p className="hint auto-send-status" role="status">{t('autoSendStatus', [resolveProvider(settings).name])} <button type="button" className="link-button" onClick={() => changeAutoSend(false)}>{t('autoSendOff')}</button></p>}
       {!blocked && !detected && !!scan && <p className="hint">{t('errNoFields')}</p>}
     </>}

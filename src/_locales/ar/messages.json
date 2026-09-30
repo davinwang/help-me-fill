@@ -18,7 +18,10 @@
   "stepReview": { "message": "المراجعة" },
   "stepFill": { "message": "التعبئة" },
   "progressParsing": { "message": "جارٍ استخراج نص المستند محليًا…" },
-  "progressMapping": { "message": "في انتظار مزوّدك…" },
+  "progressMapping": {
+    "message": "في انتظار نتائج المطابقة من $PROVIDER$…",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
   "progressFilling": { "message": "جارٍ تعبئة الحقول المحددة والتحقق منها…" },
   "progressUndoing": { "message": "جارٍ استعادة القيم غير المتغيرة…" },
   "progressCanceling": { "message": "جارٍ إلغاء العمل المتبقي. قد تبقى الحقول التي تمت تعبئتها؛ افحص النتائج." },

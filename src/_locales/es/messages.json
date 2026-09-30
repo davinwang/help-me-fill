@@ -18,7 +18,10 @@
   "stepReview": { "message": "Revisar" },
   "stepFill": { "message": "Rellenar" },
   "progressParsing": { "message": "Extrayendo el texto del documento localmente…" },
-  "progressMapping": { "message": "Esperando a tu proveedor…" },
+  "progressMapping": {
+    "message": "Esperando los resultados de emparejamiento de $PROVIDER$…",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
   "progressFilling": { "message": "Rellenando y verificando los campos seleccionados…" },
   "progressUndoing": { "message": "Restaurando los valores sin cambios…" },
   "progressCanceling": { "message": "Cancelando el trabajo restante. Los campos ya rellenados pueden permanecer; inspecciona los resultados." },

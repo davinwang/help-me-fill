@@ -13,7 +13,7 @@ const STATUS_KEYS: Record<string, string> = {
 // arrives, matched rows arm their switch, the proposed value, and their evidence
 // in place, and the fill action appears at the bottom of the same card.
 // Unmatched rows keep the disabled switch and carry their reason on the name line.
-export function PageFields({ state, dispatch, disabled, onFill, onUndo, send }: { state: Session; dispatch: Dispatch<Action>; disabled: boolean; onFill: () => void; onUndo: () => void; send?: ReactNode }) {
+export function PageFields({ state, dispatch, disabled, onFill, onUndo, send, wait }: { state: Session; dispatch: Dispatch<Action>; disabled: boolean; onFill: () => void; onUndo: () => void; send?: ReactNode; wait?: ReactNode }) {
   const scan = state.scan!;
   const plan = state.plan;
   // Defensive filter: re-keying keeps rows aligned with the scan, so a row
@@ -39,7 +39,8 @@ export function PageFields({ state, dispatch, disabled, onFill, onUndo, send }: 
   // One card for the whole workflow. Before matching the field list carries the
   // send control (its disclosures and the split button); once a plan arrives the
   // same rows arm their switches and the bottom of this card carries the fill
-  // action instead of a separate consent or action card.
+  // action instead of a separate consent or action card. `wait` is the provider
+  // wait veil: an absolute overlay pinned to the card while the LLM matches.
   return (
     <section className="card fields" aria-label={t('fieldsTitle', [String(scan.fields.length)])}>
       <h2>{t('fieldsTitle', [String(scan.fields.length)])}</h2>
@@ -105,6 +106,7 @@ export function PageFields({ state, dispatch, disabled, onFill, onUndo, send }: 
           </>}
         </fieldset>
         : send}
+      {wait}
     </section>
   );
 }

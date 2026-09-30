@@ -96,6 +96,13 @@ pre, .text-preview { max-height: 230px; overflow: auto; white-space: pre-wrap; o
 .progress > span:nth-child(2) { flex: 1; }
 .spinner { width: 14px; height: 14px; flex-shrink: 0; border: 2px solid #c8c2f1; border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
+/* While the provider computes the match there is no separate progress strip:
+   the fields card itself carries the wait state as a translucent veil with a
+   centered status line (plus the cancel action), so the wait is unmissable. */
+.fields { position: relative; }
+.fields-wait { position: absolute; inset: 0; z-index: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; padding: 16px; border-radius: 12px; background: #f2f1fac2; color: var(--accent); text-align: center; }
+.fields-wait .spinner { width: 18px; height: 18px; }
+.fields-wait > span:nth-child(2) { font-size: 12px; font-weight: 600; line-height: 1.6; }
 /* Matched rows keep the compact field-list look: the switch rides the
    section-top row and the editor replaces the value line in place. The
    unmatched reason and the evidence toggle ride the field-name line too; only

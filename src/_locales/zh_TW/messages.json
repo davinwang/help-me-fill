@@ -18,7 +18,10 @@
   "stepReview": { "message": "審核" },
   "stepFill": { "message": "填寫" },
   "progressParsing": { "message": "正在本機擷取文件文字…" },
-  "progressMapping": { "message": "正在等待你的服務商…" },
+  "progressMapping": {
+    "message": "正在等待$PROVIDER$回傳配對結果…",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
   "progressFilling": { "message": "正在填寫並驗證所選欄位…" },
   "progressUndoing": { "message": "正在還原未變更的值…" },
   "progressCanceling": { "message": "正在取消剩餘工作。已填寫的欄位可能保留，請檢查結果。" },

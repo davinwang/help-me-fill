@@ -30,7 +30,10 @@
   "stepReview": { "message": "Review" },
   "stepFill": { "message": "Fill" },
   "progressParsing": { "message": "Extracting document text locally…" },
-  "progressMapping": { "message": "Waiting for your provider…" },
+  "progressMapping": {
+    "message": "Waiting for $PROVIDER$ to return match results…",
+    "placeholders": { "provider": { "content": "$1" } }
+  },
   "progressFilling": { "message": "Filling and verifying selected fields…" },
   "progressUndoing": { "message": "Restoring unchanged values…" },
   "progressCanceling": { "message": "Canceling remaining work. Already filled fields may remain; inspect the results." },
